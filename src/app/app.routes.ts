@@ -5,5 +5,5 @@ import { ElementComponent } from './element/element.component';
 export const routes: Routes = [
     { path: '', redirectTo: 'list', pathMatch: 'full'},
     { path: 'list', component: ListComponent },
-    { path: 'element', component: ElementComponent },
+    { path: 'element/:id', component: ElementComponent },
 ];
