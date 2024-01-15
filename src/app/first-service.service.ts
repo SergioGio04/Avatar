@@ -10,7 +10,6 @@ export class FirstServiceService {
   constructor(private http: HttpClient) { }
 
   getProducts():Observable<any> {
-    debugger;
     const url= "https://dummyjson.com/products";
     return this.http.get<any>(url);    
   }

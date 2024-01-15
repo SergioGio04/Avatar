@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FirstServiceService } from './first-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { FirstServiceService } from './first-service.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,20 +11,11 @@ import { FirstServiceService } from './first-service.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Avatar';
   repoProducts: any;
 
   constructor(private FirstServiceService:FirstServiceService) {
   }
 
-  ngOnInit(): void {
-    this.FirstServiceService.getProducts().subscribe((data: any)=>{
-      debugger;
-      if(data && data.products){
-        this.repoProducts= data.products;
-      }
-      
-    })
-  }
 }

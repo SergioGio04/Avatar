@@ -1,0 +1,14 @@
+<style>
+     .singleItem{
+        margin: 10px;
+    }
+</style>
+
+<div>
+    <div *ngFor="let item of repoProducts" class="listClass">
+        <div class="singleItem">
+        <span>product: {{item.title}} - </span> 
+        <span>price {{item.price}} €</span> 
+        </div>
+    </div>
+</div>
