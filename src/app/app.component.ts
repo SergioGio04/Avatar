@@ -12,15 +12,14 @@ import { FirstServiceService } from './first-service.service';
 })
 export class AppComponent implements OnInit {
   title = 'Avatar';
-  repoProducts: any[]= [{}];
+  repoProducts: any;
 
   constructor(private FirstServiceService:FirstServiceService) {
   }
 
   ngOnInit(): void {
-    this.FirstServiceService.getProducts().subscribe((data)=>{
+    this.FirstServiceService.getProducts().subscribe((data: any)=>{
       debugger;
-      console.log("hey");
       if(data && data.products){
         this.repoProducts= data.products;
       }
