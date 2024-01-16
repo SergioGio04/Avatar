@@ -5,6 +5,7 @@
   }
  
   .ClassRoutes{
+    cursor: pointer;
     width: 15em;
   }
 </style>
@@ -12,7 +13,12 @@
 <main class="main">
   <div class="content">
 
-    <div class="ClassRoutes">menu</div>
+    <div 
+      class="ClassRoutes"
+      routerLink="/list"
+      routerLinkActive="miaClasse"
+      [routerLinkActiveOptions]='{exact:true}'
+    >list</div>
     <router-outlet></router-outlet>
     <!--
     <div>
