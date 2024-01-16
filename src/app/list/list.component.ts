@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FirstServiceService } from '../first-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
+import { ElementComponent } from '../element/element.component';
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [ CommonModule, RouterOutlet],
+  imports: [ CommonModule, RouterOutlet, ElementComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -19,7 +20,6 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.FirstServiceService.getProducts().subscribe((data: any)=>{
-      debugger;
       if(data && data.products){
         this.repoProducts= data.products;
       }
@@ -28,8 +28,6 @@ export class ListComponent implements OnInit {
   }
 
   ChangeRoute(prm:any){
-      debugger;
-      debugger;
       this.router.navigate(["element", prm.id]);
   }
 
