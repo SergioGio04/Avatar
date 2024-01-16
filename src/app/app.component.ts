@@ -18,7 +18,6 @@ export class AppComponent {
   title = 'Avatar';
   repoProducts: any;
 
-  constructor(private FirstServiceService:FirstServiceService) {
-  }
+  constructor(private FirstServiceService:FirstServiceService) {}
 
 }

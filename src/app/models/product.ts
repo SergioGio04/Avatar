@@ -8,11 +8,13 @@ export class Product{
         this.setData(json);
     }
 
-    private setData(json:any){
-        this.id=json.id;
-        this.brand=json.brand;
-        this.title=json.title;
-        this.description=json.description;
+    private setData(json?:any){
+        if(json){
+            this.id=json.id;
+            this.brand=json.brand;
+            this.title=json.title;
+            this.description=json.description;
+        }
     }
 
 }

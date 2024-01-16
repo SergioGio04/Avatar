@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FirstServiceService } from '../services/first-service.service';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Product } from '../models/product';
+import { TestService } from '../services/test.service';
 
 @Component({
   selector: 'app-element',
@@ -15,22 +15,32 @@ import { Product } from '../models/product';
 export class ElementComponent {
   @Input()idElement?:number;
 
-  objElement:any;
-  constructor(private FirstServiceService:FirstServiceService, private router: Router, private route: ActivatedRoute) {}
+  objElement?:Product;
+
+  constructor(private TestService:TestService, private FirstServiceService:FirstServiceService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     //let id= this.route.snapshot.paramMap.get('id');
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(async (params) => {
       console.log(params);
       let id= params["idElement"];
-
-      this.FirstServiceService.getProduct(id).subscribe((data: any)=>{
-        debugger;
-        console.log(data);
-        this.objElement= new Product(data);
-      })
+      try{
+        this.objElement= await this.FirstServiceService.getProduct(id);
+        console.log(this.objElement);
+      }
+      catch(error){
+        console.error(error);
+      }
+      //var data= await this.FirstServiceService.getProductObservable(id);
     });
   
+  }
+
+  RetrieveSalutoService(){
+    let saluto:string;
+   
+
+
   }
 
   ngOnDestroy(){

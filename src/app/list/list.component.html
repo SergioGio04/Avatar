@@ -10,8 +10,8 @@
 <div>
     <div *ngFor="let item of repoProducts" class="listClass">
         <div (click)="ChangeRoute(item)" class="singleItem">
-            <span>product: {{item.title}} - </span>
-            <span>price {{item.price}} €</span>
+            <span>product: {{item?.title}} - </span>
+            <span>price {{item?.brand}} €</span>
         </div>
     </div>
 </div>
