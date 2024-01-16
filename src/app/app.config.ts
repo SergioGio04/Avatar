@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-import { FirstServiceService } from './first-service.service';
+import { FirstServiceService } from './services/first-service.service';
 
 import { routes } from './app.routes';
 

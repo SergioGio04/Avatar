@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FirstServiceService } from './first-service.service';
+import { FirstServiceService } from './services/first-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { ElementComponent } from './element/element.component';

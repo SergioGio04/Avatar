@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FirstServiceService } from '../first-service.service';
+import { FirstServiceService } from '../services/first-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Product } from '../models/product';
 
 @Component({
   selector: 'app-element',
@@ -25,7 +26,8 @@ export class ElementComponent {
 
       this.FirstServiceService.getProduct(id).subscribe((data: any)=>{
         debugger;
-        this.objElement= data;
+        console.log(data);
+        this.objElement= new Product(data);
       })
     });
   
