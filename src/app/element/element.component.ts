@@ -17,7 +17,12 @@ export class ElementComponent {
 
   objElement?:Product;
 
-  constructor(private TestService:TestService, private FirstServiceService:FirstServiceService, private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private TestService:TestService, 
+    private FirstServiceService:FirstServiceService, 
+    private router: Router, 
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     //let id= this.route.snapshot.paramMap.get('id');

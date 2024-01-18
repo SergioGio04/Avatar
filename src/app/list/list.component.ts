@@ -20,19 +20,12 @@ export class ListComponent implements OnInit {
   constructor(private FirstServiceService:FirstServiceService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
-    this.repoProducts= await this.FirstServiceService.getProducts();
-    /*async ()=>{
-      debugger;
+    try{
       this.repoProducts= await this.FirstServiceService.getProducts();
-    }*/
-
-    /*
-    this.FirstServiceService.getProducts().subscribe((data: any)=>{
-      if(data && data.products){
-        this.repoProducts= data.products;
-      }
-    })
-    */
+    }
+    catch(error){
+      console.error(error);
+    }
   }
 
   ChangeRoute(prm:any){
