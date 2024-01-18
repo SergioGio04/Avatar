@@ -6,7 +6,6 @@ import { RouterLink } from '@angular/router';
 import { RouterLinkActive } from '@angular/router';
 import { environment } from '../environments/environment';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,

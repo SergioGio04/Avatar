@@ -11,7 +11,7 @@ export class FirebaseManagerService {
   db:Firestore;  
   constructor() {
     this.myFirebase= initializeApp(environment.firebaseConfig);
-    console.log(this.myFirebase);
     this.db= getFirestore(this.myFirebase);
+    console.log(this.db);
   }
 }

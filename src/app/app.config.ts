@@ -4,7 +4,6 @@ import {HttpClientModule} from '@angular/common/http';
 import { FirstServiceService } from './services/first-service.service';
 import { routes } from './app.routes';
 
-
 export const appConfig: ApplicationConfig = {
   //gli passo il importProvidersFrom(HttpClientModule) per utilizzare l'Http client globalmente
   providers: [      

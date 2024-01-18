@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
-import { collection, getDocs, query } from 'firebase/firestore';
 
 import { FirebaseManagerService } from './firebase-manager.service';
+import { collection, getDocs, query } from 'firebase/firestore';
+
 
 @Injectable({ providedIn: 'any' })
 
 export class FirstServiceService {
 
   standardUrl: string = "https://dummyjson.com/products";
-
 
   constructor(
       private http: HttpClient, 
@@ -21,12 +21,9 @@ export class FirstServiceService {
 
   async getProducts(): Promise<Product[]> {
     var promise = new Promise<Product[]>(async (resolve, reject) => {
-
-      debugger;  
-      const q = query(collection(this.firebase.db, "products"));  
         try{
+          const q = query(collection(this.firebase.db, "products"));  
           var products: Product[]= [];
-
           var res= await getDocs(q);
             res.docs.forEach((d)=>{
               console.log(d.data());

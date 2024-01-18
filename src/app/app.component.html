@@ -13,13 +13,9 @@
 <main class="main">
   <div class="content">
 
-    <div 
-      class="ClassRoutes"
-      routerLink="/list"
-      routerLinkActive="miaClasse"
-      [routerLinkActiveOptions]='{exact:true}'
-    >
-      list
+    <div>
+      <div class="ClassRoutes" routerLink="/list" routerLinkActive="miaClasse" [routerLinkActiveOptions]='{exact:true}'> list </div>
+      <div class="ClassRoutes" routerLink="/form" routerLinkActive="miaClasse" [routerLinkActiveOptions]='{exact:true}'> form </div>
     </div>
     <router-outlet></router-outlet>
     <!--

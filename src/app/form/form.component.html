@@ -1,0 +1,18 @@
+<p>MY FORM!</p>
+
+<div>
+
+    <!-- (ngSubmit)="onSubmit()" -->
+    <form [formGroup]="profileForm" >
+        <label for="first-name">brand: </label>
+        <input id="first-name" type="text" formControlName="brand">
+        <br>
+        <label for="last-name">title: </label>
+        <input id="last-name" type="text" formControlName="title">
+
+        <h4>Form Status: {{ profileForm.status }}</h4>
+        <button type="submit" (click)="Get()" [disabled]="!profileForm.valid">Get Product</button>
+        <button type="submit" (click)="onSubmit()" [disabled]="!profileForm.valid">Submit</button>
+    </form>
+
+</div>
