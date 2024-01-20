@@ -25,8 +25,7 @@ export class AppComponent {
   constructor(private FirstServiceService:FirstServiceService) { }
 
   ngOnInit(){
-    debugger;
-    console.log("CIAO" +  this.title);
+    //console.log("CIAO" +  this.title);
   }
 
 }

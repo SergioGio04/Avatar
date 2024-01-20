@@ -3,6 +3,7 @@ export class Product{
     brand?:string;
     title?:string;
     description?:string;
+    notFound?: string;
     
     constructor(json?:any) { 
         this.setData(json);
@@ -14,6 +15,9 @@ export class Product{
             this.brand=json.brand;
             this.title=json.title;
             this.description=json.description;
+        }
+        else{
+            this.notFound= "NOT FOUND";
         }
     }
 

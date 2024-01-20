@@ -7,11 +7,11 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   //gli passo il importProvidersFrom(HttpClientModule) per utilizzare l'Http client globalmente
   providers: [      
-      provideRouter(routes),    
+      provideRouter(routes),   
       importProvidersFrom(            
         [ 
           HttpClientModule, 
-          FirstServiceService  
+          FirstServiceService          
         ]
       ),
   ],
