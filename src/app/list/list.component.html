@@ -5,13 +5,19 @@
     .listClass {
         cursor: pointer;
     }
+    .containerAdd{
+        text-align: center;
+    }
 </style>
 
 <div>
+    <div class="containerAdd">
+        <button (click)="ChangeRoute(0)" style="text-align: center;">Add Product</button>
+    </div>
     <div *ngFor="let item of repoProducts" class="listClass">
-        <div (click)="ChangeRoute(item)" class="singleItem">
-            <span>product: {{item?.title}} - </span>
-            <span>price {{item?.brand}} €</span>
+        <div (click)="ChangeRoute(item.id)" class="singleItem">
+            <span>Title: {{item?.title}} - </span>
+            <span>brand {{item?.brand}} </span>
         </div>
     </div>
 </div>

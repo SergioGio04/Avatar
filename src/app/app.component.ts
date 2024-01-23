@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FirstServiceService } from './services/first-service.service';
+import { ProductServiceService } from './services/product-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { RouterLink } from '@angular/router'; 
@@ -22,7 +22,7 @@ export class AppComponent {
   title = environment?.name;
   repoProducts: any;
 
-  constructor(private FirstServiceService:FirstServiceService) { }
+  constructor(private FirstServiceService:ProductServiceService) { }
 
   ngOnInit(){
     //console.log("CIAO" +  this.title);

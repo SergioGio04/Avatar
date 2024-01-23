@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FirstServiceService } from '../services/first-service.service';
+import { ProductServiceService } from '../services/product-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { ElementComponent } from '../element/element.component';
 import { Product } from '../models/product';
+import { IProductService } from '../interfaces/i-product-service';
 
 @Component({
   selector: 'app-list',
@@ -17,7 +18,7 @@ export class ListComponent implements OnInit {
 
   repoProducts?:Product[];
 
-  constructor(private FirstServiceService:FirstServiceService, private router: Router) {}
+  constructor(private FirstServiceService:IProductService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     try{
@@ -28,8 +29,10 @@ export class ListComponent implements OnInit {
     }
   }
 
-  ChangeRoute(prm:any){
-      this.router.navigate(["element", prm.id]);
+  ChangeRoute(id:string|number|undefined){
+      if(id!= undefined){
+        this.router.navigate(["element", id]);
+      }      
   }
 
 }

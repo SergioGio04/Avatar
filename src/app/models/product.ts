@@ -1,9 +1,8 @@
 export class Product{
-    id?:number;
+    id?:string;
     brand?:string;
     title?:string;
     description?:string;
-    notFound?: string;
     
     constructor(json?:any) { 
         this.setData(json);
@@ -16,9 +15,16 @@ export class Product{
             this.title=json.title;
             this.description=json.description;
         }
-        else{
-            this.notFound= "NOT FOUND";
-        }
+    }
+    public getData(){
+        var obj:any={};
+
+        //obj["id"]= this.id;
+        obj["brand"]= this.brand;
+        obj["title"]= this.title;
+        obj["description"]= this.description;
+
+        return obj;
     }
 
 }
