@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductServiceService } from './services/product-service.service';
+import { ProductServiceService } from './product/product-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { RouterLink } from '@angular/router'; 

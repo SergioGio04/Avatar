@@ -16,8 +16,9 @@
     </div>
     <div *ngFor="let item of repoProducts" class="listClass">
         <div (click)="ChangeRoute(item.id)" class="singleItem">
-            <span>Title: {{item?.title}} - </span>
-            <span>brand {{item?.brand}} </span>
+            <span><strong>Title:</strong> {{item?.title}} - </span>
+            <span><strong>brand:</strong> {{item?.brand}} - </span>
+            <span><strong>description:</strong> {{item?.description}} </span>
         </div>
     </div>
 </div>
@@ -31,5 +32,3 @@ toDo:
     Crea la classe 
 
 -->
-
-<!--<app-element [idElement]="2"></app-element-->

@@ -1,9 +1,10 @@
 import { Injectable, forwardRef } from "@angular/core";
-import { Product } from "../models/product";
+import { Product } from "../product/product";
 import { CustomProductServiceService } from "../services/custom-product-service.service";
-import { ProductServiceService } from "../services/product-service.service";
+import { ProductServiceService } from "../product/product-service.service";
 
-@Injectable({ providedIn: 'root', 
+@Injectable({ 
+    providedIn: 'root', 
     useClass: forwardRef(()=>ProductServiceService)
 })
 

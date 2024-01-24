@@ -1,0 +1,32 @@
+
+<div>
+    <form [formGroup]="profileForm" >
+        <div style="margin-top: 10px;">
+            
+            <div style="display: none;">
+                <label for="id">id: </label>
+                <input id="id" type="text" formControlName="id">
+                <br>
+            </div>
+
+            <label for="brand">brand: </label>
+            <input id="brand" type="text" formControlName="brand">
+            <br>
+    
+            <label for="title">title: </label>
+            <input id="title" type="text" formControlName="title">
+            <br>
+
+            <label for="description">description: </label>
+            <input id="description" type="text" formControlName="description">
+        </div>       
+
+        <div style="margin-top: 10px;">
+            <button *ngIf="isNew()" type="submit" (click)="AddP()" [disabled]="!profileForm.valid">Add</button>
+            <button *ngIf="!isNew()" type="submit" (click)="UpdateP()" > Update </button>
+            <button *ngIf="!isNew()" type="submit" (click)="DeleteP()" [disabled]="!profileForm.valid">Delete</button>
+        </div>    
+    </form>
+
+
+</div>

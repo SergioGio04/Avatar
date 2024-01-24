@@ -1,11 +1,10 @@
 import { RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
-import { ListComponent } from './list/list.component';
-import { ElementComponent } from './element/element.component';
-
+import { productRoutes } from './product/product-routing.module';
+import { categoryRoutes } from './category/category-routing.module';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'list', pathMatch: 'full' },
-    { path: 'list', component: ListComponent },
-    { path: 'element/:idElement', component: ElementComponent },
+    { path: '', redirectTo: 'products', pathMatch: 'full' },
+    { path: 'products', children: productRoutes },
+    { path: 'categories', children: categoryRoutes }
 ];
 

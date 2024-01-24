@@ -2,7 +2,13 @@
 <div>
     <form [formGroup]="profileForm" >
         <div style="margin-top: 10px;">
-                
+            
+            <div style="display: none;">
+                <label for="id">id: </label>
+                <input id="id" type="text" formControlName="id">
+                <br>
+            </div>
+
             <label for="brand">brand: </label>
             <input id="brand" type="text" formControlName="brand">
             <br>

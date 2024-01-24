@@ -10,7 +10,7 @@ export class Product{
 
     private setData(json?:any){
         if(json){
-            this.id=json.id;
+            this.id= json.id;
             this.brand=json.brand;
             this.title=json.title;
             this.description=json.description;
@@ -19,10 +19,12 @@ export class Product{
     public getData(){
         var obj:any={};
 
-        //obj["id"]= this.id;
-        obj["brand"]= this.brand;
-        obj["title"]= this.title;
-        obj["description"]= this.description;
+        if(this.id != undefined){
+            obj["id"]= this.id
+        }    
+        obj["brand"]= this.brand? this.brand : null;
+        obj["title"]= this.title? this.title : null;
+        obj["description"]= this.description? this.description : null;
 
         return obj;
     }

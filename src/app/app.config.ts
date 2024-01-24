@@ -1,7 +1,8 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-import { ProductServiceService } from './services/product-service.service';
+import { ProductServiceService } from './product/product-service.service';
+import { CategoryServiceService } from './category/category-service.service';
 import { routes } from './app.routes';
 
 
@@ -22,7 +23,8 @@ export const appConfig: ApplicationConfig = {
       importProvidersFrom(            
         [ 
           HttpClientModule, 
-          ProductServiceService          
+          ProductServiceService,
+          CategoryServiceService       
         ]
       ),
   ],

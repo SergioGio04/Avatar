@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { ImportProvidersSource, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../product/product';
+import { Product } from './product';
 
-import { FirebaseManagerService } from './firebase-manager.service';
+import { FirebaseManagerService } from '../services/firebase-manager.service';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FormGroup } from '@angular/forms';
 import { IProductService } from '../abstracts/i-product-service';
@@ -11,7 +11,8 @@ import { IProductService } from '../abstracts/i-product-service';
 
 @Injectable({ providedIn: 'any' })
 
-export class CustomProductServiceService extends IProductService {
+//export class CategoryServiceService extends IProductService {
+export class CategoryServiceService {
 
   standardUrl: string = "https://dummyjson.com/products";
 
@@ -19,15 +20,15 @@ export class CustomProductServiceService extends IProductService {
       private http: HttpClient, 
       //private db: Firestore
       private firebase: FirebaseManagerService
-  ) {
-    super()
+  ) { 
+    //super()
   }
 
   async getProducts(): Promise<Product[]> {
     var promise = new Promise<Product[]>(async (resolve, reject) => {
         try{
-          console.log("SONO QUI CUSTOM");
-          const q = query(collection(this.firebase.db, "products"));  
+          console.log("SONO QUI PRODUCT");
+          const q = query(collection(this.firebase.db, "categories"));  
           var products: Product[]= [];
           var res= await getDocs(q);
             res.docs.forEach((d)=>{
@@ -45,10 +46,10 @@ export class CustomProductServiceService extends IProductService {
     return promise;
   }
 
-  getProduct(id: string): Promise<Product> {
+  async getProduct(id: string): Promise<Product> {
     var promise= new Promise<Product>(async(resolve, reject) => { 
       try{
-        const docRef = doc(this.firebase.db, "products", id);
+        const docRef = doc(this.firebase.db, "categories", id);
         const readDoc = (await getDoc(docRef)).data();
         let product= new Product(readDoc);
         resolve(product)
@@ -60,17 +61,16 @@ export class CustomProductServiceService extends IProductService {
     return promise;
   }
 
-  AddProduct(product: Product): Promise<Product>{
+  async AddProduct(product: Product): Promise<Product>{
     let p= new Promise<Product>( async(resolve,reject)=> {
       debugger;   
       try{
-        //let executionAdd= await setDoc(doc(this.firebase.db, "products", objForm.value.id), objForm.value);
-        let executionAdd= await addDoc(collection(this.firebase.db, "products"), product.getData());
+        //NB: Metti "Transaction firestore"        
+        let executionAdd= await addDoc(collection(this.firebase.db, "categories"), product.getData());
         product.id= executionAdd.id;
         await this.UpdateProduct(product);
-        debugger;
         resolve(product);
-      } 
+      }
       catch(error){
         //console.error("ERROR AddProduct " + error );
         reject("ERROR AddProduct " + error);
@@ -79,11 +79,11 @@ export class CustomProductServiceService extends IProductService {
     return p;
   }
 
-  UpdateProduct(product: Product): Promise<any>{
+  async UpdateProduct(product: Product): Promise<any>{
     let p= new Promise( async(resolve,reject)=> {
       debugger;   
       try{
-        const docRef = doc(this.firebase.db, "products", product.id!);
+        const docRef = doc(this.firebase.db, "categories", product.id!);
         let executionUpdate= await updateDoc(docRef, product.getData());
         debugger;
         resolve("ELEMENT UPDATED!");
@@ -96,11 +96,11 @@ export class CustomProductServiceService extends IProductService {
     return p;
   }
 
-  DeleteProduct(product: Product): Promise<any>{
+  async DeleteProduct(product: Product): Promise<any>{
     let p= new Promise( async(resolve,reject)=> {
       debugger;   
       try{
-        let executionDelete= await deleteDoc(doc(this.firebase.db, "products", product.id!));
+        let executionDelete= await deleteDoc(doc(this.firebase.db, "categories", product.id!));
         debugger;
         resolve("ELEMENT DELETED!");
       } 

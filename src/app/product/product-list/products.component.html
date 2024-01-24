@@ -1,0 +1,34 @@
+<style>
+    .singleItem {
+        margin: 10px;
+    }
+    .listClass {
+        cursor: pointer;
+    }
+    .containerAdd{
+        text-align: center;
+    }
+</style>
+
+<div>
+    <div class="containerAdd">
+        <button (click)="ChangeRoute(0)" style="text-align: center;">Add Product</button>
+    </div>
+    <div *ngFor="let item of repoProducts" class="listClass">
+        <div (click)="ChangeRoute(item.id)" class="singleItem">
+            <span><strong>Title:</strong> {{item?.title}} - </span>
+            <span><strong>brand:</strong> {{item?.brand}} - </span>
+            <span><strong>description:</strong> {{item?.description}} </span>
+        </div>
+    </div>
+</div>
+
+
+<!--
+
+toDo:
+-ottimizza GetProducts
+-geProduct
+    Crea la classe 
+
+-->

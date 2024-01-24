@@ -1,31 +1,32 @@
 import { Component } from '@angular/core';
-import { Product } from '../models/product';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Product } from '../product';
+import { FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 
-import { ProductServiceService } from '../services/product-service.service';
+import { CategoryServiceService } from '../category-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 
 @Component({
   selector: 'app-element',
   standalone: true,
   imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
-  templateUrl: './element.component.html',
-  styleUrl: './element.component.scss'
+  templateUrl: './product.component.html',
+  styleUrl: './product.component.scss'
 })
-export class ElementComponent {
+export class ProductComponent {
 
-  profileForm = new FormGroup({
-    brand: new FormControl(''),
-    title: new FormControl(''),
-    description: new FormControl(''),
+  profileForm = new UntypedFormGroup({
+    id: new UntypedFormControl(undefined),
+    brand: new UntypedFormControl(undefined),
+    title: new UntypedFormControl(undefined),
+    description: new UntypedFormControl(undefined)
   });
   product?:Product;
   loading:boolean= false;
 
   constructor(
-    private FirstServiceService:ProductServiceService, 
+    private FirstServiceService:CategoryServiceService, 
     private route: ActivatedRoute,
     private router: Router,
     private reuseStrategy: RouteReuseStrategy
@@ -34,17 +35,13 @@ export class ElementComponent {
   ngOnInit(): void {
     //let id= this.route.snapshot.paramMap.get('id');
     this.route.params.subscribe(async (params:any) => {
-      await this.GetP(params["idElement"]);
+      await this.GetP(params["idProduct"]);
    });
   }
 
   isNew():boolean {
-    //return this.product?.id ? false : true;
-    if(this.product != undefined){
-        let isNew= Object.keys(this.product).length>0 ? false : true;
-        return isNew
-    }
-    return true;    
+    return this.product?.id ? false : true;
+     
   }
 
   async GetP(id: string){
@@ -69,7 +66,8 @@ export class ElementComponent {
         let resAdd= await this.FirstServiceService.AddProduct(new Product(this.profileForm.value)); 
         this.loading=false;
         this.product=resAdd;
-        this.router.navigate(["/element/"+ resAdd.id ]);
+        //torna indietro di uno(toglie lo 0)
+        this.router.navigate(["../"+ resAdd.id ], {relativeTo: this.route});
       }
       catch(error){
         console.error(error);
@@ -81,8 +79,21 @@ export class ElementComponent {
   async UpdateP(){
       if(this.profileForm.valid ){
         try{
+          debugger;
           this.loading=true;
-          let resAdd= await this.FirstServiceService.UpdateProduct(new Product(this.profileForm.value)); 
+
+          /*
+          let ObjectFModel = Object.assign(
+            { id: this.product?.id },
+            this.profileForm.value
+          );
+          */          
+            let instanceP= new Product(this.profileForm.value);
+            //instanceP.id= this.product?.id;
+
+          let resAdd= await this.FirstServiceService.UpdateProduct(instanceP); 
+          //let resAdd= await this.FirstServiceService.UpdateProduct(new Product(this.profileForm.value)); 
+          
           this.loading=false;
           alert(resAdd); 
           await this.GetP(this.product!.id!);
@@ -100,7 +111,8 @@ export class ElementComponent {
       let resAdd= await this.FirstServiceService.DeleteProduct(this.product!); 
       this.loading=false;
       alert(resAdd);
-      this.router.navigate(["/list/" ]); 
+      //this.router.navigate(["../" ]);
+      this.router.navigate(["/categories/" ]); 
     }
     catch(error){
       console.error(error);

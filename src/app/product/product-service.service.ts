@@ -1,18 +1,18 @@
 import { ImportProvidersSource, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product';
+import { Product } from './product';
 
-import { FirebaseManagerService } from './firebase-manager.service';
+import { FirebaseManagerService } from '../services/firebase-manager.service';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FormGroup } from '@angular/forms';
-import { IProductService } from '../interfaces/i-product-service';
+import { IProductService } from '../abstracts/i-product-service';
 
 
 @Injectable({ providedIn: 'any' })
 
-//export class ProductServiceService extends IProductService {
-export class ProductServiceService {
+export class ProductServiceService extends IProductService {
+//export class ProductServiceService {
 
   standardUrl: string = "https://dummyjson.com/products";
 
@@ -21,7 +21,7 @@ export class ProductServiceService {
       //private db: Firestore
       private firebase: FirebaseManagerService
   ) { 
-    //super()
+    super()
   }
 
   async getProducts(): Promise<Product[]> {
@@ -65,10 +65,10 @@ export class ProductServiceService {
     let p= new Promise<Product>( async(resolve,reject)=> {
       debugger;   
       try{
-        //let executionAdd= await setDoc(doc(this.firebase.db, "products", objForm.value.id), objForm.value);
+        //NB: Metti "Transaction firestore"        
         let executionAdd= await addDoc(collection(this.firebase.db, "products"), product.getData());
         product.id= executionAdd.id;
-        //await this.UpdateProduct(product);
+        await this.UpdateProduct(product);
         resolve(product);
       }
       catch(error){
