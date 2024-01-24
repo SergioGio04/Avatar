@@ -1,27 +1,24 @@
-export class Product{
-    id?:string;
+import { ModelBase } from "../abstracts/model-base";
+
+export class Product extends ModelBase{
     brand?:string;
     title?:string;
     description?:string;
     
     constructor(json?:any) { 
-        this.setData(json);
+        super(json);
     }
 
-    private setData(json?:any){
+    protected override setData(json?:any){
+        super.setData(json);
         if(json){
-            this.id= json.id;
             this.brand=json.brand;
             this.title=json.title;
             this.description=json.description;
         }
     }
-    public getData(){
-        var obj:any={};
-
-        if(this.id != undefined){
-            obj["id"]= this.id
-        }    
+    public override getData(){
+        var obj= super.getData();
         obj["brand"]= this.brand? this.brand : null;
         obj["title"]= this.title? this.title : null;
         obj["description"]= this.description? this.description : null;

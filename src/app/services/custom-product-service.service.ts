@@ -6,7 +6,7 @@ import { Product } from '../product/product';
 import { FirebaseManagerService } from './firebase-manager.service';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FormGroup } from '@angular/forms';
-import { IProductService } from '../abstracts/i-product-service';
+import { IProductService } from '../abstracts/service-base-service';
 
 
 @Injectable({ providedIn: 'any' })

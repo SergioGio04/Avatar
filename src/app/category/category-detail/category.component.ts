@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Product } from '../product';
+import { Category } from '../category';
 import { FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
@@ -8,13 +8,13 @@ import { CategoryServiceService } from '../category-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 
 @Component({
-  selector: 'app-element',
+  selector: 'app-category',
   standalone: true,
   imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
-  templateUrl: './product.component.html',
-  styleUrl: './product.component.scss'
+  templateUrl: './category.component.html',
+  styleUrl: './category.component.scss'
 })
-export class ProductComponent {
+export class CategoryComponent {
 
   profileForm = new UntypedFormGroup({
     id: new UntypedFormControl(undefined),
@@ -22,11 +22,11 @@ export class ProductComponent {
     title: new UntypedFormControl(undefined),
     description: new UntypedFormControl(undefined)
   });
-  product?:Product;
+  product?:Category;
   loading:boolean= false;
 
   constructor(
-    private FirstServiceService:CategoryServiceService, 
+    private categoryServiceService:CategoryServiceService, 
     private route: ActivatedRoute,
     private router: Router,
     private reuseStrategy: RouteReuseStrategy
@@ -47,7 +47,7 @@ export class ProductComponent {
   async GetP(id: string){
     try{
       this.loading=true;
-      this.product= await this.FirstServiceService.getProduct(id);
+      this.product= await this.categoryServiceService.getDetail(id);
       this.loading=false;
       console.log(this.product);
       //this.profileForm.controls["brand"].setValue(this.product!.brand!);
@@ -63,7 +63,7 @@ export class ProductComponent {
     if(this.profileForm.valid){
       try{
         this.loading=true;
-        let resAdd= await this.FirstServiceService.AddProduct(new Product(this.profileForm.value)); 
+        let resAdd= await this.categoryServiceService.create(new Category(this.profileForm.value)); 
         this.loading=false;
         this.product=resAdd;
         //torna indietro di uno(toglie lo 0)
@@ -88,10 +88,10 @@ export class ProductComponent {
             this.profileForm.value
           );
           */          
-            let instanceP= new Product(this.profileForm.value);
+            let instanceP= new Category(this.profileForm.value);
             //instanceP.id= this.product?.id;
 
-          let resAdd= await this.FirstServiceService.UpdateProduct(instanceP); 
+          let resAdd= await this.categoryServiceService.update(instanceP); 
           //let resAdd= await this.FirstServiceService.UpdateProduct(new Product(this.profileForm.value)); 
           
           this.loading=false;
@@ -108,11 +108,11 @@ export class ProductComponent {
   async DeleteP(){    
     try{
       this.loading=true;
-      let resAdd= await this.FirstServiceService.DeleteProduct(this.product!); 
+      let resAdd= await this.categoryServiceService.delete(this.product!); 
       this.loading=false;
       alert(resAdd);
       //this.router.navigate(["../" ]);
-      this.router.navigate(["/categories/" ]); 
+      this.router.navigate(["../" ], {relativeTo: this.route}); 
     }
     catch(error){
       console.error(error);

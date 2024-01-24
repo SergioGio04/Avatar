@@ -5,7 +5,6 @@ import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { ProductComponent } from '../product-detail/product.component';
 import { Product } from '../product';
-import { IProductService } from '../../abstracts/i-product-service';
 
 @Component({
   selector: 'app-list',
@@ -18,11 +17,11 @@ export class ProductsComponent implements OnInit {
 
   repoProducts?:Product[];
 
-  constructor(private FirstServiceService:IProductService, private router: Router) {}
+  constructor(private ProductServiceService:ProductServiceService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     try{
-      this.repoProducts= await this.FirstServiceService.getProducts();
+      this.repoProducts= await this.ProductServiceService.getList();
     }
     catch(error){
       console.error(error);

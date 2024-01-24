@@ -8,7 +8,7 @@ import { ProductServiceService } from '../product-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 
 @Component({
-  selector: 'app-element',
+  selector: 'app-product',
   standalone: true,
   imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
   templateUrl: './product.component.html',
@@ -41,13 +41,12 @@ export class ProductComponent {
 
   isNew():boolean {
     return this.product?.id ? false : true;
-     
   }
 
   async GetP(id: string){
     try{
       this.loading=true;
-      this.product= await this.FirstServiceService.getProduct(id);
+      this.product= await this.FirstServiceService.getDetail(id);
       this.loading=false;
       console.log(this.product);
       //this.profileForm.controls["brand"].setValue(this.product!.brand!);
@@ -63,7 +62,7 @@ export class ProductComponent {
     if(this.profileForm.valid){
       try{
         this.loading=true;
-        let resAdd= await this.FirstServiceService.AddProduct(new Product(this.profileForm.value)); 
+        let resAdd= await this.FirstServiceService.create(new Product(this.profileForm.value)); 
         this.loading=false;
         this.product=resAdd;
         //torna indietro di uno(toglie lo 0)
@@ -91,7 +90,7 @@ export class ProductComponent {
             let instanceP= new Product(this.profileForm.value);
             //instanceP.id= this.product?.id;
 
-          let resAdd= await this.FirstServiceService.UpdateProduct(instanceP); 
+          let resAdd= await this.FirstServiceService.update(instanceP); 
           //let resAdd= await this.FirstServiceService.UpdateProduct(new Product(this.profileForm.value)); 
           
           this.loading=false;
@@ -108,7 +107,7 @@ export class ProductComponent {
   async DeleteP(){    
     try{
       this.loading=true;
-      let resAdd= await this.FirstServiceService.DeleteProduct(this.product!); 
+      let resAdd= await this.FirstServiceService.delete(this.product!); 
       this.loading=false;
       alert(resAdd);
       this.router.navigate(["../" ]); 
