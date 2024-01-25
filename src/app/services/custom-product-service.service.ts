@@ -6,12 +6,11 @@ import { Product } from '../product/product';
 import { FirebaseManagerService } from './firebase-manager.service';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FormGroup } from '@angular/forms';
-import { IProductService } from '../abstracts/service-base-service';
 
 
-@Injectable({ providedIn: 'any' })
+@Injectable({ providedIn: 'root' })
 
-export class CustomProductServiceService extends IProductService {
+export class CustomProductServiceService {
 
   standardUrl: string = "https://dummyjson.com/products";
 
@@ -20,7 +19,6 @@ export class CustomProductServiceService extends IProductService {
       //private db: Firestore
       private firebase: FirebaseManagerService
   ) {
-    super()
   }
 
   async getProducts(): Promise<Product[]> {

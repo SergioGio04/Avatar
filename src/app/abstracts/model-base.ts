@@ -9,6 +9,7 @@ export abstract class ModelBase {
             this.id= json.id;
         }
     }
+    
     public getData():any {
         var obj:any={};
         if(this.id != undefined){
@@ -16,4 +17,5 @@ export abstract class ModelBase {
         }    
         return obj;
     }
+
 }

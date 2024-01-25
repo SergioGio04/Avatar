@@ -6,6 +6,7 @@ import { Firestore, getFirestore } from 'firebase/firestore'
 @Injectable({
   providedIn: 'root'
 })
+
 export class FirebaseManagerService {
   myFirebase:FirebaseApp;
   db:Firestore;  

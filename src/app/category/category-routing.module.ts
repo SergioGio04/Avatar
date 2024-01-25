@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ProductsComponent } from './category-list/category-list.component';
-import { ProductComponent } from './category-detail/category.component';
+import { CategoryListComponent } from './category-list/category-list.component';
+import { CategoryComponent } from './category-detail/category.component';
 
 
 export const categoryRoutes: Routes = [
-  { path: '', component: ProductsComponent },
-  { path: ':idProduct', component: ProductComponent },
+  { path: '', component: CategoryListComponent },
+  { path: ':idProduct', component: CategoryComponent },
 ];
 
 @NgModule({

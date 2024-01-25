@@ -6,10 +6,10 @@ import { Category } from "../category/category";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
 import { FirebaseManagerService } from "../services/firebase-manager.service";
 import { ModelBase } from "./model-base";
-
+ 
 @Injectable({
     providedIn: 'root',
-    useClass: forwardRef(() => ProductServiceService)
+    //useClass: forwardRef(() => ProductServiceService)
 })
 
 export abstract class ServiceBase<T extends ModelBase>{
