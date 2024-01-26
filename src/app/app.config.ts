@@ -5,7 +5,6 @@ import { ProductServiceService } from './product/product-service.service';
 import { CategoryServiceService } from './category/category-service.service';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { MatPaginator } from '@angular/material/paginator';
 
 export const appConfig: ApplicationConfig = {
   //gli passo il importProvidersFrom(HttpClientModule) per utilizzare l'Http client globalmente
@@ -14,8 +13,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([
         HttpClientModule,
         ProductServiceService,
-        CategoryServiceService,
-        
+        CategoryServiceService,        
     ]),
     provideAnimations()
 ],

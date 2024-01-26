@@ -3,7 +3,7 @@ import { Product } from "../product/product";
 import { CustomProductServiceService } from "../services/custom-product-service.service";
 import { ProductServiceService } from "../product/product-service.service";
 import { Category } from "../category/category";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc } from "firebase/firestore";
+import { QueryDocumentSnapshot, addDoc, collection, deleteDoc, doc, endAt, endBefore, getCountFromServer, getDoc, getDocs, limit, limitToLast, orderBy, query, startAfter, startAt, updateDoc } from "firebase/firestore";
 import { FirebaseManagerService } from "../services/firebase-manager.service";
 import { ModelBase } from "./model-base";
  
@@ -24,21 +24,59 @@ export abstract class ServiceBase<T extends ModelBase>{
 
     abstract getModelInstance(json?: any): T;
 
-    async getList(): Promise<T[]> {
+    async getCountDocumentsCollection(): Promise<number>{
+        var promise = new Promise<number>( async(resolve, reject) =>{
+            try{
+                const coll = collection(this.firebase.db, this.getNameCollection());
+                const snapshot = await getCountFromServer(coll);
+                resolve(snapshot.data().count);
+            }
+            catch(err){
+                reject(err);
+            }
+        });    
+        return promise;       
+    }
+
+    async getList( 
+        numberOfElements?:number, 
+
+        idToGetDocumentSnap?:string | undefined,
+        getnext?:number | undefined
+        
+        ): Promise<T[]> {
         var promise = new Promise<T[]>(async (resolve, reject) => {
-            try {
-                console.log("SONO QUI PRODUCT");
-                const q = query(collection(this.firebase.db, this.getNameCollection()));
+            try {                
+                let q = query(collection(this.firebase.db, this.getNameCollection()));
+                if(numberOfElements!=undefined){                   
+                    q= query(q, limit(numberOfElements)); 
+                    
+                     //tutti i filtraggi del caso
+                    if(idToGetDocumentSnap!=undefined && getnext!=undefined){
+                        const docRef = doc(this.firebase.db, this.getNameCollection(), idToGetDocumentSnap);
+                        const docSnap = await getDoc(docRef);
+
+                        if(getnext==1){
+                            q= query(q, orderBy("id", "asc"), endBefore(docSnap), limitToLast(numberOfElements) );
+                        }
+                        if(getnext==2){
+                           q= query(q, startAfter(docSnap));
+                        }                        
+                        if(getnext==3){
+                            q= query(q, startAt(docSnap));
+                         }
+                    }
+
+                }
                 var list: T[] = [];
                 var res = await getDocs(q);
                 res.docs.forEach((d) => {
-                    console.log(d.data());
                     list.push(this.getModelInstance(d.data()));
                 });
+
                 resolve(list);
             }
             catch (error) {
-                console.error(error);
                 reject(error);
             }
 
@@ -57,7 +95,6 @@ export abstract class ServiceBase<T extends ModelBase>{
                 resolve(model);
             }
             catch (error) {
-                //console.error("ERROR AddProduct " + error );
                 reject("ERROR AddProduct " + error);
             }
         })
@@ -73,7 +110,6 @@ export abstract class ServiceBase<T extends ModelBase>{
                 resolve(model);
             }
             catch (error) {
-                //console.error("ERROR AddProduct " + error );
                 reject("ERROR UpdateProduct " + error);
             }
         })
@@ -102,7 +138,6 @@ export abstract class ServiceBase<T extends ModelBase>{
                 resolve();
             }
             catch (error) {
-                //console.error("ERROR AddProduct " + error );
                 reject("ERROR DeleteProduct " + error);
             }
         })

@@ -11,6 +11,8 @@
     .maringTopTable{
         margin-top: 20px;
     }
+
+
 </style>
 <!--
 <div>
@@ -48,8 +50,12 @@
         <tr mat-row *matRowDef="let row; columns: dtFormattedTable?.displayedColumns;"></tr>
     </table>
     <mat-paginator 
+        [length]="getCountElementsServer"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+
         [pageSizeOptions]="[2, 4, 6, 8]"
-        [pageSize]="4"
-        showFirstLastButtons
+        [showFirstLastButtons]="false"
+        (page)="getPageDetails($event)"
     ></mat-paginator>
 </div>

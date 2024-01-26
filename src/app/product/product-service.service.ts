@@ -17,6 +17,8 @@ export class ProductServiceService extends ServiceBase<Product> {
   getModelInstance(json?: any): Product {
     return new Product(json);
   }  
+
+
   
 
 }

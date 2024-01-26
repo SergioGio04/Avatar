@@ -32,6 +32,8 @@ export class CategoryComponent {
     private reuseStrategy: RouteReuseStrategy
   ) {
   }
+  
+/*
   ngOnInit(): void {
     //let id= this.route.snapshot.paramMap.get('id');
     this.route.params.subscribe(async (params:any) => {
@@ -50,7 +52,6 @@ export class CategoryComponent {
       this.product= await this.categoryServiceService.getDetail(id);
       this.loading=false;
       console.log(this.product);
-      //this.profileForm.controls["brand"].setValue(this.product!.brand!);
       this.profileForm.patchValue(this.product);
     }
     catch(error){
@@ -66,7 +67,6 @@ export class CategoryComponent {
         let resAdd= await this.categoryServiceService.create(new Category(this.profileForm.value)); 
         this.loading=false;
         this.product=resAdd;
-        //torna indietro di uno(toglie lo 0)
         this.router.navigate(["../"+ resAdd.id ], {relativeTo: this.route});
       }
       catch(error){
@@ -80,24 +80,14 @@ export class CategoryComponent {
       if(this.profileForm.valid ){
         try{
           debugger;
-          this.loading=true;
-
-          /*
-          let ObjectFModel = Object.assign(
-            { id: this.product?.id },
-            this.profileForm.value
-          );
-          */          
+          this.loading=true;       
             let instanceP= new Category(this.profileForm.value);
-            //instanceP.id= this.product?.id;
 
           let resAdd= await this.categoryServiceService.update(instanceP); 
-          //let resAdd= await this.FirstServiceService.UpdateProduct(new Product(this.profileForm.value)); 
           
           this.loading=false;
           alert(resAdd); 
-          await this.GetP(this.product!.id!);
-          //this.router.navigate(["/element/"+ this.profileForm.value.id ]);         
+          await this.GetP(this.product!.id!);      
         }
         catch(error){
           console.error(error);
@@ -111,7 +101,6 @@ export class CategoryComponent {
       let resAdd= await this.categoryServiceService.delete(this.product!); 
       this.loading=false;
       alert(resAdd);
-      //this.router.navigate(["../" ]);
       this.router.navigate(["../" ], {relativeTo: this.route}); 
     }
     catch(error){
@@ -119,7 +108,7 @@ export class CategoryComponent {
       this.loading=false;
     } 
   }
-  
+*/
 
 }
 

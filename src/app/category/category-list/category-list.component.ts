@@ -14,7 +14,9 @@ import { Category } from '../category';
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss'
 })
-export class CategoryListComponent implements OnInit {
+
+//export class CategoryListComponent implements OnInit {
+export class CategoryListComponent  {
 
   repoProducts?:Category[];
 
@@ -23,7 +25,7 @@ export class CategoryListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
   ) {}
-
+/*
   async ngOnInit(): Promise<void> {
     try{
       this.repoProducts= await this.CategoryServiceService.getList();
@@ -38,5 +40,5 @@ export class CategoryListComponent implements OnInit {
         this.router.navigate(["./", id], {relativeTo: this.route});
       }      
   }
-
+*/
 }
