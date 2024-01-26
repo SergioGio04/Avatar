@@ -57,11 +57,7 @@ export class ProductsComponent implements OnInit {
   }
 
   async getMyList(){
-    this.repoProducts= await this.ProductServiceService.getList(
-      this.pageSize, 
-      this.idToGetDocumentSnap, 
-      this.isNext
-    );
+    this.repoProducts= await this.ProductServiceService.getList(this.pageSize, this.idToGetDocumentSnap, this.isNext );
     //[this.repoProducts, this.docSnap]= await this.ProductServiceService.getList(this.pageSize, this.docSnap, this.isNext);
     this.dtFormattedTable= {
         displayedColumns: ["id", "title", "brand", "description"],        
@@ -82,15 +78,17 @@ export class ProductsComponent implements OnInit {
     let condBackward= Number(pageInfo.pageIndex) < Number(pageInfo.previousPageIndex);
 
     //backward
-    if(condBackward==true){
+    if(condBackward==true && this.pageIndex!= (pageInfo.pageIndex+1) ){
       this.isNext=1;
       //let geIndexDocument= ((pageInfo.pageIndex+1)*pageInfo.pageSize);
+      this.pageIndex= pageInfo.pageIndex;
       this.idToGetDocumentSnap= this.dtFormattedTable.body[0].id;
     }
     //forward
-    if(condForward==true){
+    if(condForward==true && this.pageIndex!= (pageInfo.pageIndex+1)){
       this.isNext=2;
       //let geIndexDocument= ((pageInfo.previousPageIndex+1)*pageInfo.pageSize)-1;
+      this.pageIndex= pageInfo.pageIndex;
       this.idToGetDocumentSnap= this.dtFormattedTable.body[this.pageSize-1].id;
     }
     
@@ -100,7 +98,7 @@ export class ProductsComponent implements OnInit {
       
       this.isNext=3;
       this.idToGetDocumentSnap=this.dtFormattedTable.body[0].id;
-      //this.pageIndex= pageInfo.pageIndex!= 0 ? Math.floor( ((pageInfo.pageIndex+1)*this.pageSize)/newPageSize) : pageInfo.pageIndex;
+      this.pageIndex= pageInfo.pageIndex!= 0 ? Math.floor( ((pageInfo.pageIndex+1)*this.pageSize)/newPageSize) : pageInfo.pageIndex;
       this.pageSize= newPageSize;
       
       
