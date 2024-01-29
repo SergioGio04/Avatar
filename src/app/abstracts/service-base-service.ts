@@ -3,10 +3,10 @@ import { Product } from "../product/product";
 import { CustomProductServiceService } from "../services/custom-product-service.service";
 import { ProductServiceService } from "../product/product-service.service";
 import { Category } from "../category/category";
-import { QueryDocumentSnapshot, addDoc, collection, deleteDoc, doc, endAt, endBefore, getCountFromServer, getDoc, getDocs, limit, limitToLast, orderBy, query, startAfter, startAt, updateDoc } from "firebase/firestore";
+import { AggregateQuerySnapshot, OrderByDirection, QueryDocumentSnapshot, addDoc, and, collection, deleteDoc, doc, endAt, endBefore, getCountFromServer, getDoc, getDocs, limit, limitToLast, or, orderBy, query, startAfter, startAt, updateDoc, where } from "firebase/firestore";
 import { FirebaseManagerService } from "../services/firebase-manager.service";
 import { ModelBase } from "./model-base";
- 
+
 @Injectable({
     providedIn: 'root',
     //useClass: forwardRef(() => ProductServiceService)
@@ -24,65 +24,94 @@ export abstract class ServiceBase<T extends ModelBase>{
 
     abstract getModelInstance(json?: any): T;
 
-    async getCountDocumentsCollection(): Promise<number>{
-        var promise = new Promise<number>( async(resolve, reject) =>{
-            try{
+    /*
+    async getCountDocumentsCollection(): Promise<number> {
+        var promise = new Promise<number>(async (resolve, reject) => {
+            try {
                 const coll = collection(this.firebase.db, this.getNameCollection());
                 const snapshot = await getCountFromServer(coll);
                 resolve(snapshot.data().count);
             }
-            catch(err){
+            catch (err) {
                 reject(err);
             }
-        });    
-        return promise;       
+        });
+        return promise;
     }
+    */
 
-    async getList( 
-        numberOfElements?:number, 
+    async getList(
+        numberOfElements?: number,
+        idToGetDocumentSnap?: string | undefined,
+        getnext?: number | undefined,
+        sortDirection?: OrderByDirection | undefined,
+        columnToSort?: string | undefined,
+        searchString?:string|undefined
+    ): Promise<[T[], any]> {
+        var promise = new Promise<[T[], any]>(async (resolve, reject) => {
+            try {
+                let q = query(collection( this.firebase.db, this.getNameCollection() ));
+                let valueCount= 0;
 
-        idToGetDocumentSnap?:string | undefined,
-        getnext?:number | undefined
-        
-        ): Promise<T[]> {
-        var promise = new Promise<T[]>(async (resolve, reject) => {
-            try {                
-                let q = query(collection(this.firebase.db, this.getNameCollection()));
-                if(numberOfElements!=undefined){                   
-                    q= query(q, limit(numberOfElements)); 
-                    
-                     //tutti i filtraggi del caso
-                    if(idToGetDocumentSnap!=undefined && getnext!=undefined){
-                        const docRef = doc(this.firebase.db, this.getNameCollection(), idToGetDocumentSnap);
-                        const docSnap = await getDoc(docRef);
-
-                        if(getnext==1){
-                            q= query(q, orderBy("id", "asc"), endBefore(docSnap), limitToLast(numberOfElements) );
-                        }
-                        if(getnext==2){
-                           q= query(q, startAfter(docSnap));
-                        }                        
-                        if(getnext==3){
-                            q= query(q, startAt(docSnap));
-                         }
+                //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
+                if(searchString==undefined || searchString=="" || searchString==null){                    
+                    let snapshotCount = await getCountFromServer(q);
+                    valueCount= snapshotCount.data().count;
+                }
+                if (numberOfElements != undefined) {
+                    //FILTRAGGIO SEARCH
+                    if(searchString != undefined && searchString!="" && searchString!=null ){
+                        q = query(q, 
+                            where( "lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
+                        );
+                        //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY AFTER SEARCH
+                        let snapshotCount = await getCountFromServer(q);
+                        valueCount= snapshotCount.data().count;
                     }
 
-                }
+                    q = query(q, limit(numberOfElements));
+
+                    //FILTRAGGIO SORTING
+                    if( sortDirection!=undefined && columnToSort!=undefined){
+                        q= query(q, orderBy(columnToSort, sortDirection));
+                    }
+
+                    //FILTRAGGI FORWARD/BACKWARD
+                    if (idToGetDocumentSnap != undefined && getnext != undefined) {
+                        const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
+                        const docSnap = await getDoc(docRef);
+                        //backward
+                        if (getnext == 1) {
+                            //
+                            if(sortDirection!=undefined && columnToSort!=undefined){
+                                q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
+                            }
+                            else{
+                                q = query(q, orderBy("id", "asc"), endBefore(docSnap), limitToLast(numberOfElements));
+                            }
+                            
+                        }
+                        //forward
+                        if (getnext == 2) {
+                            q = query(q, startAfter(docSnap));
+                        }
+                    }
+                }                
+                
                 var list: T[] = [];
                 var res = await getDocs(q);
                 res.docs.forEach((d) => {
-                    list.push(this.getModelInstance(d.data()));
+                    list.push(this.getModelInstance(d.data()));                    
                 });
-
-                resolve(list);
+                resolve([list, valueCount]);
             }
             catch (error) {
                 reject(error);
             }
-
         });
         return promise;
     }
+
 
     async create(model: T): Promise<T> {
         let p = new Promise<T>(async (resolve, reject) => {

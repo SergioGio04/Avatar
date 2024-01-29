@@ -73,6 +73,7 @@ export class ProductComponent {
         this.loading=false;
       } 
     }
+    
   }
 
   async UpdateP(){
