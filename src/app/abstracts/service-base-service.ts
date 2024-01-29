@@ -68,14 +68,11 @@ export abstract class ServiceBase<T extends ModelBase>{
                         let snapshotCount = await getCountFromServer(q);
                         valueCount= snapshotCount.data().count;
                     }
-
                     q = query(q, limit(numberOfElements));
-
                     //FILTRAGGIO SORTING
                     if( sortDirection!=undefined && columnToSort!=undefined){
                         q= query(q, orderBy(columnToSort, sortDirection));
                     }
-
                     //FILTRAGGI FORWARD/BACKWARD
                     if (idToGetDocumentSnap != undefined && getnext != undefined) {
                         const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
@@ -89,7 +86,6 @@ export abstract class ServiceBase<T extends ModelBase>{
                             else{
                                 q = query(q, orderBy("id", "asc"), endBefore(docSnap), limitToLast(numberOfElements));
                             }
-                            
                         }
                         //forward
                         if (getnext == 2) {
