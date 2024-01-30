@@ -17,6 +17,7 @@ import { Sort } from '@angular/material/sort';
 import { MatSortHeader } from '@angular/material/sort';
 import { MatSort } from '@angular/material/sort';
 import {MatSortModule} from '@angular/material/sort';
+import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -49,24 +50,35 @@ export class ProductsComponent implements OnInit {
   getCountElementsServer?: any;
   sortDirection?:OrderByDirection|undefined="asc";
   columnToSort?:string|undefined;
+
+  
   searchString?:string|undefined="";
+
+  private searchSubject = new Subject<string>();
 
 
   constructor(
     private ProductServiceService:ProductServiceService, 
-    private router: Router
+    private router: Router,
   ) {}
 
   @ViewChild(MatSort) myMatSort:MatSort
 
   async ngOnInit(): Promise<void> {
     try{
-      //this.getCountElementsServer= await this.ProductServiceService.getCountDocumentsCollection();
       await this.getMyList();
     }
     catch(error){
       console.error(error);
     }
+
+    this.searchSubject.pipe(
+      debounceTime(500)      
+    ).subscribe( searchString => {
+      debugger;
+      this.launchSearch();
+    })
+    
   }
 
   async getMyList(){
@@ -107,37 +119,35 @@ export class ProductsComponent implements OnInit {
   //SORT DATA
   sortData(sort: any) {
     if(sort.active!="" ){
-      debugger;
       this.pageIndex= 0;
-      this.isNext= undefined;
       this.idToGetDocumentSnap= undefined;
-      this.searchString= undefined;  
       this.isNext= undefined;
-      if(sort.direction!=""){      
-        this.columnToSort=  sort.active;
-        this.sortDirection= sort.direction;      
+      this.searchString= undefined;  
+      if(sort.direction!=""){  
+        this.sortDirection= sort.direction;     
+        this.columnToSort=  sort.active;             
       } 
       else{
-        this.columnToSort=undefined;
         this.sortDirection= undefined;
+        this.columnToSort=undefined;        
       }
       this.getMyList();
     }
-    
   }
 
   //(FORWARD/BACKWARD)ITEMS X PAGE
-  async getPageDetails(pageInfo: any){
+  async getChangesDetailsPaginator(pageInfo: any){
 
     if(pageInfo.pageSize != this.pageSize){
-      this.pageSize= pageInfo.pageSize;
       this.pageIndex= 0;
-      this.isNext= undefined;
-      this.idToGetDocumentSnap= undefined;
-      this.searchString= undefined;   
+      this.pageSize= pageInfo.pageSize;     
+      this.idToGetDocumentSnap= undefined; 
+      this.isNext= undefined;      
+      this.sortDirection= undefined;  
+      this.columnToSort= undefined;   
       this.resetRowSort();
-      this.columnToSort= undefined;      
-      this.sortDirection= undefined;   
+      this.searchString= undefined; 
+       
     }
     else{
       let condForward= Number(pageInfo.pageIndex) > Number(pageInfo.previousPageIndex);
@@ -156,21 +166,24 @@ export class ProductsComponent implements OnInit {
       }
     }
     await this.getMyList();
-}
+  }
 
-  //ALL SEARCH
-  async applyFilter(event: Event) {
-    this.searchString = (event.target as HTMLInputElement).value;
+  //ALL SEARCH's
+  async searchChanged(event: Event) {
+    //this.searchString = (event.target as HTMLInputElement).value;
+    let newSearchValue= (event.target as HTMLInputElement).value;
+    this.searchString= newSearchValue;
+    this.searchSubject.next( newSearchValue );
   }
   async launchSearch(){
-    this.isNext= undefined;
-    this.idToGetDocumentSnap= undefined;
-    this.resetRowSort();
-    this.columnToSort= undefined;
-    this.sortDirection= undefined;
-    await this.getMyList();
     this.pageIndex=0;
+    this.idToGetDocumentSnap= undefined;
+    this.isNext= undefined;
+    this.sortDirection= undefined;
+    this.columnToSort= undefined;
+    this.resetRowSort();
     
+    await this.getMyList();
   }
 
   ChangeRoute(id:string|number|undefined){

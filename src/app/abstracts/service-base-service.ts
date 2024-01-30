@@ -47,8 +47,8 @@ export abstract class ServiceBase<T extends ModelBase>{
         sortDirection?: OrderByDirection | undefined,
         columnToSort?: string | undefined,
         searchString?:string|undefined
-    ): Promise<[T[], any]> {
-        var promise = new Promise<[T[], any]>(async (resolve, reject) => {
+    ): Promise<[T[], number]> {
+        var promise = new Promise<[T[], number]>(async (resolve, reject) => {
             try {
                 let q = query(collection( this.firebase.db, this.getNameCollection() ));
                 let valueCount= 0;
@@ -58,11 +58,11 @@ export abstract class ServiceBase<T extends ModelBase>{
                     let snapshotCount = await getCountFromServer(q);
                     valueCount= snapshotCount.data().count;
                 }
-                if (numberOfElements != undefined) {
+                if ( numberOfElements != undefined ) {
                     //FILTRAGGIO SEARCH
-                    if(searchString != undefined && searchString!="" && searchString!=null ){
+                    if( searchString != undefined && searchString!="" && searchString!=null ){
                         q = query(q, 
-                            where( "lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
+                            where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
                         );
                         //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY AFTER SEARCH
                         let snapshotCount = await getCountFromServer(q);

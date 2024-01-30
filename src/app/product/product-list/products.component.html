@@ -32,14 +32,13 @@ center;">Add Product</button>
 </div>
 -->
 <div class="containerAdd">
-    <button (click)="ChangeRoute(0)" style="text-align:
-center;margin-top: 20px;">Add Product</button>
+    <button (click)="ChangeRoute(0)" style="text-align: center;margin-top: 20px;">Add Product</button>
 </div>
 <div class="mat-elevation-z8 maringTopTable">
     <mat-form-field style="width: 100%;">
-        <input matInput (keyup)="applyFilter($event)" [value]="searchString!= undefined? searchString : ''"  placeholder="Search..">
+        <input matInput (keyup)="searchChanged($event)" [value]="searchString!= undefined? searchString : ''"  placeholder="Search..">
     </mat-form-field>
-    <button (click)="launchSearch()">Start Search</button>
+    <!--<button (click)="launchSearch()">Start Search</button>-->
 
     <table mat-table [dataSource]="dtFormattedTable?.body" matSort (matSortChange)="sortData($event)" class="maringTopTable">
         <ng-container *ngFor="let item of dtFormattedTable?.displayFields" [matColumnDef]="item.namefieldBody">
@@ -56,12 +55,12 @@ center;margin-top: 20px;">Add Product</button>
         [length]="getCountElementsServer" 
 
         [pageSize]="pageSize" 
-        [pageSizeOptions]="[2, 5, 8, 10, 15]" 
+        [pageSizeOptions]="[2, 3, 5, 8, 10, 15]" 
         [hidePageSize]="false" 
 
         [pageIndex]="pageIndex" 
         [disabled]="isDataNotReceived" 
         [showFirstLastButtons]="false"
-        (page)="getPageDetails($event)"
+        (page)="getChangesDetailsPaginator($event)"
     ></mat-paginator>
 </div>
