@@ -52,7 +52,8 @@ export class CategoryListComponent extends ListBaseComponent<Category, CategoryS
   ChangeRoute(id:string|number|undefined){
     if(id!= undefined){
       this.router.navigate(["categories", id]);
-    }      
+  }
+        
 }
 
 }

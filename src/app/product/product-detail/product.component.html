@@ -1,32 +1,16 @@
 
 <div>
-    <form [formGroup]="form" >
-        <div style="margin-top: 10px;">
-            
-            <div style="display: none;">
-                <label for="id">id: </label>
-                <input id="id" type="text" formControlName="id">
-                <br>
-            </div>
-
-            <label for="brand">brand: </label>
-            <input id="brand" type="text" formControlName="brand">
-            <br>
-    
-            <label for="title">title: </label>
-            <input id="title" type="text" formControlName="title">
-            <br>
-
-            <label for="description">description: </label>
-            <input id="description" type="text" formControlName="description">
-        </div>       
-
-        <div style="margin-top: 10px;">
-            <button *ngIf="isNew()" type="submit" (click)="add()" [disabled]="!form.valid">Add</button>
-            <button *ngIf="!isNew()" type="submit" (click)="update()" > Update </button>
-            <button *ngIf="!isNew()" type="submit" (click)="delete()" [disabled]="!form.valid">Delete</button>
-        </div>    
-    </form>
-
+<app-html-generator
+    [instanceParentCaller]="this"
+    [configHTML]="{
+        'type': 'detail',
+        'configForm': [
+            { 'styleContenitorLabelInput': 'display:none', 'label': 'id:', 'formControlName': 'id' },
+            { 'styleContenitorLabelInput': 'margin-top:10px', 'label': 'Brand:', 'formControlName': 'brand' },
+            { 'styleContenitorLabelInput': 'margin-top:10px', 'label': 'title:', 'formControlName': 'title' },
+            { 'styleContenitorLabelInput': 'margin-top:10px', 'label': 'description:', 'formControlName': 'description' },
+        ]
+    }"
+></app-html-generator>
 
 </div>

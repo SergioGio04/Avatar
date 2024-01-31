@@ -18,7 +18,6 @@ import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, tak
 import { ModelBase } from './model-base';
 import { ServiceBase } from './service-base-service';
 
-
 @Component({
   selector: 'app-list',
   standalone: true,
@@ -62,7 +61,6 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
   abstract getModel(json:any):T;
   abstract getService():M;
   
-
   async ngOnInit(): Promise<void> {
     try{
       this.triggerCount=true;
@@ -195,7 +193,5 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
     await this.getMyList();
     this.triggerCount=false;
   }
-
-
   
 }

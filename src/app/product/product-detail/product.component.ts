@@ -7,13 +7,14 @@ import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 import { ProductServiceService } from '../product-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { DetailBaseComponent } from '../../abstracts/detail-base.component';
+import { HtmlGeneratorComponent } from "../../html-generator/html-generator.component";
 
 @Component({
-  selector: 'app-product',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
-  templateUrl: './product.component.html',
-  styleUrl: './product.component.scss'
+    selector: 'app-product',
+    standalone: true,
+    templateUrl: './product.component.html',
+    styleUrl: './product.component.scss',
+    imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule, HtmlGeneratorComponent]
 })
 export class ProductComponent extends DetailBaseComponent<Product, ProductServiceService> {
 

@@ -19,24 +19,26 @@ import { MatSort } from '@angular/material/sort';
 import {MatSortModule} from '@angular/material/sort';
 import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { ListBaseComponent } from '../../abstracts/list-base.component';
+import { HtmlGeneratorComponent } from "../../html-generator/html-generator.component";
 
 
 @Component({
-  selector: 'app-list',
-  standalone: true,
-  imports: [ 
-    CommonModule,
-    RouterOutlet,
-    ProductComponent,
-    MatTableModule,
-    MatPaginator,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSortModule
-  ],
-  templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+    selector: 'app-list',
+    standalone: true,
+    templateUrl: './products.component.html',
+    styleUrl: './products.component.scss',
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        ProductComponent,
+        MatTableModule,
+        MatPaginator,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSortModule,
+        HtmlGeneratorComponent
+    ]
 })
 export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService>  {
 
