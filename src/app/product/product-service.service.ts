@@ -18,7 +18,4 @@ export class ProductServiceService extends ServiceBase<Product> {
     return new Product(json);
   }  
 
-
-  
-
 }

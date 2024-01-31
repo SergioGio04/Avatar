@@ -4,6 +4,7 @@ export abstract class ModelBase {
     constructor(json?:any){
         this.setData(json);
     }
+    
     protected setData(json?:any){
         if(json){
             this.id= json.id;
@@ -16,6 +17,18 @@ export abstract class ModelBase {
             obj["id"]= this.id
         }    
         return obj;
+    }
+
+    public SetArrayOfAllCombinations(s: string): string[]{
+        let list_of_strings = new Array();
+        for(let i=0;i<s.length;i++) {
+            for(let j=i+1;j<s.length+1;j++) {
+                if(list_of_strings.includes(s[j]) == false){
+                    list_of_strings.push(s.slice(i, j));
+                }
+            }
+        }
+        return list_of_strings;
     }
 
 }

@@ -21,7 +21,6 @@ export abstract class ServiceBase<T extends ModelBase>{
     }
 
     abstract getNameCollection(): string;
-
     abstract getModelInstance(json?: any): T;
 
     /*
@@ -47,32 +46,36 @@ export abstract class ServiceBase<T extends ModelBase>{
         sortDirection?: OrderByDirection | undefined,
         columnToSort?: string | undefined,
         searchString?:string|undefined
-    ): Promise<[T[], number]> {
-        var promise = new Promise<[T[], number]>(async (resolve, reject) => {
+    ): Promise<[T[], number|boolean]> {
+        var promise = new Promise<[T[], number|boolean]>(async (resolve, reject) => {
             try {
                 let q = query(collection( this.firebase.db, this.getNameCollection() ));
                 let valueCount= 0;
 
                 //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
-                if(searchString==undefined || searchString=="" || searchString==null){                    
+                if( searchString==undefined || searchString=="" || searchString==null){                    
                     let snapshotCount = await getCountFromServer(q);
                     valueCount= snapshotCount.data().count;
                 }
                 if ( numberOfElements != undefined ) {
+
+                    //FILTRAGGIO SORTING
+                    if( sortDirection!=undefined && columnToSort!=undefined){
+                        q= query(q, orderBy(columnToSort, sortDirection));
+                    }
                     //FILTRAGGIO SEARCH
                     if( searchString != undefined && searchString!="" && searchString!=null ){
                         q = query(q, 
                             where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
                         );
+                        
                         //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY AFTER SEARCH
                         let snapshotCount = await getCountFromServer(q);
                         valueCount= snapshotCount.data().count;
+                                            
                     }
                     q = query(q, limit(numberOfElements));
-                    //FILTRAGGIO SORTING
-                    if( sortDirection!=undefined && columnToSort!=undefined){
-                        q= query(q, orderBy(columnToSort, sortDirection));
-                    }
+                    
                     //FILTRAGGI FORWARD/BACKWARD
                     if (idToGetDocumentSnap != undefined && getnext != undefined) {
                         const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
@@ -84,7 +87,7 @@ export abstract class ServiceBase<T extends ModelBase>{
                                 q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
                             }
                             else{
-                                q = query(q, orderBy("id", "asc"), endBefore(docSnap), limitToLast(numberOfElements));
+                                q = query(q, orderBy("id", "asc"),  endBefore(docSnap), limitToLast(numberOfElements));
                             }
                         }
                         //forward
@@ -107,7 +110,6 @@ export abstract class ServiceBase<T extends ModelBase>{
         });
         return promise;
     }
-
 
     async create(model: T): Promise<T> {
         let p = new Promise<T>(async (resolve, reject) => {

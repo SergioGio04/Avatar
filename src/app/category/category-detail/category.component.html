@@ -1,6 +1,6 @@
 
 <div>
-    <form [formGroup]="profileForm" >
+    <form [formGroup]="form" >
         <div style="margin-top: 10px;">
             
             <div style="display: none;">
@@ -22,11 +22,9 @@
         </div>       
 
         <div style="margin-top: 10px;">
-            <!--
-            <button *ngIf="isNew()" type="submit" (click)="AddP()" [disabled]="!profileForm.valid">Add</button>
-            <button *ngIf="!isNew()" type="submit" (click)="UpdateP()" > Update </button>
-            <button *ngIf="!isNew()" type="submit" (click)="DeleteP()" [disabled]="!profileForm.valid">Delete</button>
-            -->
+            <button *ngIf="isNew()" type="submit" (click)="add()" [disabled]="!form.valid">Add</button>
+            <button *ngIf="!isNew()" type="submit" (click)="update()" > Update </button>
+            <button *ngIf="!isNew()" type="submit" (click)="delete()" [disabled]="!form.valid">Delete</button>
         </div>    
     </form>
 
