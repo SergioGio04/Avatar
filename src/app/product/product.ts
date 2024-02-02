@@ -4,6 +4,7 @@ export class Product extends ModelBase{
     brand?:string;
     title?:string;
     description?:string;
+    categoryId?:string;
     
     constructor(json?:any) { 
         super(json);
@@ -15,6 +16,7 @@ export class Product extends ModelBase{
             this.brand=json.brand;
             this.title=json.title;
             this.description=json.description;
+            this.categoryId= json.categoryId;
         }
     }
     public override getData(){
@@ -22,13 +24,17 @@ export class Product extends ModelBase{
         obj["brand"]= this.brand? this.brand : null;
         obj["title"]= this.title? this.title : null;
         obj["description"]= this.description? this.description : null;
+        obj["categoryId"]= this.categoryId!=null && this.categoryId!=undefined ? this.categoryId : null;
 
         let stringToGetAllCombinations= "";
         if(obj.brand != null){
             stringToGetAllCombinations+=obj.brand.toLocaleLowerCase()+
                 (obj.title != null ? " " + obj.title.toLocaleLowerCase() : "" );           
         }
-        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(stringToGetAllCombinations);
+        debugger;
+        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
+            this.generateStringForCombinations( [{val: obj.brand, isSpaceAfter:true}, {val: obj.title} ] )
+        );
         return obj;
     }
 

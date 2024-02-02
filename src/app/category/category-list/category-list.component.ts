@@ -40,6 +40,14 @@ export class CategoryListComponent extends ListBaseComponent<Category, CategoryS
     private CategoryServiceService:CategoryServiceService, 
   ) {
     super(injector);
+    this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description"];
+    this.dtFormattedTable.displayFields= [ 
+      {"headerName": "Id",          "namefieldBody": "id"},
+      {"headerName": "Title",       "namefieldBody": "title"},
+      {"headerName": "Brand",       "namefieldBody": "brand"},
+      {"headerName": "Description", "namefieldBody": "description"},
+    ];
+
   }
 
   override getModel(json: any): Category {

@@ -25,12 +25,12 @@ export class Category extends ModelBase{
         obj["title"]= this.title? this.title : null;
         obj["description"]= this.description? this.description : null;
 
-        let stringToGetAllCombinations= "";
-        if(obj.brand != null){
-            stringToGetAllCombinations+=obj.brand.toLocaleLowerCase()+
-                (obj.title != null ? " " + obj.title.toLocaleLowerCase() : "" );           
-        }
-        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(stringToGetAllCombinations);
+        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
+            this.generateStringForCombinations( [
+                {val: obj.brand, isSpaceAfter:true}, 
+                {val: obj.title} ] 
+            )
+        );
         return obj;
     }
 

@@ -20,6 +20,7 @@ export abstract class ModelBase {
     }
 
     public SetArrayOfAllCombinations(s: string): string[]{
+        debugger;
         let list_of_strings = new Array();
         for(let i=0;i<s.length;i++) {
             for(let j=i+1;j<s.length+1;j++) {
@@ -29,6 +30,16 @@ export abstract class ModelBase {
             }
         }
         return list_of_strings;
+    }
+
+    public generateStringForCombinations(arrayStrings: any[] ){
+        let finalString= "";
+        for(let obj of arrayStrings){
+            if(obj.val!= undefined && obj.val!= null){
+                finalString+=obj.val + (obj.isSpaceAfter==true? " " : "") ;
+            }
+        }
+        return finalString;
     }
 
 }

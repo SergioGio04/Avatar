@@ -1,4 +1,4 @@
-import { Component, Inject, Injector, OnInit, ViewChild } from '@angular/core';
+import {  Component, Inject, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ProductServiceService } from '../product-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
@@ -20,6 +20,9 @@ import {MatSortModule} from '@angular/material/sort';
 import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { ListBaseComponent } from '../../abstracts/list-base.component';
 import { HtmlGeneratorComponent } from "../../html-generator/html-generator.component";
+import { CategoryServiceService } from '../../category/category-service.service';
+import { Category } from '../../category/category';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -37,25 +40,50 @@ import { HtmlGeneratorComponent } from "../../html-generator/html-generator.comp
         MatFormFieldModule,
         MatInputModule,
         MatSortModule,
-        HtmlGeneratorComponent
-    ]
+        HtmlGeneratorComponent,
+        MatSelectModule
+    ],
 })
 export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService>  {
-
+  
+  listCategories:Category[];
 
   constructor(
     injector: Injector,
-    private ProductServiceService:ProductServiceService, 
+    protected productServiceService:ProductServiceService, 
+    protected categoryService:CategoryServiceService
   ) {
     super(injector);
+    this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description"];
+    this.dtFormattedTable.displayFields= [ 
+      {"headerName": "Id",          "namefieldBody": "id"},
+      {"headerName": "Title",       "namefieldBody": "title"},
+      {"headerName": "Brand",       "namefieldBody": "brand"},
+      {"headerName": "Description", "namefieldBody": "description"},
+    ];
   }
+
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+    this.listCategories= await this.categoryService.getListCategories();
+    this.selectedId= this.listCategories[0].id;
+  }
+
+  selectCategoryChanged(event:any){
+    this.selectedId= event.value;
+    this.pageIndex= 0;
+    this.idToGetDocumentSnap= undefined;
+    this.isNext= undefined;
+    this.getMyList();
+  }
+
 
   override getModel(json:any):Product{
     return new Product(json);
   }
 
   override getService(): ProductServiceService {
-    return this.ProductServiceService;
+    return this.productServiceService;
   }
 
   ChangeRoute(id:string|number|undefined){
@@ -63,6 +91,8 @@ export class ProductsComponent extends ListBaseComponent<Product, ProductService
         this.router.navigate(["products", id]);
       }      
   }
+
+  
 
   
 }

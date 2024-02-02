@@ -63,12 +63,10 @@
 <div *ngIf="configHTML?.type=='detail'">
     <form [formGroup]="instanceParentCaller.form" >
         <div style="margin-top: 10px;">
-            
             <div *ngFor="let item of configHTML?.configForm" [style]="item?.styleContenitorLabelInput">
                 <label [for]="item.formControlName">{{item.label}} </label>
                 <input [id]="item.formControlName" type="text" [formControlName]="item.formControlName">
             </div>
-
         </div>       
         <div style="margin-top: 10px;">
             <button *ngIf="instanceParentCaller.isNew()" type="submit" (click)="instanceParentCaller.add()" [disabled]="!instanceParentCaller.form.valid">Add</button>

@@ -7,6 +7,7 @@ import { ServiceBase } from './service-base-service';
 import { ProductServiceService } from '../product/product-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { ModelBase } from './model-base';
+import { CategoryServiceService } from '../category/category-service.service';
 
 @Component({
   selector: 'app-product',
@@ -14,13 +15,15 @@ import { ModelBase } from './model-base';
   imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
   template: ``,
 })
-export abstract class DetailBaseComponent< T extends ModelBase,M extends ServiceBase<T> > {
+export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceBase<T> > {
 
   form:UntypedFormGroup; 
   private route: ActivatedRoute;
   private router: Router;
   model?:T;
   loading:boolean= false;
+  
+  selectedId:string|number|undefined;
 
   constructor(injector: Injector) {
     this.route= injector.get(ActivatedRoute);
@@ -35,7 +38,8 @@ export abstract class DetailBaseComponent< T extends ModelBase,M extends Service
     
     this.route.params.subscribe(async (params:any) => {
       await this.getDetail(params[this.getParamsId()]);
-   });
+    });
+    
   }
 
   abstract initializationForm():void;
@@ -109,6 +113,7 @@ export abstract class DetailBaseComponent< T extends ModelBase,M extends Service
         } 
       }
   }
+
   async delete(){    
     try{
       this.loading=true;

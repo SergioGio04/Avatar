@@ -36,7 +36,7 @@ import { ServiceBase } from './service-base-service';
 export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T>> {
 
   repoProducts?:T[];
-  dtFormattedTable:any;
+  dtFormattedTable:any={};
 
   pageSize:number= 5;
   pageIndex:number=0;
@@ -51,9 +51,14 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
   searchString?:string|undefined="";
   private searchSubject = new Subject<string>();
 
+  selectedId:string|number|undefined;
+
   router:Router;
   constructor(injector: Injector) {
     this.router= injector.get(Router);
+    this.dtFormattedTable= {
+      body: []
+    }
   }
 
   @ViewChild(MatSort) myMatSort:MatSort
@@ -88,7 +93,8 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.isNext, 
       this.sortDirection, 
       this.columnToSort, 
-      this.searchString
+      this.searchString,
+      this.selectedId
     );
 
     this.repoProducts= resGetList[0];  
@@ -97,16 +103,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
     if(this.repoProducts!=undefined){
       this.isDataNotReceived=false;
     }
-    this.dtFormattedTable= {
-      displayedColumns: ["id", "title", "brand", "description"],        
-      displayFields: [ 
-        {"headerName": "Id",          "namefieldBody": "id"},
-        {"headerName": "Title",       "namefieldBody": "title"},
-        {"headerName": "Brand",       "namefieldBody": "brand"},
-        {"headerName": "Description", "namefieldBody": "description"},
-      ],
-      body: this.repoProducts,
-    }
+    this.dtFormattedTable.body= this.repoProducts;
   }
 
   //RESET ANIMATION ROW SORT

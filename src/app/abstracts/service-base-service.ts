@@ -45,7 +45,8 @@ export abstract class ServiceBase<T extends ModelBase>{
         getnext?: number | undefined,
         sortDirection?: OrderByDirection | undefined,
         columnToSort?: string | undefined,
-        searchString?:string|undefined
+        searchString?:string|undefined,
+        selectedId?:string|number|undefined
     ): Promise<[T[], number|boolean]> {
         var promise = new Promise<[T[], number|boolean]>(async (resolve, reject) => {
             try {
@@ -70,11 +71,24 @@ export abstract class ServiceBase<T extends ModelBase>{
                         );
                         
                         //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY AFTER SEARCH
-                        let snapshotCount = await getCountFromServer(q);
-                        valueCount= snapshotCount.data().count;
+                        //let snapshotCount = await getCountFromServer(q);
+                        //valueCount= snapshotCount.data().count;
                                             
                     }
-                    q = query(q, limit(numberOfElements));
+
+                    //FILTRAGGIO SelectedCategory
+                    if( selectedId!=undefined && selectedId!=null && selectedId!=0 ){
+                        q = query(q, where("categoryId", "==", selectedId ) );
+                    }
+
+                    //COUNT ELEMENT RETRIVED FROM DB
+                    if( (searchString != undefined && searchString!="" && searchString!=null) || 
+                        (selectedId!=undefined && selectedId!=null && selectedId!=0) ){
+                        let snapshotCount = await getCountFromServer(q);
+                        valueCount= snapshotCount.data().count;
+                    }
+
+                    //q = query(q, limit(numberOfElements));
                     
                     //FILTRAGGI FORWARD/BACKWARD
                     if (idToGetDocumentSnap != undefined && getnext != undefined) {
@@ -95,6 +109,9 @@ export abstract class ServiceBase<T extends ModelBase>{
                             q = query(q, startAfter(docSnap));
                         }
                     }
+
+                    q = query(q, limit(numberOfElements));
+                                        
                 }                
                 
                 var list: T[] = [];

@@ -7,6 +7,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-html-generator',
@@ -21,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSortModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule
   ],
   templateUrl: './html-generator.component.html',
   styleUrl: './html-generator.component.scss'
@@ -29,7 +31,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class HtmlGeneratorComponent {
   @Input()instanceParentCaller:any;
   @Input()configHTML:any;
-  constructor(){}
+  constructor(){
+    
+  }
   ngOnInit(){}
 
 }
