@@ -11,6 +11,7 @@ import { HtmlGeneratorComponent } from "../../html-generator/html-generator.comp
 import { CategoryServiceService } from '../../category/category-service.service';
 import { Category } from '../../category/category';
 import {MatSelectModule} from '@angular/material/select';
+import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
 
 @Component({
     selector: 'app-product',
@@ -23,7 +24,6 @@ export class ProductComponent extends DetailBaseComponent<Product, ProductServic
   
   listCategories:Category[];
   
-
   constructor(
     injector: Injector, 
     protected productService: ProductServiceService,
@@ -35,9 +35,7 @@ export class ProductComponent extends DetailBaseComponent<Product, ProductServic
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
     this.listCategories= await this.categoryService.getListCategories();
-
   }
-
   override initializationForm(): void {
    this.form.addControl("brand", new UntypedFormControl(undefined));
    this.form.addControl("title", new UntypedFormControl(undefined));

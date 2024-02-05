@@ -17,6 +17,8 @@ import {MatSortModule} from '@angular/material/sort';
 import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { ModelBase } from './model-base';
 import { ServiceBase } from './service-base-service';
+import { BaseParams } from './base-params';
+import { GetDynamicParams } from './get-dynamic-params';
 
 @Component({
   selector: 'app-list',
@@ -33,7 +35,7 @@ import { ServiceBase } from './service-base-service';
   ],
   template: ''
 })
-export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T>> {
+export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T> > {
 
   repoProducts?:T[];
   dtFormattedTable:any={};
@@ -51,7 +53,6 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
   searchString?:string|undefined="";
   private searchSubject = new Subject<string>();
 
-  selectedId:string|number|undefined;
 
   router:Router;
   constructor(injector: Injector) {
@@ -64,8 +65,9 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
   @ViewChild(MatSort) myMatSort:MatSort
 
   abstract getModel(json:any):T;
+  abstract getDynamicParams():GetDynamicParams;
   abstract getService():M;
-  
+
   async ngOnInit(): Promise<void> {
     try{
       this.triggerCount=true;
@@ -84,17 +86,24 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
 
   }
 
+
+  //async getMyList(prms?:P){
   async getMyList(){
+
     this.isDataNotReceived=true;
     //GET LIST
-    let resGetList= await this.getService().getList(
+
+    var baseParams= new BaseParams(
       this.pageSize, 
       this.idToGetDocumentSnap, 
       this.isNext, 
       this.sortDirection, 
       this.columnToSort, 
-      this.searchString,
-      this.selectedId
+      this.searchString
+    );
+    let resGetList= await this.getService().getList(
+      baseParams,
+      this.getDynamicParams()
     );
 
     this.repoProducts= resGetList[0];  

@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
 
 @Component({
   selector: 'app-products',
@@ -33,13 +34,15 @@ import { MatSortModule } from '@angular/material/sort';
 })
 
 //export class CategoryListComponent implements OnInit {
-export class CategoryListComponent extends ListBaseComponent<Category, CategoryServiceService>  {
+//export class CategoryListComponent extends ListBaseComponent<Category, CategoryServiceService>  {
+export class CategoryListComponent  {
 
   constructor(
     injector: Injector,
     private CategoryServiceService:CategoryServiceService, 
   ) {
-    super(injector);
+    //super(injector);
+    /*
     this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description"];
     this.dtFormattedTable.displayFields= [ 
       {"headerName": "Id",          "namefieldBody": "id"},
@@ -47,9 +50,11 @@ export class CategoryListComponent extends ListBaseComponent<Category, CategoryS
       {"headerName": "Brand",       "namefieldBody": "brand"},
       {"headerName": "Description", "namefieldBody": "description"},
     ];
+    */
 
   }
 
+  /*
   override getModel(json: any): Category {
     return new Category(json);
   }
@@ -61,7 +66,8 @@ export class CategoryListComponent extends ListBaseComponent<Category, CategoryS
     if(id!= undefined){
       this.router.navigate(["categories", id]);
   }
+  */
         
 }
 
-}
+

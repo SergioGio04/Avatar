@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { RouterLink } from '@angular/router'; 
 import { RouterLinkActive } from '@angular/router';
 import { environment } from '../environments/environment';
+import { ProductsComponent } from './product/product-list/products.component';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ import { environment } from '../environments/environment';
     CommonModule, 
     RouterOutlet, 
     RouterLink, 
-    RouterLinkActive
+    RouterLinkActive,
+    ProductsComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

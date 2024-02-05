@@ -3,9 +3,7 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 import { Firestore, getFirestore } from 'firebase/firestore'
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 
 export class FirebaseManagerService {
   myFirebase:FirebaseApp;

@@ -32,8 +32,10 @@ center;">Add Product</button>
 </div>
 -->
 
-
+  
 CATEGORIES
+
+<!--
 <div class="containerAdd">
     <button (click)="ChangeRoute(0)" style="text-align: center;margin-top: 20px;">Add</button>
 </div>
@@ -41,7 +43,6 @@ CATEGORIES
     <mat-form-field style="width: 100%;">
         <input  #ciao matInput (keyup)="searchChanged($event)" [value]="searchString!= undefined? searchString : ''"  placeholder="Search..">
     </mat-form-field>
-    <!--<button (click)="launchSearch()">Start Search</button>-->
 
     <mat-table 
         [dataSource]="dtFormattedTable?.body" 
@@ -77,3 +78,4 @@ CATEGORIES
     ></mat-paginator>
 </div>
 
+-->

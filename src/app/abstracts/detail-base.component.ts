@@ -8,6 +8,7 @@ import { ProductServiceService } from '../product/product-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { ModelBase } from './model-base';
 import { CategoryServiceService } from '../category/category-service.service';
+import { GetDynamicParams } from './get-dynamic-params';
 
 @Component({
   selector: 'app-product',
@@ -21,7 +22,7 @@ export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceB
   private route: ActivatedRoute;
   private router: Router;
   model?:T;
-  loading:boolean= false;
+  loading:boolean= false; 
   
   selectedId:string|number|undefined;
 
@@ -39,7 +40,6 @@ export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceB
     this.route.params.subscribe(async (params:any) => {
       await this.getDetail(params[this.getParamsId()]);
     });
-    
   }
 
   abstract initializationForm():void;

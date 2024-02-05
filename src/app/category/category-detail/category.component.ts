@@ -7,6 +7,7 @@ import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 import { CategoryServiceService } from '../category-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { DetailBaseComponent } from '../../abstracts/detail-base.component';
+import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
 
 @Component({
   selector: 'app-category',
@@ -15,15 +16,18 @@ import { DetailBaseComponent } from '../../abstracts/detail-base.component';
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'
 })
-export class CategoryComponent extends DetailBaseComponent<Category, CategoryServiceService> {
+//export class CategoryComponent extends DetailBaseComponent<Category, CategoryServiceService> {
+export class CategoryComponent  {
+
 
   constructor(
     injector: Injector,
     private categoryServiceService:CategoryServiceService, 
   ) {
-    super(injector);
+    //super(injector);
   }
   
+  /*
   override initializationForm(): void {
     this.form.addControl("brand", new UntypedFormControl(undefined));
     this.form.addControl("title", new UntypedFormControl(undefined));
@@ -39,6 +43,7 @@ export class CategoryComponent extends DetailBaseComponent<Category, CategorySer
     debugger;
     return this.categoryServiceService;
   }
+  */
 
 }
 
