@@ -45,8 +45,8 @@ export class ProductComponent extends DetailBaseComponent<Product, ProductServic
         this.selectedId= this.listCategories[0].id;
       }
     });
-    
   }
+  
   override initializationForm(): void {
    this.form.addControl("brand", new UntypedFormControl(undefined));
    this.form.addControl("title", new UntypedFormControl(undefined));

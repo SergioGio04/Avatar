@@ -16,7 +16,7 @@ import { MatSort } from '@angular/material/sort';
 import {MatSortModule} from '@angular/material/sort';
 import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { ModelBase } from './model-base';
-import { ServiceBase } from './service-base-service';
+import {  ServiceBase } from './service-base-service';
 import { BaseParams } from './base-params';
 
 @Component({
@@ -85,6 +85,11 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
 
   }
 
+  ChangeRoute( path?:string, id?:string){
+    if(id!= undefined){
+        this.router.navigate([path, id]);
+      }      
+  }
 
   //async getMyList(prms?:P){
   async getMyList(){

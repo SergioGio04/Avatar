@@ -1,0 +1,43 @@
+
+<div>
+    
+    <form [formGroup]="form" >
+        <div style="margin-top: 10px;">
+            
+            <div style="display: none;">
+                <label for="id">id: </label>
+                <input id="id" type="text" formControlName="id">
+                <br>
+            </div>
+
+            <label for="brand">brand: </label>
+            <input id="brand" type="text" formControlName="brand">
+            <br>
+    
+            <label for="cost">cost: </label>
+            <input id="cost" type="number" formControlName="cost">
+            <br>
+
+            <mat-form-field style="margin-top: 10px;">
+                <!--<mat-label for="categoryId">Select an option</mat-label>-->
+                <mat-select id="categoryId" [value]="selectedId" formControlName="categoryId" >
+                    <mat-option 
+                        *ngFor="let iSelected of listCategories" 
+                        [value]="iSelected.id"
+                    >
+                        {{iSelected.title}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>       
+
+        <div style="margin-top: 10px;">
+            <button *ngIf="isNew()" type="submit" (click)="add()" [disabled]="!form.valid">Add</button>
+            <button *ngIf="!isNew()" type="submit" (click)="update()" > Update </button>
+            <button *ngIf="!isNew()" type="submit" (click)="delete()" [disabled]="!form.valid">Delete</button>
+        </div>    
+    </form>
+
+
+</div>

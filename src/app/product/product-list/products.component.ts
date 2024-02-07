@@ -89,11 +89,5 @@ export class ProductsComponent extends ListBaseComponent<Product, ProductService
     return this.productServiceService;
   }
 
-  ChangeRoute(id:string|number|undefined){
-    if(id!= undefined){
-        this.router.navigate(["products", id]);
-      }      
-  }
-
   
 }

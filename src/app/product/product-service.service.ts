@@ -3,11 +3,11 @@ import { Product } from './product';
 import { ServiceBase } from '../abstracts/service-base-service';
 import { Category } from '../category/category';
 import { Query, getCountFromServer, query, where } from 'firebase/firestore';
-import { BaseParams } from '../abstracts/base-params';
 import { ProductParamsModel } from './models/product-params-model';
+import { BridgeCategoryService } from '../abstracts/bridge-category.service';
 
 @Injectable({ providedIn: 'root' })
-export class ProductServiceService extends ServiceBase<Product, ProductParamsModel> {
+export class ProductServiceService extends BridgeCategoryService<Product, ProductParamsModel> {
 
   constructor( injector: Injector) { 
     super(injector);
@@ -21,13 +21,7 @@ export class ProductServiceService extends ServiceBase<Product, ProductParamsMod
   }  
 
   override async getAdditionalQuery(q:Query, dynamicParam?: ProductParamsModel): Promise<Query>{
-  
-    if( dynamicParam?.categoryId!= undefined && dynamicParam?.categoryId!= null && dynamicParam?.categoryId!="0" ){
-      q = query(q, where("categoryId", "==", dynamicParam?.categoryId ) );
-      //return [q, await this.getRunTimeCountElementsDB(q)];
-      return q;
-    }    
-    //return [q,undefined];
+    q= await super.getAdditionalQuery(q, dynamicParam);
     return q;
 
   }

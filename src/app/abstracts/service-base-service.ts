@@ -10,7 +10,8 @@ import { BaseParams } from "./base-params";
 
 //@Injectable({ providedIn: 'root' })
 
-export abstract class ServiceBase<T extends ModelBase, P>{
+
+export abstract class ServiceBase<T extends ModelBase, P>  {
 
     protected firebase: FirebaseManagerService;
 
@@ -240,6 +241,7 @@ export abstract class ServiceBase<T extends ModelBase, P>{
             try {
                 const docRef = doc(this.firebase.db, this.getNameCollection(), id);
                 const readDoc = (await getDoc(docRef)).data();
+                
                 let model = this.getModelInstance(readDoc);
                 resolve(model)
             }

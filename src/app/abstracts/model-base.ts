@@ -40,7 +40,7 @@ export abstract class ModelBase {
                 finalString+=obj.val + (obj.isSpaceAfter==true? " " : "") ;
             }
         }
-        return finalString;
+        return finalString.toLocaleLowerCase();
     }
 
 }
