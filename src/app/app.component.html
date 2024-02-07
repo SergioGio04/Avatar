@@ -30,10 +30,18 @@
       > 
         categories 
       </div>
+      <div 
+        class="ClassRoutes" 
+        routerLink="/home" 
+        routerLinkActive="home" 
+        [routerLinkActiveOptions]='{exact:true}'
+      > 
+        home 
+      </div>
+
     </div>
     <router-outlet></router-outlet>
 
-    <app-list></app-list>
     <!--
     <div>
       <div *ngFor="let item of repoProducts" class="listClass">

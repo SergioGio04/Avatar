@@ -1,16 +1,14 @@
+import { ModelloSearch } from "./modello-search.model";
 
-export class Character{
-    id?:number;
+export class Character extends ModelloSearch{
     name?:string;
     power?:string;
-    strength?:number;
 
-    constructor( private json?:any ){
+    constructor( json?:any ){
+        super(json);
         if(json){
-            this.id= json.id;
             this.name= json.name;
             this.power= json.power;
-            this.strength= json.strength;
         }        
     }
 

@@ -12,7 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
+import { BaseParams } from '../../abstracts/base-params';
+import { CategoryParamsModel } from '../models/category-params-model';
 
 @Component({
   selector: 'app-products',
@@ -34,15 +35,14 @@ import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
 })
 
 //export class CategoryListComponent implements OnInit {
-//export class CategoryListComponent extends ListBaseComponent<Category, CategoryServiceService>  {
-export class CategoryListComponent  {
+export class CategoryListComponent extends ListBaseComponent<Category, CategoryServiceService, CategoryParamsModel>  {
+//export class CategoryListComponent  {
 
   constructor(
     injector: Injector,
     private CategoryServiceService:CategoryServiceService, 
   ) {
-    //super(injector);
-    /*
+    super(injector);
     this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description"];
     this.dtFormattedTable.displayFields= [ 
       {"headerName": "Id",          "namefieldBody": "id"},
@@ -50,11 +50,13 @@ export class CategoryListComponent  {
       {"headerName": "Brand",       "namefieldBody": "brand"},
       {"headerName": "Description", "namefieldBody": "description"},
     ];
-    */
-
   }
 
-  /*
+  getDynamicParams(): CategoryParamsModel{
+    return new CategoryParamsModel();
+    //return new ProductParams(this.selectedId);
+  }
+
   override getModel(json: any): Category {
     return new Category(json);
   }
@@ -65,8 +67,8 @@ export class CategoryListComponent  {
   ChangeRoute(id:string|number|undefined){
     if(id!= undefined){
       this.router.navigate(["categories", id]);
+    } 
   }
-  */
         
 }
 

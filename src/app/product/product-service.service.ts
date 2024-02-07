@@ -3,22 +3,15 @@ import { Product } from './product';
 import { ServiceBase } from '../abstracts/service-base-service';
 import { Category } from '../category/category';
 import { Query, getCountFromServer, query, where } from 'firebase/firestore';
-import { GetDynamicParams, GetDynamicParams as GetStaticParamsProduct } from '../abstracts/get-dynamic-params';
-import { ProductParams } from './product-params';
+import { BaseParams } from '../abstracts/base-params';
+import { ProductParamsModel } from './models/product-params-model';
 
 @Injectable({ providedIn: 'root' })
+export class ProductServiceService extends ServiceBase<Product, ProductParamsModel> {
 
-export class ProductServiceService extends ServiceBase<Product> {
-
-  //categoryId?:string|number;
-
-  constructor(
-    injector: Injector
-  ) { 
+  constructor( injector: Injector) { 
     super(injector);
-    console.log("OOOOO SONO PRODUCT SERVICE!");
   }
-
 
   getNameCollection(): string {
     return "products";
@@ -27,15 +20,15 @@ export class ProductServiceService extends ServiceBase<Product> {
     return new Product(json);
   }  
 
+  override async getAdditionalQuery(q:Query, dynamicParam?: ProductParamsModel): Promise<Query>{
   
-  override async getAdditionalQuery(q:Query, dynamicParam: GetDynamicParams): Promise<[Query, number|undefined]>{
-  
-    debugger;
-    if( dynamicParam.props.categoryId!=undefined && dynamicParam.props.categoryId!=null && dynamicParam.props.categoryId!="0" ){
-      q = query(q, where("categoryId", "==", dynamicParam.props.categoryId ) );
-      return [q, await this.getRunTimeCountElementsDB(q)];
+    if( dynamicParam?.categoryId!= undefined && dynamicParam?.categoryId!= null && dynamicParam?.categoryId!="0" ){
+      q = query(q, where("categoryId", "==", dynamicParam?.categoryId ) );
+      //return [q, await this.getRunTimeCountElementsDB(q)];
+      return q;
     }    
-    return [q,undefined];
+    //return [q,undefined];
+    return q;
 
   }
   

@@ -7,11 +7,10 @@ import { AggregateQuerySnapshot, OrderByDirection, Query, QueryDocumentSnapshot,
 import { FirebaseManagerService } from "../services/firebase-manager.service";
 import { ModelBase } from "./model-base";
 import { BaseParams } from "./base-params";
-import { GetDynamicParams } from "./get-dynamic-params";
 
 //@Injectable({ providedIn: 'root' })
 
-export abstract class ServiceBase<T extends ModelBase>{
+export abstract class ServiceBase<T extends ModelBase, P>{
 
     protected firebase: FirebaseManagerService;
 
@@ -87,8 +86,9 @@ export abstract class ServiceBase<T extends ModelBase>{
         return [q, valueCount];
     }
 
-    async getAdditionalQuery(q: Query, dynamicParam: GetDynamicParams): Promise<[Query, number|undefined]>{
-        return [q, undefined] ;
+    //async getAdditionalQuery(q: Query, dynamicParam: GetDynamicParams): Promise<[Query, number|undefined]>{
+    async getAdditionalQuery(q: Query, dynamicParam?: P): Promise<Query>{
+        return q ;
     }
 
     async getRunTimeCountElementsDB(q:Query): Promise<number>{
@@ -98,8 +98,8 @@ export abstract class ServiceBase<T extends ModelBase>{
     }
 
     async getList(
-        baseParams?: BaseParams,
-        dynamicParam?:GetDynamicParams
+        baseParams?:BaseParams,
+        dynamicParam?:P
     ): Promise<[T[], number|boolean]> {
         var promise = new Promise<[T[], number|boolean]>(async (resolve, reject) => {
             try {
@@ -119,7 +119,6 @@ export abstract class ServiceBase<T extends ModelBase>{
                     valueCount= getResAdditionalQuery[1]
                 }
                 */
-
                 var searchString= baseParams?.searchString;
                 var numberOfElements= baseParams?.numberOfElements;
                 var columnToSort= baseParams?.columnToSort;
@@ -146,16 +145,16 @@ export abstract class ServiceBase<T extends ModelBase>{
                             where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
                         );            
                     }
-                    //COUNT ELEMENT RETRIVED FROM DB
-                    if( (searchString != undefined && searchString!="" && searchString!=null)  ){
-                        valueCount= await this.getRunTimeCountElementsDB(q);
-                    }
-
+                    
+                    //QUERY CUSTOM!
                     //FILTRAGGIO PER CATEGORY(INSERIMENTO ADDITIONAL QUERY)
-                    let getResAdditionalQuery= await this.getAdditionalQuery(q, dynamicParam!);
-                    q= getResAdditionalQuery[0];
-                    if(getResAdditionalQuery[1]!=undefined){
-                        valueCount= getResAdditionalQuery[1]
+                    q= await this.getAdditionalQuery(q, dynamicParam);
+                   
+
+                    //COUNT ELEMENT RETRIVED FROM DB
+                    if( (searchString != undefined && searchString!="" && searchString!=null) || 
+                        dynamicParam!=undefined ){
+                        valueCount= await this.getRunTimeCountElementsDB(q);
                     }
 
                     //NB TUTTI I COUNT DOPO IL LIMIT SONO ANNULLATI!
@@ -166,7 +165,7 @@ export abstract class ServiceBase<T extends ModelBase>{
                         const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
                         const docSnap = await getDoc(docRef);
                         //backward
-                        if (getnext == 1) {
+                        if (getnext == false) {
                             //
                             if(sortDirection!=undefined && columnToSort!=undefined){
                                 q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
@@ -180,7 +179,7 @@ export abstract class ServiceBase<T extends ModelBase>{
                             }
                         }
                         //forward
-                        if (getnext == 2) {
+                        if (getnext == true) {
                             q = query(q, startAfter(docSnap));
                         }
                     }

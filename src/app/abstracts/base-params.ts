@@ -5,7 +5,7 @@ export class BaseParams {
 
     numberOfElements?: number;
     idToGetDocumentSnap?: string | undefined;
-    getnext?: number | undefined;
+    getnext?: boolean | undefined;
     sortDirection?: OrderByDirection | undefined;
     columnToSort?: string | undefined;
     searchString?:string|undefined;
@@ -13,7 +13,7 @@ export class BaseParams {
     constructor( 
         numberOfElements?: number,
         idToGetDocumentSnap?: string | undefined,
-        getnext?: number | undefined,
+        getnext?: boolean | undefined,
         sortDirection?:OrderByDirection | undefined,
         columnToSort?: string | undefined,
         searchString?: string | undefined

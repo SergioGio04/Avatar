@@ -1,6 +1,7 @@
 import { Component, Inject, Injector } from '@angular/core';
 import { ProductsComponent } from '../product/product-list/products.component';
 import { TestService } from '../services/test.service';
+import { Character } from '../models/character';
 
 
 @Component({
@@ -10,12 +11,20 @@ import { TestService } from '../services/test.service';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent extends TestService{
+export class HomePageComponent {
 
   casa:string="ciaone"
+  getInstance:Character;
+  
   constructor(injector: Injector){
-    super(injector, "ciapo");
-    
+    //super(injector, "ciapo");
+    this.getInstance= new Character({
+      id:"ono",
+      search: "meSearch",
+      name: "meName",
+      power: "mePower"
+    })
+    debugger;
   }
 
 }

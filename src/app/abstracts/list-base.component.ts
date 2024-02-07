@@ -18,7 +18,6 @@ import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, tak
 import { ModelBase } from './model-base';
 import { ServiceBase } from './service-base-service';
 import { BaseParams } from './base-params';
-import { GetDynamicParams } from './get-dynamic-params';
 
 @Component({
   selector: 'app-list',
@@ -35,7 +34,7 @@ import { GetDynamicParams } from './get-dynamic-params';
   ],
   template: ''
 })
-export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T> > {
+export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T, P>, P > {
 
   repoProducts?:T[];
   dtFormattedTable:any={};
@@ -44,7 +43,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
   pageIndex:number=0;
   isDataNotReceived:boolean=true;
   idToGetDocumentSnap?:string | undefined;
-  isNext?:number | undefined;
+  isNext?:boolean | undefined;
   triggerCount?:boolean=false;
   getCountElementsServer?: number | boolean;
   sortDirection?:OrderByDirection|undefined="asc";
@@ -65,7 +64,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
   @ViewChild(MatSort) myMatSort:MatSort
 
   abstract getModel(json:any):T;
-  abstract getDynamicParams():GetDynamicParams;
+  abstract getDynamicParams():P;
   abstract getService():M;
 
   async ngOnInit(): Promise<void> {
@@ -89,10 +88,8 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
 
   //async getMyList(prms?:P){
   async getMyList(){
-
     this.isDataNotReceived=true;
     //GET LIST
-
     var baseParams= new BaseParams(
       this.pageSize, 
       this.idToGetDocumentSnap, 
@@ -101,7 +98,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.columnToSort, 
       this.searchString
     );
-    let resGetList= await this.getService().getList(
+    let resGetList= await this.getService().getList( 
       baseParams,
       this.getDynamicParams()
     );
@@ -166,13 +163,13 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       let condBackward= Number(pageInfo.pageIndex) < Number(pageInfo.previousPageIndex);
       //backward
       if(condBackward==true ){
-        this.isNext=1;
+        this.isNext=false;
         this.pageIndex= pageInfo.pageIndex;
         this.idToGetDocumentSnap= this.dtFormattedTable.body[0].id;
       }
       //forward
       if(condForward==true ){
-        this.isNext=2;
+        this.isNext=true;
         this.pageIndex= pageInfo.pageIndex;
         this.idToGetDocumentSnap= this.dtFormattedTable.body[this.pageSize-1].id;
       }

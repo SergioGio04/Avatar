@@ -11,7 +11,8 @@ import { HtmlGeneratorComponent } from "../../html-generator/html-generator.comp
 import { CategoryServiceService } from '../../category/category-service.service';
 import { Category } from '../../category/category';
 import {MatSelectModule} from '@angular/material/select';
-import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
+import { ProductParamsModel } from '../models/product-params-model';
+
 
 @Component({
     selector: 'app-product',
@@ -20,21 +21,31 @@ import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
     styleUrl: './product.component.scss',
     imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule, HtmlGeneratorComponent, MatSelectModule]
 })
-export class ProductComponent extends DetailBaseComponent<Product, ProductServiceService> {
+export class ProductComponent extends DetailBaseComponent<Product, ProductServiceService, ProductParamsModel> {
   
   listCategories:Category[];
+  selectedId:string|undefined;
   
   constructor(
     injector: Injector, 
     protected productService: ProductServiceService,
-    protected categoryService: CategoryServiceService  
+    protected categoryService: CategoryServiceService,
+    protected activatedRoute: ActivatedRoute
   ) {    
     super(injector);   
   }
   
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    this.listCategories= await this.categoryService.getListCategories();
+    let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
+    this.listCategories= await this.categoryService.getListCategories(defaultSelectConfig);
+    
+    this.activatedRoute.params.subscribe( (params:any) => {
+      if(params[this.getParamsId()]=="0"){
+        this.selectedId= this.listCategories[0].id;
+      }
+    });
+    
   }
   override initializationForm(): void {
    this.form.addControl("brand", new UntypedFormControl(undefined));

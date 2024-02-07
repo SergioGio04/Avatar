@@ -8,7 +8,6 @@ import { ProductServiceService } from '../product/product-service.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { ModelBase } from './model-base';
 import { CategoryServiceService } from '../category/category-service.service';
-import { GetDynamicParams } from './get-dynamic-params';
 
 @Component({
   selector: 'app-product',
@@ -16,15 +15,14 @@ import { GetDynamicParams } from './get-dynamic-params';
   imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
   template: ``,
 })
-export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceBase<T> > {
-
+export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceBase<T, P>, P > {
+ 
   form:UntypedFormGroup; 
   private route: ActivatedRoute;
   private router: Router;
   model?:T;
   loading:boolean= false; 
   
-  selectedId:string|number|undefined;
 
   constructor(injector: Injector) {
     this.route= injector.get(ActivatedRoute);

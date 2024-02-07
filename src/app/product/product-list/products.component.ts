@@ -1,30 +1,21 @@
-import {  Component, Inject, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ProductServiceService } from '../product-service.service';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
-import { ProductComponent } from '../product-detail/product.component';
-import { Product } from '../product';
-import {MatTableModule, MatTableDataSource} from
-'@angular/material/table';
-import {MatPaginator, MatPaginatorModule, PageEvent} from
-'@angular/material/paginator';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import { AggregateQuerySnapshot, OrderByDirection, QueryDocumentSnapshot, QuerySnapshot } from
-'firebase/firestore';
-import { Sort } from '@angular/material/sort';
-import { MatSortHeader } from '@angular/material/sort';
-import { MatSort } from '@angular/material/sort';
-import {MatSortModule} from '@angular/material/sort';
-import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
-import { ListBaseComponent } from '../../abstracts/list-base.component';
-import { HtmlGeneratorComponent } from "../../html-generator/html-generator.component";
-import { CategoryServiceService } from '../../category/category-service.service';
-import { Category } from '../../category/category';
+import { Component, Injector } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-import { GetDynamicParams } from '../../abstracts/get-dynamic-params';
-import { ProductParams } from '../product-params';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { RouterOutlet } from '@angular/router';
+import { BaseParams } from '../../abstracts/base-params';
+import { ListBaseComponent } from '../../abstracts/list-base.component';
+import { Category } from '../../category/category';
+import { CategoryServiceService } from '../../category/category-service.service';
+import { HtmlGeneratorComponent } from "../../html-generator/html-generator.component";
+import { Product } from '../product';
+import { ProductComponent } from '../product-detail/product.component';
+import { ProductServiceService } from '../product-service.service';
+import { ProductParamsModel } from '../models/product-params-model';
 
 @Component({
     selector: 'app-list',
@@ -46,16 +37,15 @@ import { ProductParams } from '../product-params';
         
     ],
 })
-export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService>  {
+export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService, ProductParamsModel >  {
   
-  listCategories:Category[];
-  selectedId:string;
+  listCategories: Category[];
+  selectedId: string|undefined;
 
   constructor(
     injector: Injector,
     protected productServiceService:ProductServiceService, 
-    protected categoryService:CategoryServiceService,
-    //protected dynamicParams: GetDynamicParams
+    protected categoryService:CategoryServiceService
   ) {
     super(injector);
     this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description"];
@@ -67,20 +57,16 @@ export class ProductsComponent extends ListBaseComponent<Product, ProductService
     ];
   }
 
-  getDynamicParams(): GetDynamicParams{
-    return new GetDynamicParams(
-      { 
-        "categoryId": this.selectedId,  
-        "productInstance": new Product({brand:"EIIIIII"})
-      }
-    );
-    //return new ProductParams(this.selectedId);
+  getDynamicParams(): ProductParamsModel{
+    return new ProductParamsModel(this.selectedId);
+    //return new GetDynamicParams(baseParams, { "pippo": "pluto" });
   }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    this.listCategories= await this.categoryService.getListCategories();
-    this.selectedId= this.listCategories[0].id as string;
+    let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
+    this.listCategories= await this.categoryService.getListCategories( defaultSelectConfig );
+    this.selectedId= this.listCategories[0].id;
   }
 
   selectCategoryChanged( event:any ){
@@ -108,8 +94,6 @@ export class ProductsComponent extends ListBaseComponent<Product, ProductService
         this.router.navigate(["products", id]);
       }      
   }
-
-  
 
   
 }

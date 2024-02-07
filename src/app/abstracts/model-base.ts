@@ -16,16 +16,17 @@ export abstract class ModelBase {
         if(this.id != undefined){
             obj["id"]= this.id
         }    
-        return obj;
+        return obj; 
     }
 
     public SetArrayOfAllCombinations(s: string): string[]{
         debugger;
         let list_of_strings = new Array();
-        for(let i=0;i<s.length;i++) {
-            for(let j=i+1;j<s.length+1;j++) {
-                if(list_of_strings.includes(s[j]) == false){
-                    list_of_strings.push(s.slice(i, j));
+        for(let iStart=0; iStart<s.length;iStart++) {
+            for(let iEnd=iStart+1;iEnd<s.length+1;iEnd++) {
+                let stringToAdd= s.slice(iStart, iEnd);
+                if(list_of_strings.includes(stringToAdd) == false){
+                    list_of_strings.push(stringToAdd);
                 }
             }
         }

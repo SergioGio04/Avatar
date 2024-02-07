@@ -10,7 +10,6 @@ export abstract class TestService {
     injector: Injector, 
     @Inject("prm") prm?:any
   ) {
-    debugger;
     console.log(prm);
     
     console.log(injector);

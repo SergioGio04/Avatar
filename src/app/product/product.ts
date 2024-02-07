@@ -26,11 +26,6 @@ export class Product extends ModelBase{
         obj["description"]= this.description? this.description : null;
         obj["categoryId"]= this.categoryId!=null && this.categoryId!=undefined ? this.categoryId : null;
 
-        let stringToGetAllCombinations= "";
-        if(obj.brand != null){
-            stringToGetAllCombinations+=obj.brand.toLocaleLowerCase()+
-                (obj.title != null ? " " + obj.title.toLocaleLowerCase() : "" );           
-        }
         debugger;
         obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
             this.generateStringForCombinations( [{val: obj.brand, isSpaceAfter:true}, {val: obj.title} ] )

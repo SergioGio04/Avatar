@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
+import { Character } from '../models/character';
 
 @Component({
   selector: 'app-html-generator',
@@ -31,6 +32,8 @@ import {MatSelectModule} from '@angular/material/select';
 export class HtmlGeneratorComponent {
   @Input()instanceParentCaller:any;
   @Input()configHTML:any;
+
+
   constructor(){
     
   }
