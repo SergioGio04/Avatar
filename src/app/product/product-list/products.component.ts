@@ -48,12 +48,13 @@ export class ProductsComponent extends ListBaseComponent<Product, ProductService
     protected categoryService:CategoryServiceService
   ) {
     super(injector);
-    this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description"];
+    this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description", "categoryId"];
     this.dtFormattedTable.displayFields= [ 
       {"headerName": "Id",          "namefieldBody": "id"},
       {"headerName": "Title",       "namefieldBody": "title"},
       {"headerName": "Brand",       "namefieldBody": "brand"},
       {"headerName": "Description", "namefieldBody": "description"},
+      {"headerName": "Category Id", "namefieldBody": "categoryId"},
     ];
   }
 
@@ -67,6 +68,8 @@ export class ProductsComponent extends ListBaseComponent<Product, ProductService
     let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
     this.listCategories= await this.categoryService.getListCategories( defaultSelectConfig );
     this.selectedId= this.listCategories[0].id;
+
+    //FUNZIONE CUSTOM CHE RECUPERA IL NAME DI CATEGORY E LO AGGIUNGE ALLA LISTA[id]
   }
 
   selectCategoryChanged( event:any ){

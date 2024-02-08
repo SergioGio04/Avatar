@@ -17,7 +17,6 @@ export class CategoryServiceService extends ServiceBase<Category, CategoryParams
   //prms, se vuoi il category e cosa vuoi impostare come title
   async getListCategories(defaultSelectConfig?: { [key: string|number]: any }):Promise<Category[]>{
     let [list]= await this.getList();
-
     if(defaultSelectConfig && defaultSelectConfig["enabled"]==true){
       let categoryNone= new Category();
       categoryNone.id= defaultSelectConfig["value"];
@@ -26,6 +25,8 @@ export class CategoryServiceService extends ServiceBase<Category, CategoryParams
     }
     return list;
   }
+
+  //FUNZIONE CUSTOM CHE RECUPERA IL NAME DI CATEGORY
   
   getNameCollection():string {
     return "categories";

@@ -104,22 +104,7 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
     ): Promise<[T[], number|boolean]> {
         var promise = new Promise<[T[], number|boolean]>(async (resolve, reject) => {
             try {
-                /*
-                var [q,valueCount] = await this.getQuery(
-                    numberOfElements,
-                    idToGetDocumentSnap,
-                    getnext,
-                    sortDirection,
-                    columnToSort,
-                    searchString
-                );
-
-                let getResAdditionalQuery= await this.getAdditionalQuery(q, dynamicParam!);
-                q= getResAdditionalQuery[0];
-                if(getResAdditionalQuery[1]!=undefined){
-                    valueCount= getResAdditionalQuery[1]
-                }
-                */
+                
                 var searchString= baseParams?.searchString;
                 var numberOfElements= baseParams?.numberOfElements;
                 var columnToSort= baseParams?.columnToSort;
