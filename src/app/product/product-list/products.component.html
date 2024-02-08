@@ -39,7 +39,7 @@ PRODUCTS
             <th mat-header-cell *matHeaderCellDef [mat-sort-header]="item.namefieldBody" sortActionDescription="Sort by number"> {{item.headerName}} </th>
             
             <td mat-cell *matCellDef="let element" (click)="ChangeRoute('products', element.id)" class="listClass">
-                {{element[item.namefieldBody]}}
+                {{element[item.namefieldBody]}} {{element.category?.brand}}
             </td>
 
         </ng-container>

@@ -10,7 +10,12 @@ export class Category extends ModelBase{
         super(json)
     }
 
-    protected override setData(json?:any){
+    public override getName(): string{
+        return this.brand?? "";
+    }
+    
+
+    public override setData(json?:any){
         super.setData(json);
         if(json){
             this.brand=json.brand;

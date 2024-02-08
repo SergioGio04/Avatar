@@ -1,6 +1,5 @@
 import { Injectable, Injector, forwardRef } from "@angular/core";
 import { Product } from "../product/product";
-import { CustomProductServiceService } from "../services/custom-product-service.service";
 import { ProductServiceService } from "../product/product-service.service";
 import { Category } from "../category/category";
 import { AggregateQuerySnapshot, OrderByDirection, Query, QueryDocumentSnapshot, addDoc, and, collection, deleteDoc, doc, endAt, endBefore, getCountFromServer, getDoc, getDocs, limit, limitToLast, or, orderBy, query, startAfter, startAt, updateDoc, where } from "firebase/firestore";
@@ -93,100 +92,103 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
     }
 
     async getRunTimeCountElementsDB(q:Query): Promise<number>{
-        let snapshotCount = await getCountFromServer(q);
-        var valueCount= snapshotCount.data().count;
-        return valueCount;
+        try{
+            let snapshotCount = await getCountFromServer(q).then( (snapshot) => {
+                return snapshot.data().count;
+            });
+            //var valueCount= snapshotCount.data().count;
+            return snapshotCount;
+        }
+        catch(error){
+            throw(error);
+        }
     }
 
     async getList(
         baseParams?:BaseParams,
         dynamicParam?:P
     ): Promise<[T[], number|boolean]> {
-        var promise = new Promise<[T[], number|boolean]>(async (resolve, reject) => {
-            try {
+        try {
+            var searchString= baseParams?.searchString;
+            var numberOfElements= baseParams?.numberOfElements;
+            var columnToSort= baseParams?.columnToSort;
+            var sortDirection= baseParams?.sortDirection;
+            var idToGetDocumentSnap= baseParams?.idToGetDocumentSnap;
+            var getnext= baseParams?.getnext;
+
+            let q = query(collection( this.firebase.db, this.getNameCollection() ));
+            let valueCount= 0;
+
+            //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
+            if( searchString==undefined || searchString=="" || searchString==null){           
+                valueCount= await this.getRunTimeCountElementsDB(q);
+            }
+            if ( numberOfElements != undefined ) {
+
+                //FILTRAGGIO SORTING
+                if( sortDirection!=undefined && columnToSort!=undefined){
+                    q= query(q, orderBy(columnToSort, sortDirection));
+                }
+                //FILTRAGGIO SEARCH
+                if( searchString != undefined && searchString!="" && searchString!=null ){
+                    q = query(q, 
+                        where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
+                    );            
+                }
                 
-                var searchString= baseParams?.searchString;
-                var numberOfElements= baseParams?.numberOfElements;
-                var columnToSort= baseParams?.columnToSort;
-                var sortDirection= baseParams?.sortDirection;
-                var idToGetDocumentSnap= baseParams?.idToGetDocumentSnap;
-                var getnext= baseParams?.getnext;
+                //QUERY CUSTOM!
+                //FILTRAGGIO PER CATEGORY(INSERIMENTO ADDITIONAL QUERY)
+                q= await this.getAdditionalQuery(q, dynamicParam);
+                
 
-                let q = query(collection( this.firebase.db, this.getNameCollection() ));
-                let valueCount= 0;
-
-                //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
-                if( searchString==undefined || searchString=="" || searchString==null){           
+                //COUNT ELEMENT RETRIVED FROM DB
+                if( (searchString != undefined && searchString!="" && searchString!=null) || 
+                    dynamicParam!=undefined ){
                     valueCount= await this.getRunTimeCountElementsDB(q);
                 }
-                if ( numberOfElements != undefined ) {
 
-                    //FILTRAGGIO SORTING
-                    if( sortDirection!=undefined && columnToSort!=undefined){
-                        q= query(q, orderBy(columnToSort, sortDirection));
-                    }
-                    //FILTRAGGIO SEARCH
-                    if( searchString != undefined && searchString!="" && searchString!=null ){
-                        q = query(q, 
-                            where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
-                        );            
-                    }
-                    
-                    //QUERY CUSTOM!
-                    //FILTRAGGIO PER CATEGORY(INSERIMENTO ADDITIONAL QUERY)
-                    q= await this.getAdditionalQuery(q, dynamicParam);
-                   
-
-                    //COUNT ELEMENT RETRIVED FROM DB
-                    if( (searchString != undefined && searchString!="" && searchString!=null) || 
-                        dynamicParam!=undefined ){
-                        valueCount= await this.getRunTimeCountElementsDB(q);
-                    }
-
-                    //NB TUTTI I COUNT DOPO IL LIMIT SONO ANNULLATI!
-                    q = query(q, limit(numberOfElements));
-                    
-                    //FILTRAGGI FORWARD/BACKWARD
-                    if (idToGetDocumentSnap != undefined && getnext != undefined) {
-                        const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
-                        const docSnap = await getDoc(docRef);
-                        //backward
-                        if (getnext == false) {
-                            //
-                            if(sortDirection!=undefined && columnToSort!=undefined){
-                                q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
-                            }
-                            else{
-                                q = query(q, 
-                                    orderBy("id", "asc"),  
-                                    endBefore(docSnap), 
-                                    limitToLast(numberOfElements)
-                                );
-                            }
+                //NB TUTTI I COUNT DOPO IL LIMIT SONO ANNULLATI!
+                q = query(q, limit(numberOfElements));
+                
+                //FILTRAGGI FORWARD/BACKWARD
+                if (idToGetDocumentSnap != undefined && getnext != undefined) {
+                    const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
+                    const docSnap = await getDoc(docRef);
+                    //backward
+                    if (getnext == false) {
+                        //
+                        if(sortDirection!=undefined && columnToSort!=undefined){
+                            q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
                         }
-                        //forward
-                        if (getnext == true) {
-                            q = query(q, startAfter(docSnap));
+                        else{
+                            q = query(q, 
+                                orderBy("id", "asc"),  
+                                endBefore(docSnap), 
+                                limitToLast(numberOfElements)
+                            );
                         }
                     }
+                    //forward
+                    if (getnext == true) {
+                        q = query(q, startAfter(docSnap));
+                    }
+                }
 
-                    //GENERA ERRORE QUANDO VAI INDIETRO DI 1, RITORNA ALLA PRIMA PAGINA
-                    //q = query(q, limit(numberOfElements));
-                                        
-                }  
+                //GENERA ERRORE QUANDO VAI INDIETRO DI 1, RITORNA ALLA PRIMA PAGINA
+                //q = query(q, limit(numberOfElements));
+                                    
+            }  
 
-                var list: T[] = [];
-                var res = await getDocs(q);
-                res.docs.forEach((d) => {
-                    list.push(this.getModelInstance(d.data()));                    
-                });
-                resolve([list, valueCount]);
-            }
-            catch (error) {
-                reject(error);
-            }
-        });
-        return promise;
+            var list: T[] = [];
+            var res = await getDocs(q);
+            res.docs.forEach((d) => {
+                list.push(this.getModelInstance(d.data()));                    
+            });
+            return ([list, valueCount]);
+        }
+        catch (error) {
+            throw(error);
+        }
     }
 
     async create(model: T): Promise<T> {
@@ -248,6 +250,39 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
             }
         })
         return p;
+    }
+
+
+
+      //prms, se vuoi il category e cosa vuoi impostare come title
+    async getListCollection(defaultSelectConfig?: { [key: string|number]: any }): Promise<T[]>{
+        let [list]= await this.getList();
+        if(defaultSelectConfig && defaultSelectConfig["enabled"]==true){
+        let defaultSetter:any= {
+            "id": defaultSelectConfig["value"],
+            "title": defaultSelectConfig["label"]
+        }
+        let categoryNone= this.getModelInstance();
+        categoryNone.setData(defaultSetter);
+        /*
+        categoryNone.id= defaultSelectConfig["value"];
+        categoryNone.title= defaultSelectConfig["label"];    
+        */
+        list.splice(0, 0, categoryNone);
+        }
+        return list;
+    }
+
+    async retrieveDocumentsCollection(arrIds: string[]): Promise <T[]>{
+        let arrDocs:any= [];
+        for(let id of arrIds){
+        let doc= await this.getDetail(id);
+        if(doc.id != undefined){
+            arrDocs.push(doc);
+        }      
+        }
+        return arrDocs;
+
     }
 
 }

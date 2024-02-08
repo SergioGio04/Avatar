@@ -36,7 +36,7 @@ import { BaseParams } from './base-params';
 })
 export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T, P>, P > {
 
-  repoProducts?:T[];
+  items:T[]=[];
   dtFormattedTable:any={};
 
   pageSize:number= 5;
@@ -54,7 +54,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
 
 
   router:Router;
-  constructor(injector: Injector) {
+  constructor(public injector: Injector) {
     this.router= injector.get(Router);
     this.dtFormattedTable= {
       body: []
@@ -108,13 +108,13 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.getDynamicParams()
     );
 
-    this.repoProducts= resGetList[0];  
+    this.items= resGetList[0];  
     this.getCountElementsServer= resGetList[1] == false ? this.getCountElementsServer : resGetList[1];
     
-    if(this.repoProducts!=undefined){
+    if(this.items!=undefined){
       this.isDataNotReceived=false;
     }
-    this.dtFormattedTable.body= this.repoProducts;
+    this.dtFormattedTable.body= this.items;
   }
 
   //RESET ANIMATION ROW SORT
@@ -155,12 +155,6 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.pageSize= pageInfo.pageSize;     
       this.idToGetDocumentSnap= undefined; 
       this.isNext= undefined;      
-      //this.sortDirection= undefined;  
-      //this.columnToSort= undefined;   
-      //this.resetRowSort();
-      
-      //this.searchString= undefined; 
-
       await this.getMyList();
     }
     else{

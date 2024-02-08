@@ -35,7 +35,7 @@ export class BottleDetailComponent extends DetailBaseComponent<Bottle, BottleSer
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
     let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
-    this.listCategories= await this.categoryService.getListCategories(defaultSelectConfig);
+    this.listCategories= await this.categoryService.getListCollection(defaultSelectConfig);
     
     this.activatedRoute.params.subscribe( (params:any) => {
       if(params[this.getParamsId()]=="0"){

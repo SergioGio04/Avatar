@@ -1,3 +1,4 @@
+import { Injector } from "@angular/core";
 
 export abstract class ModelBase {
     id?:string;
@@ -5,10 +6,14 @@ export abstract class ModelBase {
         this.setData(json);
     }
     
-    protected setData(json?:any){
+    public setData(json?:any){
         if(json){
             this.id= json.id;
         }
+    }
+
+    public getName(){
+        return "-"
     }
     
     public getData():any {

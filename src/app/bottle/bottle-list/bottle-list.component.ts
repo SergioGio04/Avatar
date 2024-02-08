@@ -16,6 +16,7 @@ import { ListBaseComponent } from '../../abstracts/list-base.component';
 import { CategoryServiceService } from '../../category/category-service.service';
 import { Category } from '../../category/category';
 import { ButtonModule } from 'primeng/button';
+import { BridgeCategoryAdditionalColumns } from '../../abstracts/bridge-category-additional-columns';
 
 @Component({
   selector: 'app-bottle-list',
@@ -37,30 +38,25 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './bottle-list.component.html',
   styleUrl: './bottle-list.component.scss'
 })
-export class BottleListComponent extends ListBaseComponent<Bottle, BottleService, BottleParams > {
+export class BottleListComponent extends BridgeCategoryAdditionalColumns<Bottle, BottleService, BottleParams > {
   
-  listCategories: Category[];
-  selectedId: string|undefined;
-
   constructor( 
     injector: Injector,
     protected bottleService: BottleService,
-    protected categoryService:CategoryServiceService
   ){
     super(injector);
-    this.dtFormattedTable.displayedColumns= ["id", "brand", "cost"];
+    this.dtFormattedTable.displayedColumns= ["id", "brand", "cost", "categoryId", "categoryName"];
     this.dtFormattedTable.displayFields= [ 
       {"headerName": "Id",          "namefieldBody": "id"},
       {"headerName": "Brand",       "namefieldBody": "brand"},
-      {"headerName": "Cost", "namefieldBody": "cost"},
+      {"headerName": "Cost",        "namefieldBody": "cost"},
+      {"headerName": "Category Id", "namefieldBody": "categoryId"},
+      {"headerName": "Category Name", "namefieldBody": "categoryName"},
     ];
   }
 
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-    let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
-    this.listCategories= await this.categoryService.getListCategories( defaultSelectConfig );
-    this.selectedId= this.listCategories[0].id;
+    await super.ngOnInit();
   }
 
   override getModel(json: any): Bottle {
@@ -73,15 +69,9 @@ export class BottleListComponent extends ListBaseComponent<Bottle, BottleService
     return this.bottleService;
   }
 
-  selectCategoryChanged( event:any ){
-    this.selectedId= event.value;
-    this.pageIndex= 0;
-    this.idToGetDocumentSnap= undefined;
-    this.isNext= undefined;
-    this.getMyList();
-  }
-
-
-  
+  //override fillCategory(category:Category, item: Bottle):void{
+    //item.category= category;
+  //};
+ 
 
 }

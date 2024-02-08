@@ -10,7 +10,7 @@ export class Bottle extends BridgeCategory{
         super(json);
     }
 
-    protected override setData(json?:any){
+    public override setData(json?:any){
         super.setData(json);
         if(json){
             this.brand=json.brand;

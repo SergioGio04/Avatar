@@ -16,6 +16,7 @@ import { Product } from '../product';
 import { ProductComponent } from '../product-detail/product.component';
 import { ProductServiceService } from '../product-service.service';
 import { ProductParamsModel } from '../models/product-params-model';
+import { BridgeCategoryAdditionalColumns } from '../../abstracts/bridge-category-additional-columns';
 
 @Component({
     selector: 'app-list',
@@ -37,60 +38,43 @@ import { ProductParamsModel } from '../models/product-params-model';
         
     ],
 })
-export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService, ProductParamsModel >  {
+//export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService, ProductParamsModel >  {
+  export class ProductsComponent extends BridgeCategoryAdditionalColumns<Product, ProductServiceService, ProductParamsModel >  {
   
-  listCategories: Category[];
-  selectedId: string|undefined;
 
   constructor(
     injector: Injector,
     protected productServiceService:ProductServiceService, 
-    protected categoryService:CategoryServiceService
   ) {
     super(injector);
-    this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description", "categoryId"];
+    this.dtFormattedTable.displayedColumns= ["id", "title", "brand", "description", "categoryId", "categoryName"];
     this.dtFormattedTable.displayFields= [ 
       {"headerName": "Id",          "namefieldBody": "id"},
       {"headerName": "Title",       "namefieldBody": "title"},
       {"headerName": "Brand",       "namefieldBody": "brand"},
       {"headerName": "Description", "namefieldBody": "description"},
       {"headerName": "Category Id", "namefieldBody": "categoryId"},
+      {"headerName": "Category Name", "namefieldBody": "categoryName"},
     ];
   }
-
-  getDynamicParams(): ProductParamsModel{
-    return new ProductParamsModel(this.selectedId);
-    //return new GetDynamicParams(baseParams, { "pippo": "pluto" });
-  }
-
   override async ngOnInit(): Promise<void> {
-    super.ngOnInit();
-    let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
-    this.listCategories= await this.categoryService.getListCategories( defaultSelectConfig );
-    this.selectedId= this.listCategories[0].id;
-
-    //FUNZIONE CUSTOM CHE RECUPERA IL NAME DI CATEGORY E LO AGGIUNGE ALLA LISTA[id]
+    await super.ngOnInit();
   }
-
-  selectCategoryChanged( event:any ){
-    this.selectedId= event.value;
-    //this.productServiceService.categoryId= event.value;
-
-    this.pageIndex= 0;
-    this.idToGetDocumentSnap= undefined;
-    this.isNext= undefined;
-
-    this.getMyList();
-    //this.getMyList([this.selectedId]);
-  }
-
   override getModel(json:any):Product{
     return new Product(json);
   }
-
   override getService(): ProductServiceService {
     return this.productServiceService;
   }
+  override getDynamicParams(): ProductParamsModel{
+    return new ProductParamsModel(this.selectedId);
+  }
+
+  /*
+  override fillCategory(category:Category, item: Product):void{
+    item.category= category;
+  }; 
+  */ 
 
   
 }

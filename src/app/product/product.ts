@@ -1,16 +1,20 @@
+import { Injector } from "@angular/core";
 import { BridgeCategory } from "../abstracts/bridge-category";
 import { ModelBase } from "../abstracts/model-base";
+import { Category } from "../category/category";
+import { CategoryServiceService } from "../category/category-service.service";
+
 
 export class Product extends BridgeCategory{
     brand?:string;
     title?:string;
     description?:string;
     
-    constructor(json?:any) { 
-        super(json);
+    constructor(injector:Injector, json?:any) { 
+        super(injector, json);
     }
 
-    protected override setData(json?:any){
+    public override setData(json?:any){
         super.setData(json);
         if(json){
             this.brand=json.brand;
