@@ -24,6 +24,8 @@ export abstract class ModelBase {
         return obj; 
     }
 
+    public async fillModels(injector: Injector){}
+
     public SetArrayOfAllCombinations(s: string): string[]{
         debugger;
         let list_of_strings = new Array();

@@ -68,10 +68,6 @@ export class BottleListComponent extends BridgeCategoryAdditionalColumns<Bottle,
   override getService(): BottleService {
     return this.bottleService;
   }
-
-  //override fillCategory(category:Category, item: Bottle):void{
-    //item.category= category;
-  //};
  
 
 }

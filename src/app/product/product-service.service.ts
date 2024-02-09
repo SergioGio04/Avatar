@@ -23,7 +23,6 @@ export class ProductServiceService extends BridgeCategoryService<Product, Produc
   override async getAdditionalQuery(q:Query, dynamicParam?: ProductParamsModel): Promise<Query>{
     q= await super.getAdditionalQuery(q, dynamicParam);
     return q;
-
   }
   
 

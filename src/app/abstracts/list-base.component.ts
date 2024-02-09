@@ -63,7 +63,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
 
   @ViewChild(MatSort) myMatSort:MatSort
 
-  abstract getModel(json:any):T;
+  abstract getModel( json:any):T;
   abstract getDynamicParams():P;
   abstract getService():M;
 
@@ -103,7 +103,7 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.columnToSort, 
       this.searchString
     );
-    let resGetList= await this.getService().getList( 
+    let resGetList= await this.getService().getListFiller( 
       baseParams,
       this.getDynamicParams()
     );
@@ -115,7 +115,9 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.isDataNotReceived=false;
     }
     this.dtFormattedTable.body= this.items;
+
   }
+
 
   //RESET ANIMATION ROW SORT
   /*

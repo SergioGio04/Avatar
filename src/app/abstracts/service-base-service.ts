@@ -14,7 +14,7 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
 
     protected firebase: FirebaseManagerService;
 
-    constructor(injector: Injector) {
+    constructor(public injector: Injector) {
         this.firebase = injector.get(FirebaseManagerService);
     }
 
@@ -104,10 +104,7 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
         }
     }
 
-    async getList(
-        baseParams?:BaseParams,
-        dynamicParam?:P
-    ): Promise<[T[], number|boolean]> {
+    async getList( baseParams?:BaseParams, dynamicParam?:P ): Promise<[T[], number|boolean]> {
         try {
             var searchString= baseParams?.searchString;
             var numberOfElements= baseParams?.numberOfElements;
@@ -189,6 +186,18 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
         catch (error) {
             throw(error);
         }
+    }
+
+    async getListFiller( baseParams?:BaseParams, dynamicParam?:P ){
+        let result= await this.getList(baseParams, dynamicParam);
+        await this.getModelsCollection(result[0]);
+        return result;
+    }
+
+    async getModelsCollection(items:T[]){
+        for(let item of items){      
+            await item.fillModels(this.injector);  
+        } 
     }
 
     async create(model: T): Promise<T> {

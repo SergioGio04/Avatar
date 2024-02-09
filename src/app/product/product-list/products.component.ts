@@ -61,7 +61,7 @@ import { BridgeCategoryAdditionalColumns } from '../../abstracts/bridge-category
     await super.ngOnInit();
   }
   override getModel(json:any):Product{
-    return new Product(json);
+    return new Product( json);
   }
   override getService(): ProductServiceService {
     return this.productServiceService;
@@ -69,12 +69,5 @@ import { BridgeCategoryAdditionalColumns } from '../../abstracts/bridge-category
   override getDynamicParams(): ProductParamsModel{
     return new ProductParamsModel(this.selectedId);
   }
-
-  /*
-  override fillCategory(category:Category, item: Product):void{
-    item.category= category;
-  }; 
-  */ 
-
   
 }

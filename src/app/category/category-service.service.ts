@@ -18,6 +18,7 @@ export class CategoryServiceService extends ServiceBase<Category, CategoryParams
     return "categories";
   }
   getModelInstance(json?:any): Category {
+    debugger;
     let model= new Category(json);
     return model;
   }

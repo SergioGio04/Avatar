@@ -10,8 +10,8 @@ export class Product extends BridgeCategory{
     title?:string;
     description?:string;
     
-    constructor(injector:Injector, json?:any) { 
-        super(injector, json);
+    constructor(json?:any) { 
+        super( json);
     }
 
     public override setData(json?:any){
@@ -22,6 +22,7 @@ export class Product extends BridgeCategory{
             this.description=json.description;
         }
     }
+    
     public override getData(){
         var obj= super.getData();
         obj["brand"]= this.brand? this.brand : null;
@@ -33,6 +34,10 @@ export class Product extends BridgeCategory{
             this.generateStringForCombinations( [{val: obj.brand, isSpaceAfter:true}, {val: obj.title} ] )
         );
         return obj;
+    }
+
+    public override async fillModels(injector: Injector){
+        await super.fillModels(injector);
     }
 
     

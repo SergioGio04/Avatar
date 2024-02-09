@@ -7,36 +7,26 @@ import { FillerModel } from "./filler-model";
 export class BridgeCategoryParams{
     constructor(){}
 }
-
-export abstract class BridgeCategory extends FillerModel<Category, BridgeCategoryParams, CategoryServiceService>{
+export abstract class BridgeCategory extends ModelBase {
     categoryId?:string;
-    categoryName?: string;
+    category?:Category;
 
-    constructor( injector:Injector, json?:any, ) { 
-        super(injector, json);
+    constructor( json?:any, ) { 
+        super(json);
     }
-
-    override getService(): CategoryServiceService{
-        return this.injector.get(CategoryServiceService);
-    }
-    override getId():string{
-        return this.categoryId?? "";
-    }
-
-    /*
-    public async fillCategory(injector: Injector){
+    
+    public override async fillModels(injector: Injector){
+        await super.fillModels(injector);
         if(this.categoryId){
             let categoryService= injector.get(CategoryServiceService);
             this.category= await categoryService.getDetail(this.categoryId!);
         }
     }
-    */
 
     public override setData(json?:any){
         super.setData(json);
         if(json){
             this.categoryId= json.categoryId;
-            this.categoryName= json.categoryName;
             
         }
     }
@@ -44,7 +34,6 @@ export abstract class BridgeCategory extends FillerModel<Category, BridgeCategor
     public override getData(){
         var obj= super.getData();
         obj["categoryId"]= this.categoryId!=null && this.categoryId!=undefined ? this.categoryId : null;
-        obj["categoryName"]= this.categoryName!=null && this.categoryName!=undefined ? this.categoryName : null;
         return obj;
     }
 

@@ -43,7 +43,6 @@ export abstract class BridgeCategoryAdditionalColumns
   abstract override getModel(json:any):M;
   abstract override getService(): S;
   abstract override getDynamicParams(): P;
-  //abstract fillCategory(category:Category, item: M):void;
   private categoryService:CategoryServiceService;
 
   constructor(
@@ -69,20 +68,6 @@ export abstract class BridgeCategoryAdditionalColumns
 
   }
 
-  override async getMyList(){
-    await super.getMyList();
-    await this.getCategoryElements();
-  }
-
-  async getCategoryElements(){
-    for(let item of this.items){      
-      if(item.categoryId ){
-        //item.fillCategory(this.injector);
-        item.fillModel();
-      }
-    }
-    //let arrDocumentsWantedCategories= await this.categoryService.retrieveDocumentsCollection(listIds);   
-  }
-
+  
   
 }
