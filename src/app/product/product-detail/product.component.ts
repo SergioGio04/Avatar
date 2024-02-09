@@ -13,13 +13,24 @@ import { Category } from '../../category/category';
 import {MatSelectModule} from '@angular/material/select';
 import { ProductParamsModel } from '../models/product-params-model';
 
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'app-product',
     standalone: true,
     templateUrl: './product.component.html',
     styleUrl: './product.component.scss',
-    imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule, HtmlGeneratorComponent, MatSelectModule]
+    imports: [
+      CommonModule, 
+      RouterOutlet, 
+      ReactiveFormsModule, 
+      CommonModule, 
+      HtmlGeneratorComponent, 
+      MatSelectModule,
+      InputTextModule,
+      ButtonModule
+    ]
 })
 export class ProductComponent extends DetailBaseComponent<Product, ProductServiceService, ProductParamsModel> {
   

@@ -26,6 +26,15 @@ export abstract class ModelBase {
 
     public async fillModels(injector: Injector){}
 
+    setLowercaseSearch(obj?:any, elemToCombine?: any[]){
+        if(obj!=undefined && elemToCombine!=undefined){
+            obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
+                this.generateStringForCombinations(elemToCombine)
+            );
+        }        
+        return obj;
+    }
+
     public SetArrayOfAllCombinations(s: string): string[]{
         debugger;
         let list_of_strings = new Array();

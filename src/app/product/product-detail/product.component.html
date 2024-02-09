@@ -1,56 +1,94 @@
+<style>
+    .marginTopContenitorInput{
+        margin-top: 22px;
+    }
+    .mainContanitorInputs{
+        margin-top: 40px;
+    }
+
+</style>
+
 
 <div>
+    <form [formGroup]="form" >
+        <div class="mainContanitorInputs">
+            
+            <div style="margin-top: 10px;">
+            
+                <div style="display: none;">
+                    <label for="id">id: </label>
+                    <input id="id" type="text" formControlName="id">
+                    <br>
+                </div>
 
+                <div class="flex justify-content-center">
+                    <div class="p-float-label">                    
+                        <input pInputText id="brand" formControlName="brand"  />
+                        <label for="brand">Brand</label>
+                    </div>
+                </div>
 
-<form [formGroup]="form" >
-    <div style="margin-top: 10px;">
-        
-        <div style="margin-top: 10px;">
-        
-            <div style="display: none;">
-                <label for="id">id: </label>
-                <input id="id" type="text" formControlName="id">
-                <br>
-            </div>
+                <div class="flex justify-content-center marginTopContenitorInput">
+                    <div class="p-float-label">                    
+                        <input pInputText id="title" formControlName="title"  />
+                        <label for="title">Title</label>
+                    </div>
+                </div>
 
-            <div>
-                <label for="brand">brand: </label>
-                <input id="brand" type="text" formControlName="brand">
-                <br>
-            </div>  
-    
-            <div>        
-                <label for="title">title: </label>
-                <input id="title" type="text" formControlName="title">
-                <br>
-            </div>
+                <div class="flex justify-content-center marginTopContenitorInput">
+                    <div class="p-float-label">                    
+                        <input pInputText id="description" formControlName="description"  />
+                        <label for="description">Description</label>
+                    </div>
+                </div>
+            </div> 
 
-            <div>
-                <label for="description">description: </label>
-                <input id="description" type="text" formControlName="description">
-                <br>
-            </div>
-        </div> 
-
-        <mat-form-field style="margin-top: 10px;">
-            <!--<mat-label for="categoryId">Select an option</mat-label>-->
-            <mat-select id="categoryId" [value]="selectedId" formControlName="categoryId" >
-                <mat-option 
-                    *ngFor="let iSelected of listCategories" 
-                    [value]="iSelected.id"
-                >
-                    {{iSelected.title}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        
-    </div>       
-    <div style="margin-top: 10px;">
-        <button *ngIf="isNew()" type="submit" (click)="add()" [disabled]="!form.valid">Add</button>
-        <button *ngIf="!isNew()" type="submit" (click)="update()" > Update </button>
-        <button *ngIf="!isNew()" type="submit" (click)="delete()" [disabled]="!form.valid">Delete</button>
-    </div>    
-</form>
+            <mat-form-field style="margin-top: 10px;">
+                <!--<mat-label for="categoryId">Select an option</mat-label>-->
+                <mat-select id="categoryId" [value]="selectedId" formControlName="categoryId" >
+                    <mat-option 
+                        *ngFor="let iSelected of listCategories" 
+                        [value]="iSelected.id"
+                    >
+                        {{iSelected.title}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+        </div>       
+        <div style="margin-top: 15px;">
+            <p-button 
+                *ngIf="isNew()"
+                label="Add" 
+                icon="pi pi-plus" 
+                iconPos="right"  
+                type="submit" 
+                (click)="add()" 
+                [disabled]="!form.valid" 
+            ></p-button>                     
+            <p-button 
+                *ngIf="!isNew()"
+                label="Update" 
+                severity="warning" 
+                icon="pi pi-exclamation-triangle" 
+                iconPos="right"  
+                type="submit" 
+                (click)="update()"
+                [disabled]="!form.valid" 
+            ></p-button>            
+            <p-button 
+                *ngIf="!isNew()"
+                label="Delete" 
+                severity="danger"  
+                icon="pi pi-times" 
+                iconPos="right"  
+                type="submit" 
+                (click)="delete()"
+                [disabled]="!form.valid" 
+                [style]="{'margin-left': '6px'}"
+            ></p-button>
+        </div>    
+    </form>
 
 <!--
 <app-html-generator

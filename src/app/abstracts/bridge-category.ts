@@ -2,7 +2,6 @@ import { Injector } from "@angular/core";
 import { Category } from "../category/category";
 import { CategoryServiceService } from "../category/category-service.service";
 import { ModelBase } from "./model-base";
-import { FillerModel } from "./filler-model";
 
 export class BridgeCategoryParams{
     constructor(){}

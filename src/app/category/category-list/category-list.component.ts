@@ -14,6 +14,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { BaseParams } from '../../abstracts/base-params';
 import { CategoryParamsModel } from '../models/category-params-model';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-products',
@@ -28,7 +29,8 @@ import { CategoryParamsModel } from '../models/category-params-model';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSortModule
+    MatSortModule,
+    ButtonModule
   ],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss'

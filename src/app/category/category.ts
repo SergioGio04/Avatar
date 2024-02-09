@@ -30,12 +30,7 @@ export class Category extends ModelBase{
         obj["title"]= this.title? this.title : null;
         obj["description"]= this.description? this.description : null;
 
-        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
-            this.generateStringForCombinations( [
-                {val: obj.brand, isSpaceAfter:true}, 
-                {val: obj.title} ] 
-            )
-        );
+        this.setLowercaseSearch(obj, [ {val: obj.brand, isSpaceAfter:true}, {val: obj.title}] );
         return obj;
     }
 

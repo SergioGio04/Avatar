@@ -1,8 +1,15 @@
-
+<style>
+    .marginTopContenitorInput{
+        margin-top: 22px;
+    }
+    .mainContanitorInputs{
+        margin-top: 40px;
+    }
+</style>
 <div>
     
     <form [formGroup]="form" >
-        <div style="margin-top: 10px;">
+        <div class="mainContanitorInputs">
             
             <div style="display: none;">
                 <label for="id">id: </label>
@@ -10,13 +17,25 @@
                 <br>
             </div>
 
-            <label for="brand">brand: </label>
-            <input id="brand" type="text" formControlName="brand">
-            <br>
-    
-            <label for="cost">cost: </label>
-            <input id="cost" type="number" formControlName="cost">
-            <br>
+            <div class="flex justify-content-center">
+                <div class="p-float-label">                    
+                    <input pInputText id="brand" formControlName="brand"  />
+                    <label for="brand">Brand</label>
+                </div>
+            </div>
+
+            <div class="flex justify-content-center marginTopContenitorInput">
+                <div class="p-float-label">  
+                     <p-inputNumber 
+                        mode="decimal" 
+                        inputId="withoutgrouping" 
+                        [useGrouping]="false"
+                        id="cost"
+                        formControlName="cost" 
+                    ></p-inputNumber>
+                    <label for="cost">Cost</label>
+                </div>
+            </div>
 
             <mat-form-field style="margin-top: 10px;">
                 <!--<mat-label for="categoryId">Select an option</mat-label>-->
@@ -32,10 +51,37 @@
 
         </div>       
 
-        <div style="margin-top: 10px;">
-            <button *ngIf="isNew()" type="submit" (click)="add()" [disabled]="!form.valid">Add</button>
-            <button *ngIf="!isNew()" type="submit" (click)="update()" > Update </button>
-            <button *ngIf="!isNew()" type="submit" (click)="delete()" [disabled]="!form.valid">Delete</button>
+        <div style="margin-top: 15px;">
+            <p-button 
+                *ngIf="isNew()"
+                label="Add" 
+                icon="pi pi-plus" 
+                iconPos="right"  
+                type="submit" 
+                (click)="add()" 
+                [disabled]="!form.valid" 
+            ></p-button>                     
+            <p-button 
+                *ngIf="!isNew()"
+                label="Update" 
+                severity="warning" 
+                icon="pi pi-exclamation-triangle" 
+                iconPos="right"  
+                type="submit" 
+                (click)="update()"
+                [disabled]="!form.valid" 
+            ></p-button>            
+            <p-button 
+                *ngIf="!isNew()"
+                label="Delete" 
+                severity="danger"  
+                icon="pi pi-times" 
+                iconPos="right"  
+                type="submit" 
+                (click)="delete()"
+                [disabled]="!form.valid" 
+                [style]="{'margin-left': '6px'}"
+            ></p-button>
         </div>    
     </form>
 

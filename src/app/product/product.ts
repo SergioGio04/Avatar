@@ -28,11 +28,9 @@ export class Product extends BridgeCategory{
         obj["brand"]= this.brand? this.brand : null;
         obj["title"]= this.title? this.title : null;
         obj["description"]= this.description? this.description : null;
-       
+        
+        this.setLowercaseSearch(obj, [{val: obj.brand, isSpaceAfter:true}, {val: obj.title} ]);
         debugger;
-        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
-            this.generateStringForCombinations( [{val: obj.brand, isSpaceAfter:true}, {val: obj.title} ] )
-        );
         return obj;
     }
 

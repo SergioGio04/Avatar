@@ -17,6 +17,7 @@ import { ProductComponent } from '../product-detail/product.component';
 import { ProductServiceService } from '../product-service.service';
 import { ProductParamsModel } from '../models/product-params-model';
 import { BridgeCategoryAdditionalColumns } from '../../abstracts/bridge-category-additional-columns';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'app-list',
@@ -35,7 +36,7 @@ import { BridgeCategoryAdditionalColumns } from '../../abstracts/bridge-category
         MatSortModule,
         HtmlGeneratorComponent,
         MatSelectModule,
-        
+        ButtonModule
     ],
 })
 //export class ProductsComponent extends ListBaseComponent<Product, ProductServiceService, ProductParamsModel >  {

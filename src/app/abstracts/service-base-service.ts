@@ -195,9 +195,16 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
     }
 
     async getModelsCollection(items:T[]){
-        for(let item of items){      
-            await item.fillModels(this.injector);  
+        let arrayPromise= [];
+        for(let item of items){     
+            let promise= item.fillModels(this.injector);
+            arrayPromise.push(promise);
         } 
+        Promise.all(arrayPromise).then((values) => {
+            console.log("done");
+        });
+
+
     }
 
     async create(model: T): Promise<T> {
@@ -261,37 +268,19 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
         return p;
     }
 
-
-
-      //prms, se vuoi il category e cosa vuoi impostare come title
+    //prms, se vuoi il category e cosa vuoi impostare come title
     async getListCollection(defaultSelectConfig?: { [key: string|number]: any }): Promise<T[]>{
         let [list]= await this.getList();
         if(defaultSelectConfig && defaultSelectConfig["enabled"]==true){
-        let defaultSetter:any= {
-            "id": defaultSelectConfig["value"],
-            "title": defaultSelectConfig["label"]
-        }
-        let categoryNone= this.getModelInstance();
-        categoryNone.setData(defaultSetter);
-        /*
-        categoryNone.id= defaultSelectConfig["value"];
-        categoryNone.title= defaultSelectConfig["label"];    
-        */
-        list.splice(0, 0, categoryNone);
+            let defaultSetter:any= {
+                "id": defaultSelectConfig["value"],
+                "title": defaultSelectConfig["label"]
+            }
+            let categoryNone= this.getModelInstance();
+            categoryNone.setData(defaultSetter);
+            list.splice(0, 0, categoryNone);
         }
         return list;
-    }
-
-    async retrieveDocumentsCollection(arrIds: string[]): Promise <T[]>{
-        let arrDocs:any= [];
-        for(let id of arrIds){
-        let doc= await this.getDetail(id);
-        if(doc.id != undefined){
-            arrDocs.push(doc);
-        }      
-        }
-        return arrDocs;
-
     }
 
 }

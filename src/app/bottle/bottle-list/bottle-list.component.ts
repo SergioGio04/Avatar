@@ -45,7 +45,8 @@ export class BottleListComponent extends BridgeCategoryAdditionalColumns<Bottle,
     protected bottleService: BottleService,
   ){
     super(injector);
-    this.dtFormattedTable.displayedColumns= ["id", "brand", "cost", "categoryId", "categoryName"];
+    this.dtFormattedTable.displayedColumns= 
+    ["id", "brand", "cost", "categoryId", "categoryName"];
     this.dtFormattedTable.displayFields= [ 
       {"headerName": "Id",          "namefieldBody": "id"},
       {"headerName": "Brand",       "namefieldBody": "brand"},

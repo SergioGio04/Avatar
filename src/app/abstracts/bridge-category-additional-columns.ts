@@ -65,9 +65,5 @@ export abstract class BridgeCategoryAdditionalColumns
     let defaultSelectConfig= { enabled: true, value:"0", label:"niente" };
     this.listCategories= await this.categoryService.getListCollection( defaultSelectConfig );
     this.selectedId= this.listCategories[0].id;
-
-  }
-
-  
-  
+  }  
 }

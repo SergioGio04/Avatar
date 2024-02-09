@@ -11,10 +11,24 @@ import { Category } from '../../category/category';
 import { MatSelectModule } from '@angular/material/select';
 import { HtmlGeneratorComponent } from '../../html-generator/html-generator.component';
 
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { InputNumberModule } from 'primeng/inputnumber';
+
 @Component({
   selector: 'app-bottle-detail',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule, HtmlGeneratorComponent, MatSelectModule],
+  imports: [
+    CommonModule, 
+    RouterOutlet, 
+    ReactiveFormsModule, 
+    CommonModule, 
+    HtmlGeneratorComponent, 
+    MatSelectModule,
+    InputTextModule,
+    ButtonModule,
+    InputNumberModule
+  ],
   templateUrl: './bottle-detail.component.html',
   styleUrl: './bottle-detail.component.scss'
 })

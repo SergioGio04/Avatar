@@ -3,16 +3,22 @@ import { Category } from '../category';
 import { FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
-
 import { CategoryServiceService } from '../category-service.service';
 import { DetailBaseComponent } from '../../abstracts/detail-base.component';
-
 import { CategoryParamsModel } from '../models/category-params-model';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule],
+  imports: [
+    CommonModule, 
+    RouterOutlet, 
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule
+  ],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'
 })

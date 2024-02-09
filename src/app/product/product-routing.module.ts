@@ -8,10 +8,9 @@ export const productRoutes: Routes = [
   { path: ':idProduct', component: ProductComponent },
 ];
 
-/*
+
 @NgModule({
   imports: [RouterModule.forChild(productRoutes)],
   exports: [RouterModule]
 })
 export class ProductRoutingModule { }
-*/

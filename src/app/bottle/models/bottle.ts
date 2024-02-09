@@ -22,9 +22,7 @@ export class Bottle extends BridgeCategory{
         obj["brand"]= this.brand? this.brand : null;
         obj["cost"]= this.cost? this.cost : null;
         
-        obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
-            this.generateStringForCombinations( [{val: obj.brand}] )
-        );
+        this.setLowercaseSearch(obj, [{val: obj.brand}] );
         return obj;
     }
 

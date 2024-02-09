@@ -11,9 +11,11 @@
         text-align: center;
     }
 
-    .maringTopTable {
-        margin-top: 20px;
+    .contanitorTable {
+        margin: 20px 20px 5px 0px;
+        width: 80%;
     }
+
 </style>
 <!--
 <div>
@@ -32,13 +34,14 @@ center;">Add Product</button>
 </div>
 -->
 
-  
-CATEGORIES
-
-<div class="containerAdd">
-    <button (click)="ChangeRoute('categories', '0')" style="text-align: center;margin-top: 20px;">Add</button>
+<div class="">
+    <p-button 
+        label="Add" 
+        (click)="ChangeRoute('categories', '0')"
+        [style]="{'margin-top': '20px'}"
+    ></p-button>
 </div>
-<div class="mat-elevation-z8 maringTopTable" >
+<div class="mat-elevation-z8 contanitorTable" >
     <mat-form-field style="width: 100%;">
         <input  #ciao matInput (keyup)="searchChanged($event)" [value]="searchString!= undefined? searchString : ''"  placeholder="Search..">
     </mat-form-field>
@@ -47,8 +50,7 @@ CATEGORIES
         [dataSource]="dtFormattedTable?.body" 
         matSort 
         (matSortChange)="sortData($event)" 
-        class="maringTopTable"
-        style="height: 300px; overflow: auto;"
+        style="height: 400px; overflow: auto;"
     >
         <ng-container *ngFor="let item of dtFormattedTable?.displayFields" [matColumnDef]="item.namefieldBody">
             <th mat-header-cell *matHeaderCellDef [mat-sort-header]="item.namefieldBody" sortActionDescription="Sort by number"> {{item.headerName}} </th>

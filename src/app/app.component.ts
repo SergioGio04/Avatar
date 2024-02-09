@@ -67,23 +67,24 @@ export class AppComponent {
     this.items = [
         {
             path: "/products",
-            label: 'Finder',
-            icon: 'https://primefaces.org/cdn/primeng/images/dock/finder.svg'
+            label: 'Products',
+            icon: '../assets/images/product.png'
         },
         {
             path: "/categories",
-            label: 'App Store',
-            icon: 'https://primefaces.org/cdn/primeng/images/dock/appstore.svg'
+            label: 'Categories',
+            icon: '../assets/images/categories.png'
         },
         {
             path: "/bottles",
-            label: 'Photos',
-            icon: 'https://primefaces.org/cdn/primeng/images/dock/photos.svg'
+            label: 'Bottles',
+            //icon: '../assets/images/bottles2.png'
+            icon: '../assets/images/bottles.png'
         },
         {
             path: "/home",
-            label: 'Trash',
-            icon: 'https://primefaces.org/cdn/primeng/images/dock/trash.png'
+            label: 'Home', 
+            icon: '../assets/images/home4.png'
         }
     ];
 }
