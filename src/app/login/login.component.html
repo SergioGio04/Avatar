@@ -1,0 +1,19 @@
+<div class="contenitorForm">
+    <form [formGroup]="loginForm" >
+
+        <label for="email">email: </label>
+        <input id="email" type="email" formControlName="email">
+        <br>
+
+        <label for="password">password: </label>
+        <input id="password" type="password" formControlName="password">
+
+        <h4>Form Status: {{ loginForm.status }}</h4>    
+        
+        <button type="submit" (click)="callSignInSignUpFunction(0)"> Sign In </button> 
+        <button type="submit" (click)="callSignInSignUpFunction(1)"> Sign Up </button> 
+
+        <div style="color: red;">{{firebase.errorAuth}}</div>
+        
+    </form>
+</div>

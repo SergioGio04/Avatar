@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductServiceService } from './product/product-service.service';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterLink } from '@angular/router'; 
 import { RouterLinkActive } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -15,6 +15,8 @@ import { DropdownModule } from 'primeng/dropdown';
 
 import { DockModule } from 'primeng/dock';
 import { MenuItem } from 'primeng/api';
+
+import { FirebaseManagerService } from './services/firebase-manager.service';
 
 @Component({
   selector: 'app-root',
@@ -61,32 +63,51 @@ export class AppComponent {
             value: 'right'
         }
   ];
-  constructor(private FirstServiceService:ProductServiceService) { }
+  constructor(public firebase: FirebaseManagerService, private router: Router, private route: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.items = [
-        {
-            path: "/products",
-            label: 'Products',
-            icon: '../assets/images/product.png'
-        },
-        {
-            path: "/categories",
-            label: 'Categories',
-            icon: '../assets/images/categories.png'
-        },
-        {
-            path: "/bottles",
-            label: 'Bottles',
-            //icon: '../assets/images/bottles2.png'
-            icon: '../assets/images/bottles.png'
-        },
-        {
-            path: "/home",
-            label: 'Home', 
-            icon: '../assets/images/home4.png'
+    ngOnInit() {
+        this.items = [
+            {
+                path: "/products",
+                label: 'Products',
+                icon: '../assets/images/product.png'
+            },
+            {
+                path: "/categories",
+                label: 'Categories',
+                icon: '../assets/images/categories.png'
+            },
+            {
+                path: "/bottles",
+                label: 'Bottles',
+                //icon: '../assets/images/bottles2.png'
+                icon: '../assets/images/bottles.png'
+            },
+            {
+                path: "/home",
+                label: 'Home', 
+                icon: '../assets/images/home4.png'
+            },
+            /*
+            {
+                path: "/hero",
+                label: 'Hero', 
+                icon: '../assets/images/hero.png'
+            }
+            */
+        ];
+    }
+
+    async callLogOut(){
+        await this.firebase.logout();
+        this.router.navigate(["login"]);
+    }
+
+    showElements(){
+        if(this.firebase.user!=undefined && this.router.url!="/login" ){
+            return true;
         }
-    ];
-}
+        return false;
+    }
 
 }

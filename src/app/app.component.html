@@ -4,6 +4,11 @@
     display: grid;
     grid-template-columns: 0fr auto;
   }
+
+  .mainContent2{
+    display: grid;
+    grid-template-columns: 1fr;
+  }
  
   .ClassRoutes{
     width: 15em;
@@ -29,84 +34,38 @@
 </style>
 
 <main class="main">
-  <div class="mainContent">
 
-    <div class="LeftMenu">
+  <div *ngIf="showElements()" >
+    <span>user: {{firebase.user?.email}} </span>
+    <button (click)="callLogOut()">logOut</button>
+  </div>
 
-      <!--Deprecated LEFT MENU-->
-    
-      <!--
-      <div 
-        class="ClassRoutes" 
-        routerLink="/products" 
-        routerLinkActive="miaClasse" 
-        [routerLinkActiveOptions]='{exact:true}'
-      > 
-        products 
+  <div [class]="firebase.user!=undefined ? 'mainContent' : 'mainContent2' ">
+
+    <div *ngIf="showElements()" class="LeftMenu">
+        <!--SECOND LEFT MENU-->
+        <div class="ClassRoutes">
+          
+          <div class="dock-window">
+              <p-dock [model]="items" position="left">
+                  <ng-template pTemplate="item" let-item>
+                      <img 
+                        [src]="item.icon" 
+                        [alt]="item.label" 
+                        width="100%"
+                        [routerLink]="item.path" 
+                        [routerLinkActive]="item.path" 
+                        [routerLinkActiveOptions]='{exact:true}'
+                      />
+                  </ng-template>
+              </p-dock>
+          </div>
       </div>
-      <div 
-        class="ClassRoutes" 
-        routerLink="/categories" 
-        routerLinkActive="miaClasse" 
-        [routerLinkActiveOptions]='{exact:true}'
-      > 
-        categories 
-      </div>
-      <div 
-        class="ClassRoutes" 
-        routerLink="/bottles" 
-        routerLinkActive="bottles" 
-        [routerLinkActiveOptions]='{exact:true}'
-      > 
-        bottles 
-      </div>
-      <div 
-        class="ClassRoutes" 
-        routerLink="/home" 
-        routerLinkActive="home" 
-        [routerLinkActiveOptions]='{exact:true}'
-      > 
-        home 
-      </div>
-      -->
-  
-
-
-      <!--SECOND LEFT MENU-->
-      <div class="ClassRoutes">
-        
-        <div class="dock-window">
-            <p-dock [model]="items" position="left">
-                <ng-template pTemplate="item" let-item>
-                    <img 
-                      [src]="item.icon" 
-                      [alt]="item.label" 
-                      width="100%"
-                      [routerLink]="item.path" 
-                      [routerLinkActive]="item.path" 
-                      [routerLinkActiveOptions]='{exact:true}'
-                    />
-                </ng-template>
-            </p-dock>
-        </div>
-    </div>
-
-    
     </div>
     <div class="routerOutletContainer">
       <router-outlet ></router-outlet>
     </div>
-    
-    <!--
-    <div>
-      <div *ngFor="let item of repoProducts" class="listClass">
-        <div class="singleItem">
-          <span>product: {{item.title}} - </span> 
-          <span>price {{item.price}} €</span> 
-        </div>
-      </div>
-    </div>
-    -->
+  
 
   </div>
 </main>

@@ -1,32 +1,20 @@
-import { Injector } from "@angular/core";
 
-export abstract class ModelBase {
+export class BaseModel{
     id?:string;
 
     constructor(json?:any){
         this.setData(json);
     }
-    
-    public setData(json?:any){
+    public setData(json?:any) {
         if(json){
             this.id= json.id;
         }
     }
-
-    public getName(){
-        return "-"
+    public getData() {
+        let obj:any={};
+        obj["id"]= this.id? this.id:null;
+        return obj;
     }
-    
-    public getData():any {
-        var obj:any={};
-        if(this.id != undefined){
-            obj["id"]= this.id
-        }    
-        return obj; 
-    }
-
-    public async fillModels(injector: Injector){}
-
     setLowercaseSearch(obj?:any, elemToCombine?: any[]){
         if(obj!=undefined && elemToCombine!=undefined){
             obj["lowercaseSearch"]= this.SetArrayOfAllCombinations(
@@ -59,5 +47,4 @@ export abstract class ModelBase {
         }
         return finalString.toLocaleLowerCase();
     }
-
 }
