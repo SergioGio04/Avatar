@@ -13,10 +13,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'backoffice', pathMatch: 'full' },    
+    { path: '', redirectTo: 'products', pathMatch: 'full' },    
     { path: 'login', component: LoginComponent},
-    { path: 'backoffice', component: WrapComponent, canActivate: [canActivate], children: [
-        { path: '', redirectTo: 'products', pathMatch: 'full' },
+    { path: '', component: WrapComponent, canActivate: [canActivate], children: [
         { path: 'products', children: productRoutes },
         { path: 'categories', children: categoryRoutes },
         { path: 'bottles', children: bottleRoutes },

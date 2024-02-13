@@ -14,8 +14,6 @@ export class FirebaseManagerService {
   user: User|null;
   errorAuth: string;
 
-  unsubscribe: Unsubscribe;
-
   constructor() {
     this.myFirebase= initializeApp(environment.firebaseConfig);
     this.db= getFirestore(this.myFirebase);
@@ -34,7 +32,7 @@ export class FirebaseManagerService {
 
   async getLoggedUser(){   
     return new Promise((resolve, reject) => {      
-      this.unsubscribe= onAuthStateChanged(this.firebaseAuth, user => {   
+      onAuthStateChanged(this.firebaseAuth, user => {   
           this.user = user;
           resolve(user);
       }, reject);

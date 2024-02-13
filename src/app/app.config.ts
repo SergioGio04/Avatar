@@ -10,9 +10,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { firstValueFrom, tap } from 'rxjs';
 import { InitializerConfigService } from './services/initializer-config.service';
+import { FirebaseManagerService } from './services/firebase-manager.service';
 
 
 export function initializeApp(config: InitializerConfigService ) {
+  //PUO RITORNARE ANCHE true
   return async() => await config.initializerCond();
 }
 

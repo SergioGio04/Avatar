@@ -4,6 +4,11 @@ import { FirebaseManagerService } from '../services/firebase-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import {MatInputModule} from '@angular/material/input';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-login',
@@ -11,13 +16,18 @@ import { PasswordModule } from 'primeng/password';
   imports: [
     ReactiveFormsModule,
     InputTextModule,
-    PasswordModule
+    PasswordModule,
+    MatInputModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    ButtonModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
-export class LoginComponent {
-  
+export class LoginComponent {  
+
+  hide:boolean=false;
   constructor(
     public firebase: FirebaseManagerService, 
     public router: Router,

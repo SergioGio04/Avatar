@@ -1,15 +1,30 @@
+
+<style>
+
+    .customButtonStyle{
+        background: #adacac;
+        border-color: #adacac;
+        cursor: pointer;
+    }
+</style>
+
 <div style="margin: 50px;" class="contenitorForm">
     <form [formGroup]="loginForm" >
 
-
-        <div class="">
-            <label for="email">Insert Valid email</label>
+        <div >
+            <label for="email">Insert Valid email</label><br>
             <input pInputText  id="email" type="email" formControlName="email"  />            
         </div>
 
-        <label for="password">password: </label>
-        <input id="password" type="password" formControlName="password">
-
+        <div>
+            <label for="password">Password</label><br>           
+            
+            <p-inputGroup [style]="{'display': 'inline-flex'}">                
+                <input id="password" [type]="hide==false?'password':'text'" pInputText formControlName="password"    />
+                <button class="customButtonStyle" (click)="hide=!hide" severity="secondary" type="button" pButton [icon]="hide==false?'pi pi-eye-slash' : 'pi pi-eye'"></button>
+            </p-inputGroup>          
+        </div>    
+            
         <h4>Form Status: {{ loginForm.status }}</h4>    
         
         <button type="submit" (click)="callSignInSignUpFunction(0)"> Sign In </button> 

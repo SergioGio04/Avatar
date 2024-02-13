@@ -10,8 +10,8 @@ export class InitializerConfigService {
   constructor(private firebase: FirebaseManagerService, private router: Router) { }
 
   async initializerCond(){    
-    let user= await this.firebase.initUser();
-    return user;
+    await this.firebase.initUser();
+    return true;
   }
 
 }
