@@ -1,14 +1,8 @@
-11:56:48.621 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-11:56:48.692 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
-11:56:53.310 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - avatar-b8859-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 50ms, init: 0ms
-11:56:53.333 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace avatar-b8859-default-rtdb status Active to Active
-12:39:09.981 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
-namespace avatar-b8859, but the emulator is configured for avatar-b8859-default-rtdb. To 
-opt-out of single project mode add/set the singleProjectMode: false property in 
-the firebase.json emulators config. 
-12:39:09.996 [NamespaceSystem-akka.actor.default-dispatcher-13] INFO com.firebase.core.namespace.NamespaceActor - avatar-b8859 successfully activated FBKV (SurveyIdle(0)) wait: 7ms, init: 0ms
-14:06:38.912 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
-14:06:38.919 [NamespaceSystem-akka.actor.default-dispatcher-21] INFO com.firebase.core.namespace.Terminator$Terminator - 2 actors left to terminate: avatar-b8859-default-rtdb, avatar-b8859
-14:06:38.921 [NamespaceSystem-akka.actor.default-dispatcher-26] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for avatar-b8859-default-rtdb
-14:06:38.921 [NamespaceSystem-akka.actor.default-dispatcher-24] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for avatar-b8859
-14:06:38.923 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.
+16:33:25.249 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+16:33:25.353 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
+16:33:29.874 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - avatar-b8859-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 76ms, init: 0ms
+16:33:29.903 [NamespaceSystem-blocking-namespace-operation-dispatcher-7] INFO com.firebase.core.namespace.StateManager - Namespace avatar-b8859-default-rtdb status Active to Active
+16:33:52.334 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+16:33:52.337 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: avatar-b8859-default-rtdb
+16:33:52.345 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for avatar-b8859-default-rtdb
+16:33:52.347 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.
