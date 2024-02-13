@@ -1,9 +1,11 @@
-<div class="contenitorForm">
+<div style="margin: 50px;" class="contenitorForm">
     <form [formGroup]="loginForm" >
 
-        <label for="email">email: </label>
-        <input id="email" type="email" formControlName="email">
-        <br>
+
+        <div class="">
+            <label for="email">Insert Valid email</label>
+            <input pInputText  id="email" type="email" formControlName="email"  />            
+        </div>
 
         <label for="password">password: </label>
         <input id="password" type="password" formControlName="password">

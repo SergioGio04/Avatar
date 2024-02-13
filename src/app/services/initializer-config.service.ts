@@ -9,13 +9,9 @@ export class InitializerConfigService {
 
   constructor(private firebase: FirebaseManagerService, private router: Router) { }
 
-  async initializerCond(){
-    let user= await this.firebase.getLoggedUser();
-    if(user == undefined){
-      this.router.navigate([this.router.url, "login" ]);
-    }
+  async initializerCond(){    
+    let user= await this.firebase.initUser();
     return user;
-      
   }
 
 }

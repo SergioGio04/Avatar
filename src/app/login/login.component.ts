@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { FirebaseManagerService } from '../services/firebase-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InputTextModule,
+    PasswordModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -21,16 +25,14 @@ export class LoginComponent {
   ){}
 
   loginForm = new UntypedFormGroup ({
-      email: new UntypedFormControl(undefined, [Validators.required]),
+      email: new UntypedFormControl(undefined, [Validators.required, Validators.email]),
       password: new UntypedFormControl(undefined, [Validators.required]),
   });
 
   async callSignInSignUpFunction(wantedSign: number) {
-    debugger;
     //console.log(this.profileForm.status);
     console.log(this.loginForm.value);
     if(this.loginForm.status == "VALID"){
-      debugger;
       if(wantedSign==0){
         await this.firebase.signIn(this.loginForm.value.email, this.loginForm.value.password);
       }
@@ -39,6 +41,7 @@ export class LoginComponent {
       }      
       if(this.firebase.user){
         this.router.navigate(["../" ], {relativeTo: this.route});
+        //this.router.navigate(["/products"]);
       }
     }
   }

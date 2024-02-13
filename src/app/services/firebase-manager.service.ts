@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 import { Firestore, getFirestore } from 'firebase/firestore';
-import { Auth, User, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, updateEmail, updatePassword } from "firebase/auth";
+import { Auth, Unsubscribe, User, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, updateEmail, updatePassword } from "firebase/auth";
 
 @Injectable({providedIn: 'root'})
 
@@ -14,17 +14,27 @@ export class FirebaseManagerService {
   user: User|null;
   errorAuth: string;
 
+  unsubscribe: Unsubscribe;
+
   constructor() {
     this.myFirebase= initializeApp(environment.firebaseConfig);
     this.db= getFirestore(this.myFirebase);
     this.firebaseAuth= getAuth(this.myFirebase);
-    setPersistence(this.firebaseAuth, browserLocalPersistence);
     
+  }
+
+  isAuthenticated(){
+    //let res= await this.getLoggedUser();
+    return this.user!=null? true : false;
+  }
+
+  async initUser(){
+    return await this.getLoggedUser();
   }
 
   async getLoggedUser(){   
     return new Promise((resolve, reject) => {      
-      onAuthStateChanged(this.firebaseAuth, user => {   
+      this.unsubscribe= onAuthStateChanged(this.firebaseAuth, user => {   
           this.user = user;
           resolve(user);
       }, reject);
@@ -32,9 +42,9 @@ export class FirebaseManagerService {
   }
 
   //ISCRIVITI
-  signUp(email?:string, password?:string){
+  async signUp(email?:string, password?:string){
     if(email != undefined && password!=undefined){
-      createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+      await createUserWithEmailAndPassword(this.firebaseAuth, email, password)
       .then((userCredential) => {
         this.user = userCredential.user;
       })

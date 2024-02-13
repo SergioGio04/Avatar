@@ -6,15 +6,23 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { heroRoutes } from './TEST/hero/routing/hero-routing';
 import { LoginComponent } from './login/login.component';
 
-export const routes: Routes = [
-    { path: '', redirectTo: 'products', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent},
-    { path: 'products', children: productRoutes },
-    { path: 'categories', children: categoryRoutes },
-    { path: 'bottles', children: bottleRoutes },
-    { path: 'home', component: HomePageComponent  },
-    
+import { canActivateTeam } from './services/permission.service';
+import { canActivate } from './services/auth/auth-guard';
+import { WrapComponent } from './wrap/wrap.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
-    { path: 'hero', children: heroRoutes },
+
+export const routes: Routes = [
+    { path: '', redirectTo: 'backoffice', pathMatch: 'full' },    
+    { path: 'login', component: LoginComponent},
+    { path: 'backoffice', component: WrapComponent, canActivate: [canActivate], children: [
+        { path: '', redirectTo: 'products', pathMatch: 'full' },
+        { path: 'products', children: productRoutes },
+        { path: 'categories', children: categoryRoutes },
+        { path: 'bottles', children: bottleRoutes },
+        { path: 'home', component: HomePageComponent },
+        { path: 'hero', children: heroRoutes },
+        { path: '**', component: NotFoundComponent }
+    ]},
 ];
 
