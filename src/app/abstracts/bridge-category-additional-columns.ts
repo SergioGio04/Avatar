@@ -43,6 +43,7 @@ export abstract class BridgeCategoryAdditionalColumns
   abstract override getModel(json:any):M;
   abstract override getService(): S;
   abstract override getDynamicParams(): P;
+
   private categoryService:CategoryServiceService;
 
   constructor(
@@ -66,4 +67,5 @@ export abstract class BridgeCategoryAdditionalColumns
     this.listCategories= await this.categoryService.getListCollection( defaultSelectConfig );
     this.selectedId= this.listCategories[0].id;
   }  
+
 }

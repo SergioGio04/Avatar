@@ -6,6 +6,8 @@ import { AggregateQuerySnapshot, OrderByDirection, Query, QueryDocumentSnapshot,
 import { FirebaseManagerService } from "../services/firebase-manager.service";
 import { ModelBase } from "./model-base";
 import { BaseParams } from "./base-params";
+import { retry } from "rxjs";
+import { environment } from "../../environments/environment.development";
 
 //@Injectable({ providedIn: 'root' })
 
@@ -91,6 +93,8 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
         return q ;
     }
 
+    additionalSelectQueryBigQuery(){}
+
     async getRunTimeCountElementsDB(q:Query): Promise<number>{
         try{
             let snapshotCount = await getCountFromServer(q).then( (snapshot) => {
@@ -106,81 +110,118 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
 
     async getList( baseParams?:BaseParams, dynamicParam?:P ): Promise<[T[], number|boolean]> {
         try {
+            var list: T[] = [];
+            let valueCount= 0;
+
             var searchString= baseParams?.searchString;
             var numberOfElements= baseParams?.numberOfElements;
             var columnToSort= baseParams?.columnToSort;
             var sortDirection= baseParams?.sortDirection;
             var idToGetDocumentSnap= baseParams?.idToGetDocumentSnap;
             var getnext= baseParams?.getnext;
+            var pageIndex= baseParams?.pageIndex;
 
-            let q = query(collection( this.firebase.db, this.getNameCollection() ));
-            let valueCount= 0;
-
-            //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
-            if( searchString==undefined || searchString=="" || searchString==null){           
-                valueCount= await this.getRunTimeCountElementsDB(q);
-            }
-            if ( numberOfElements != undefined ) {
-
-                //FILTRAGGIO SORTING
-                if( sortDirection!=undefined && columnToSort!=undefined){
-                    q= query(q, orderBy(columnToSort, sortDirection));
-                }
-                //FILTRAGGIO SEARCH
-                if( searchString != undefined && searchString!="" && searchString!=null ){
-                    q = query(q, 
-                        where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
-                    );            
-                }
-                
-                //QUERY CUSTOM!
-                //FILTRAGGIO PER CATEGORY(INSERIMENTO ADDITIONAL QUERY)
-                q= await this.getAdditionalQuery(q, dynamicParam);
-                
-
-                //COUNT ELEMENT RETRIVED FROM DB
-                if( (searchString != undefined && searchString!="" && searchString!=null) || 
-                    dynamicParam!=undefined ){
+            let fromBigQuery= this.getModelInstance().fromBigQuery;
+            if( fromBigQuery==false || fromBigQuery==undefined){
+                let q = query(collection( this.firebase.db, this.getNameCollection() ));
+                //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
+                if( searchString==undefined || searchString=="" || searchString==null){           
                     valueCount= await this.getRunTimeCountElementsDB(q);
                 }
+                if ( numberOfElements != undefined ) {
 
-                //NB TUTTI I COUNT DOPO IL LIMIT SONO ANNULLATI!
-                q = query(q, limit(numberOfElements));
-                
-                //FILTRAGGI FORWARD/BACKWARD
-                if (idToGetDocumentSnap != undefined && getnext != undefined) {
-                    const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
-                    const docSnap = await getDoc(docRef);
-                    //backward
-                    if (getnext == false) {
-                        //
-                        if(sortDirection!=undefined && columnToSort!=undefined){
-                            q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
+                    //FILTRAGGIO SORTING
+                    if( sortDirection!=undefined && columnToSort!=undefined){
+                        q= query(q, orderBy(columnToSort, sortDirection));
+                    }
+                    //FILTRAGGIO SEARCH
+                    if( searchString != undefined && searchString!="" && searchString!=null ){
+                        q = query(q, 
+                            where("lowercaseSearch", "array-contains", searchString.toLocaleLowerCase() ),
+                        );            
+                    }
+                    
+                    //QUERY CUSTOM!
+                    //FILTRAGGIO PER CATEGORY(INSERIMENTO ADDITIONAL QUERY)
+                    q= await this.getAdditionalQuery(q, dynamicParam);
+                    
+
+                    //COUNT ELEMENT RETRIVED FROM DB
+                    if( (searchString != undefined && searchString!="" && searchString!=null) || 
+                        dynamicParam!=undefined ){
+                        valueCount= await this.getRunTimeCountElementsDB(q);
+                    }
+
+                    //NB TUTTI I COUNT DOPO IL LIMIT SONO ANNULLATI!
+                    q = query(q, limit(numberOfElements));
+                    
+                    //FILTRAGGI FORWARD/BACKWARD
+                    if (idToGetDocumentSnap != undefined && getnext != undefined) {
+                        const docRef = doc(this.firebase.db,this.getNameCollection(), idToGetDocumentSnap);
+                        const docSnap = await getDoc(docRef);
+                        //backward
+                        if (getnext == false) {
+                            //
+                            if(sortDirection!=undefined && columnToSort!=undefined){
+                                q = query(q, endBefore(docSnap), limitToLast(numberOfElements));
+                            }
+                            else{
+                                q = query(q, 
+                                    orderBy("id", "asc"),  
+                                    endBefore(docSnap), 
+                                    limitToLast(numberOfElements)
+                                );
+                            }
                         }
-                        else{
-                            q = query(q, 
-                                orderBy("id", "asc"),  
-                                endBefore(docSnap), 
-                                limitToLast(numberOfElements)
-                            );
+                        //forward
+                        if (getnext == true) {
+                            q = query(q, startAfter(docSnap));
                         }
                     }
-                    //forward
-                    if (getnext == true) {
-                        q = query(q, startAfter(docSnap));
-                    }
+
+                    //GENERA ERRORE QUANDO VAI INDIETRO DI 1, RITORNA ALLA PRIMA PAGINA
+                    //q = query(q, limit(numberOfElements));
+                                        
+                }  
+                var res = await getDocs(q);
+                res.docs.forEach((d) => {
+                    list.push(this.getModelInstance(d.data()));                    
+                });
+            }
+            else{
+
+                let query=`WITH CTE AS(
+                        SELECT 
+                        JSON_EXTRACT(data, "$.id") AS id,
+                        ${this.additionalSelectQueryBigQuery()}
+                        JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,
+                        DATA AS data
+                        FROM "${environment.firebaseConfig.projectId}.firestore_export.${this.getNameCollection()}_raw_latest"
+                    )          
+                    SELECT * FROM CTE
+                `;
+
+                if(searchString || (columnToSort && sortDirection) ){
+                    query+=`WHERE `;
                 }
 
-                //GENERA ERRORE QUANDO VAI INDIETRO DI 1, RITORNA ALLA PRIMA PAGINA
-                //q = query(q, limit(numberOfElements));
-                                    
-            }  
+                if(searchString){
+                    query+=`${searchString.toLocaleLowerCase()} IN UNNEST(CTE.lowercaseSearch)`
+                }
+                if( columnToSort && sortDirection ){
+                    query+=`ORDER BY ${columnToSort} ${sortDirection}`;
+                }
+                if(numberOfElements){
+                    query += ` LIMIT ${numberOfElements}`;
+                }
+                if(numberOfElements && pageIndex){
+                    query += `OFFSET ${numberOfElements * pageIndex}`;
+                }
 
-            var list: T[] = [];
-            var res = await getDocs(q);
-            res.docs.forEach((d) => {
-                list.push(this.getModelInstance(d.data()));                    
-            });
+                console.log(query);
+                //func custom  additionalQuerybigQuery
+            }
+            
             return ([list, valueCount]);
         }
         catch (error) {

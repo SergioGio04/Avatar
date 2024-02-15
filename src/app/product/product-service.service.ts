@@ -24,6 +24,15 @@ export class ProductServiceService extends BridgeCategoryService<Product, Produc
     q= await super.getAdditionalQuery(q, dynamicParam);
     return q;
   }
+
+  override additionalSelectQueryBigQuery(){
+    let q=`
+        JSON_EXTRACT(data, "$.brand") AS brand,
+        JSON_EXTRACT(data, "$.categoryId") AS categoryId,
+        JSON_EXTRACT(data, "$.description") AS description
+    `;
+    return q; 
+  }
   
 
 }

@@ -101,7 +101,8 @@ export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBa
       this.isNext, 
       this.sortDirection, 
       this.columnToSort, 
-      this.searchString
+      this.searchString,
+      this.pageIndex
     );
     let resGetList= await this.getService().getListFiller( 
       baseParams,

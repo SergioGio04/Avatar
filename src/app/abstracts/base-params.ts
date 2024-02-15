@@ -4,19 +4,21 @@ import { OrderByDirection } from "firebase/firestore";
 export class BaseParams {
 
     numberOfElements?: number;
-    idToGetDocumentSnap?: string | undefined;
-    getnext?: boolean | undefined;
-    sortDirection?: OrderByDirection | undefined;
-    columnToSort?: string | undefined;
-    searchString?:string|undefined;
+    idToGetDocumentSnap?: string;
+    getnext?: boolean;
+    sortDirection?: OrderByDirection;
+    columnToSort?: string;
+    searchString?:string;
+    pageIndex?: number
 
     constructor( 
         numberOfElements?: number,
-        idToGetDocumentSnap?: string | undefined,
-        getnext?: boolean | undefined,
-        sortDirection?:OrderByDirection | undefined,
-        columnToSort?: string | undefined,
-        searchString?: string | undefined
+        idToGetDocumentSnap?: string,
+        getnext?: boolean,
+        sortDirection?:OrderByDirection,
+        columnToSort?: string,
+        searchString?: string,
+        pageIndex?: number,
     ) {
         this.numberOfElements= numberOfElements;
         this.idToGetDocumentSnap= idToGetDocumentSnap;
@@ -24,6 +26,7 @@ export class BaseParams {
         this.sortDirection= sortDirection;
         this.columnToSort= columnToSort;
         this.searchString= searchString;
+        this.pageIndex= pageIndex;
 
     }
 
