@@ -1,36 +1,80 @@
-
 <style>
-
+    .formLoginClass{
+        width: 370px;
+        padding: 30px 0;
+        border: 1px solid lightgray;
+        display: grid;
+        justify-content: center;
+        border-radius: 8px;
+        background-color: #0000007a;
+    }
     .customButtonStyle{
         background: #adacac;
         border-color: #adacac;
         cursor: pointer;
     }
+    .labelStyle{
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    #myVideo {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        transform: translateX(calc((100% - 100vw) / 2));
+        z-index: -1;
+    }
+    .contenitorForm{
+        height: 94vh;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
-
-<div style="margin: 50px;" class="contenitorForm">
-    <form [formGroup]="loginForm" >
-
-        <div >
-            <label for="email">Insert Valid email</label><br>
-            <input pInputText  id="email" type="email" formControlName="email"  />            
-        </div>
-
-        <div>
-            <label for="password">Password</label><br>           
+<div>
+    <video loop autoplay [muted]="'muted'" id="myVideo" src="../../assets/abstract_-_27726 (720p).mp4"></video>
+    <div class="contenitorForm">
+        <form class="formLoginClass" [formGroup]="loginForm" >
+            <div>
+                <label class="labelStyle" for="email">Insert Valid email</label><br>
+                <input size="large" pInputText  id="email" type="email" formControlName="email"  />            
+            </div>
+            <div style="margin-top: 15px;">
+                <label class="labelStyle" for="password">Password</label><br>            
+                <p-inputGroup [style]="{'display': 'inline-flex'}">                
+                    <input id="password" [type]="hide==false?'password':'text'" pInputText formControlName="password"    />
+                    <button class="customButtonStyle" (click)="hide=!hide" severity="secondary" type="button" pButton [icon]="hide==false?'pi pi-eye-slash' : 'pi pi-eye'"></button>
+                </p-inputGroup>
+                <div style="color: #c6c6c6;margin-top: 1px;">*password min length 6 characters</div>           
+            </div>                   
+            <!--
+            <div>
+                <p>Form Status: {{ loginForm.status }}</p>    
+            </div>
+            -->
+            <div style="margin-top: 25px;">
+                <p-button 
+                    [disabled]="!(loginForm.status == 'VALID')"
+                    [style]="{'margin-right': '10px'}" 
+                    type="submit" 
+                    (click)="callSignInSignUpFunction(0)" 
+                    label="Sign In"
+                ></p-button>
+                <p-button 
+                    [disabled]="!(loginForm.status == 'VALID')"
+                    type="submit" 
+                    (click)="callSignInSignUpFunction(1)" 
+                    label="Sign Up" 
+                    severity="success"
+                ></p-button>
+            </div>
             
-            <p-inputGroup [style]="{'display': 'inline-flex'}">                
-                <input id="password" [type]="hide==false?'password':'text'" pInputText formControlName="password"    />
-                <button class="customButtonStyle" (click)="hide=!hide" severity="secondary" type="button" pButton [icon]="hide==false?'pi pi-eye-slash' : 'pi pi-eye'"></button>
-            </p-inputGroup>          
-        </div>    
-            
-        <h4>Form Status: {{ loginForm.status }}</h4>    
+            <div style="color: red;">{{firebase.errorAuth}}</div>
+        </form>
         
-        <button type="submit" (click)="callSignInSignUpFunction(0)"> Sign In </button> 
-        <button type="submit" (click)="callSignInSignUpFunction(1)"> Sign Up </button> 
-
-        <div style="color: red;">{{firebase.errorAuth}}</div>
-        
-    </form>
+    </div>
 </div>
+

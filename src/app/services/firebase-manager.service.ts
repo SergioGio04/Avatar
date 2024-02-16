@@ -59,6 +59,7 @@ export class FirebaseManagerService {
       await signInWithEmailAndPassword(this.firebaseAuth, email, password)
       .then((userCredential) => {
         this.user = userCredential.user;
+        this.errorAuth= "";
       })
       .catch((error) => {
         console.log(error.message);

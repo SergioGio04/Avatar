@@ -36,7 +36,7 @@ export class LoginComponent {
 
   loginForm = new UntypedFormGroup ({
       email: new UntypedFormControl(undefined, [Validators.required, Validators.email]),
-      password: new UntypedFormControl(undefined, [Validators.required]),
+      password: new UntypedFormControl(undefined, [Validators.required, Validators.minLength(6)]),
   });
 
   async callSignInSignUpFunction(wantedSign: number) {
