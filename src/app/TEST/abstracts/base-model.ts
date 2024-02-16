@@ -25,7 +25,6 @@ export class BaseModel{
     }
 
     public SetArrayOfAllCombinations(s: string): string[]{
-        debugger;
         let list_of_strings = new Array();
         for(let iStart=0; iStart<s.length;iStart++) {
             for(let iEnd=iStart+1;iEnd<s.length+1;iEnd++) {

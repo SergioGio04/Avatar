@@ -250,7 +250,6 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
 
     async create(model: T): Promise<T> {
         let p = new Promise<T>(async (resolve, reject) => {
-            debugger;
             try {
                 //NB: Metti "Transaction firestore"        
                 let executionAdd = await addDoc(collection(this.firebase.db, this.getNameCollection()), model.getData());
@@ -267,7 +266,6 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
 
     async update(model: T): Promise<T> {
         let p = new Promise<T>(async (resolve, reject) => {
-            debugger;
             try {
                 const docRef = doc(this.firebase.db, this.getNameCollection(), model.id!);
                 await updateDoc(docRef, model.getData());

@@ -32,7 +32,6 @@ export class Product extends BridgeCategory{
         obj["description"]= this.description? this.description : null;
         
         this.setLowercaseSearch(obj, [{val: obj.brand, isSpaceAfter:true}, {val: obj.title} ]);
-        debugger;
         return obj;
     }
 

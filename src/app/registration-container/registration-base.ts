@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { FirebaseManagerService } from '../services/firebase-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,17 +22,19 @@ import { ButtonModule } from 'primeng/button';
     InputGroupAddonModule,
     ButtonModule
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  template: ''
 })
-export class LoginComponent {  
+export abstract class RegistrationBase {  
 
   hide:boolean=false;
-  constructor(
-    public firebase: FirebaseManagerService, 
-    public router: Router,
-    public route: ActivatedRoute
-  ){}
+  firebase:FirebaseManagerService;
+  router:Router;
+  route: ActivatedRoute;
+  constructor(injector: Injector){
+    this.firebase= injector.get(FirebaseManagerService);
+    this.router= injector.get(Router);
+    this.route= injector.get(ActivatedRoute);
+  }
 
   loginForm = new UntypedFormGroup ({
       email: new UntypedFormControl(undefined, [Validators.required, Validators.email]),

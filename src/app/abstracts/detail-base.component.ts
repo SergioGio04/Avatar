@@ -85,7 +85,6 @@ export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceB
   async update(){
       if(this.form.valid ){
         try{
-          debugger;
           this.loading=true;
 
           /*

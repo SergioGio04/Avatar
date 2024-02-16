@@ -17,7 +17,6 @@ export class ServiceFirebase2Service {
     this.firebaseInstance= initializeApp(environment.firebaseConfig);
     this.firebaseDB= getFirestore(this.firebaseInstance);
     this.firebaseAuth= getAuth(this.firebaseInstance);
-    debugger;
 
   }
 

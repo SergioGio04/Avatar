@@ -24,7 +24,6 @@ export const canActivateTeam: CanActivateFn = async (
   state: RouterStateSnapshot
 ) => {
   let service= inject(PermissionService);
-  debugger;
   let result= await service.canActivate(inject(UserToken), route.params['id']);
   return result;
 };

@@ -18,7 +18,7 @@
         font-size: 14px;
         font-weight: 500;
     }
-    #myVideo {
+    #myVideo{
         position: fixed;
         right: 0;
         bottom: 0;
@@ -64,14 +64,12 @@
                     label="Sign In"
                 ></p-button>
                 <p-button 
-                    [disabled]="!(loginForm.status == 'VALID')"
-                    type="submit" 
-                    (click)="callSignInSignUpFunction(1)" 
-                    label="Sign Up" 
+                    routerLink="/signup"
                     severity="success"
+                    icon="pi pi-arrow-right" iconPos="right"
+                    label="go to Sign Up" 
                 ></p-button>
-            </div>
-            
+            </div>            
             <div style="color: red;">{{firebase.errorAuth}}</div>
         </form>
         

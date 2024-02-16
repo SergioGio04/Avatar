@@ -43,7 +43,6 @@ export class CategoryComponent extends DetailBaseComponent<Category, CategorySer
     return new Category(json);
   }
   override getService(): CategoryServiceService {
-    debugger;
     return this.categoryServiceService;
   }
   

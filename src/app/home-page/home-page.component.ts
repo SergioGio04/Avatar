@@ -24,7 +24,6 @@ export class HomePageComponent {
       name: "meName",
       power: "mePower"
     })
-    debugger;
   }
 
 }
