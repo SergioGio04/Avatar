@@ -15,6 +15,7 @@ import { BridgeCategoryParams } from './bridge-category-params';
 import { Category } from '../category/category';
 import { ProductParamsModel } from '../product/models/product-params-model';
 import { BridgeCategory } from './bridge-category';
+import { BaseParameters } from './base-parameters';
 
 @Component({
     selector: 'app-list',
@@ -34,7 +35,7 @@ import { BridgeCategory } from './bridge-category';
     ],
 })
 export abstract class BridgeCategoryAdditionalColumns
-  <M extends BridgeCategory, S extends BridgeCategoryService<M, P & BridgeCategoryParams>, P> 
+  <M extends BridgeCategory, S extends BridgeCategoryService<M, P & BridgeCategoryParams>, P extends BaseParameters> 
   extends ListBaseComponent<M, S, P >  {
   
   listCategories: Category[];

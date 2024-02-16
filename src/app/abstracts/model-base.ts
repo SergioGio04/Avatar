@@ -2,7 +2,6 @@ import { Injector } from "@angular/core";
 
 export abstract class ModelBase {
     id?:string;
-    fromBigQuery?:boolean=false;
 
     constructor(json?:any){
         this.setData(json);

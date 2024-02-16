@@ -18,6 +18,7 @@ import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, tak
 import { ModelBase } from './model-base';
 import {  ServiceBase } from './service-base-service';
 import { BaseParams } from './base-params';
+import { BaseParameters } from './base-parameters';
 
 @Component({
   selector: 'app-list',
@@ -34,7 +35,7 @@ import { BaseParams } from './base-params';
   ],
   template: ''
 })
-export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T, P>, P > {
+export abstract class ListBaseComponent<T extends ModelBase, M extends ServiceBase<T, P>, P extends BaseParameters > {
 
   items:T[]=[];
   dtFormattedTable:any={};

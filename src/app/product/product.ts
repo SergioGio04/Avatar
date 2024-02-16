@@ -9,7 +9,6 @@ export class Product extends BridgeCategory{
     brand?:string;
     title?:string;
     description?:string;
-    //override fromBigQuery?:boolean= true;
     
     constructor(json?:any) { 
         super( json);

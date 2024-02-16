@@ -8,11 +8,13 @@ import { ModelBase } from "./model-base";
 import { BaseParams } from "./base-params";
 import { retry } from "rxjs";
 import { environment } from "../../environments/environment.development";
+import { BaseParameters } from "./base-parameters";
+
 
 //@Injectable({ providedIn: 'root' })
 
 
-export abstract class ServiceBase<T extends ModelBase, P>  {
+export abstract class ServiceBase<T extends ModelBase, P extends BaseParameters>  {
 
     protected firebase: FirebaseManagerService;
 
@@ -89,7 +91,7 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
     }
 
     //async getAdditionalQuery(q: Query, dynamicParam: GetDynamicParams): Promise<[Query, number|undefined]>{
-    async getAdditionalQuery(q: Query, dynamicParam?: P): Promise<Query>{
+    async getAdditionalQuery(q: Query, dynamicParam?: BaseParameters): Promise<Query>{
         return q ;
     }
 
@@ -108,7 +110,7 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
         }
     }
 
-    async getList( baseParams?:BaseParams, dynamicParam?:P ): Promise<[T[], number|boolean]> {
+    async getList( baseParams?:BaseParams, dynamicParam?:BaseParameters ): Promise<[T[], number|boolean]> {
         try {
             var list: T[] = [];
             let valueCount= 0;
@@ -121,8 +123,7 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
             var getnext= baseParams?.getnext;
             var pageIndex= baseParams?.pageIndex;
 
-            let fromBigQuery= this.getModelInstance().fromBigQuery;
-            if( fromBigQuery==false || fromBigQuery==undefined){
+            if( dynamicParam?.fromBigQuery==false || dynamicParam?.fromBigQuery==undefined){
                 let q = query(collection( this.firebase.db, this.getNameCollection() ));
                 //GET COUNT OF ALL ELEMENTS IN COLLECTION RETURNED FROM QUERY
                 if( searchString==undefined || searchString=="" || searchString==null){           
@@ -189,7 +190,6 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
                 });
             }
             else{
-
                 let query=`WITH CTE AS(
                         SELECT 
                         JSON_EXTRACT(data, "$.id") AS id,
@@ -219,6 +219,12 @@ export abstract class ServiceBase<T extends ModelBase, P>  {
                 }
 
                 console.log(query);
+                //TODO
+                //1 chiamata function callable
+                //2 creala function in functions
+
+                //senza deploy devi serve functions
+                //firebase.callable(nomefunzione, query)
                 //func custom  additionalQuerybigQuery
             }
             

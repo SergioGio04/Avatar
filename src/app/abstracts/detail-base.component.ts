@@ -4,10 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
 
 import { ServiceBase } from './service-base-service';
-import { ProductServiceService } from '../product/product-service.service';
-import { RouteReuseStrategy } from '@angular/router';
 import { ModelBase } from './model-base';
-import { CategoryServiceService } from '../category/category-service.service';
+import { BaseParameters } from './base-parameters';
 
 @Component({
   selector: 'app-product',
@@ -15,14 +13,13 @@ import { CategoryServiceService } from '../category/category-service.service';
   imports: [CommonModule, RouterOutlet, ReactiveFormsModule, CommonModule],
   template: ``,
 })
-export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceBase<T, P>, P > {
+export abstract class DetailBaseComponent<T extends ModelBase,M extends ServiceBase<T, P>, P extends BaseParameters > {
  
   form:UntypedFormGroup; 
   private route: ActivatedRoute;
   private router: Router;
   model?:T;
   loading:boolean= false; 
-  
 
   constructor(injector: Injector) {
     this.route= injector.get(ActivatedRoute);

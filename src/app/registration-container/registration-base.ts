@@ -8,6 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @Component({
@@ -20,7 +21,8 @@ import { ButtonModule } from 'primeng/button';
     MatInputModule,
     InputGroupModule,
     InputGroupAddonModule,
-    ButtonModule
+    ButtonModule,
+    ProgressSpinnerModule
   ],
   template: ''
 })

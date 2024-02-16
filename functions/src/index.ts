@@ -38,12 +38,9 @@ exports.addmessage = onRequest( async (req:any, res:any) => {
       res.json({result: req.auth});
       console.log(req.auth);
     }
-
-    
 });
 
-
-  // Listens for new messages added to /messages/:documentId/original
+// Listens for new messages added to /messages/:documentId/original
 // and saves an uppercased version of the message
 // to /messages/:documentId/uppercase
 exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event:any) => {
@@ -63,3 +60,5 @@ exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event:any) 
     return event.data.ref.set({uppercase}, {merge: true});
   });
   
+
+//export.callBigQuery= onCallable 

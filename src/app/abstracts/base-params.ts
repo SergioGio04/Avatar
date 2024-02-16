@@ -9,7 +9,7 @@ export class BaseParams {
     sortDirection?: OrderByDirection;
     columnToSort?: string;
     searchString?:string;
-    pageIndex?: number
+    pageIndex?: number;
 
     constructor( 
         numberOfElements?: number,
@@ -18,7 +18,7 @@ export class BaseParams {
         sortDirection?:OrderByDirection,
         columnToSort?: string,
         searchString?: string,
-        pageIndex?: number,
+        pageIndex?: number
     ) {
         this.numberOfElements= numberOfElements;
         this.idToGetDocumentSnap= idToGetDocumentSnap;
@@ -27,7 +27,6 @@ export class BaseParams {
         this.columnToSort= columnToSort;
         this.searchString= searchString;
         this.pageIndex= pageIndex;
-
     }
 
 }

@@ -37,6 +37,9 @@
 <div>
     <video loop autoplay [muted]="'muted'" id="myVideo" src="../../assets/abstract_-_27726 (720p).mp4"></video>
     <div class="contenitorForm">
+        <!--Loading Spinner-->
+        
+
         <form class="formLoginClass" [formGroup]="loginForm" >
             <div>
                 <label class="labelStyle" for="email">Insert Valid email</label><br>
@@ -71,8 +74,7 @@
                 ></p-button>
             </div>            
             <div style="color: red;">{{firebase.errorAuth}}</div>
-        </form>
-        
+        </form>        
     </div>
 </div>
 

@@ -18,6 +18,7 @@ export class FirebaseManagerService {
     this.myFirebase= initializeApp(environment.firebaseConfig);
     this.db= getFirestore(this.myFirebase);
     this.firebaseAuth= getAuth(this.myFirebase);
+    //this.firebaseFunctions= getFunction(this.myFirebase);
     
   }
 
