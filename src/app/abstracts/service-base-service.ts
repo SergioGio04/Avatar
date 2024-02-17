@@ -11,6 +11,8 @@ import { environment } from "../../environments/environment.development";
 import { BaseParameters } from "./base-parameters";
 
 
+import { httpsCallable } from "firebase/functions";
+
 //@Injectable({ providedIn: 'root' })
 
 
@@ -220,10 +222,17 @@ export abstract class ServiceBase<T extends ModelBase, P extends BaseParameters>
 
                 console.log(query);
                 //TODO
-                //1 chiamata function callable
-                //2 creala function in functions
+                //senza deploy devi lanciare il serve functions
+                
+                let callBigQuery= httpsCallable(this.firebase.firebaseFunctions, "callBigQuery");
+                callBigQuery({ text: query })
+                .then((result) => {
+                    debugger;
+                    const data = result.data;
+                    console.log(data);
+                    //const sanitizedMessage = data.text;
+                });
 
-                //senza deploy devi serve functions
                 //firebase.callable(nomefunzione, query)
                 //func custom  additionalQuerybigQuery
             }

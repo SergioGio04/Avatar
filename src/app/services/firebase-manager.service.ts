@@ -3,6 +3,8 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 import { Firestore, getFirestore } from 'firebase/firestore';
 import { Auth, Unsubscribe, User, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, updateEmail, updatePassword } from "firebase/auth";
+import { Functions, getFunctions } from 'firebase/functions';
+
 
 @Injectable({providedIn: 'root'})
 
@@ -10,6 +12,7 @@ export class FirebaseManagerService {
   myFirebase:FirebaseApp;
   db:Firestore;  
   firebaseAuth: Auth;
+  firebaseFunctions: Functions;
 
   user: User|null;
   errorAuth: string;
@@ -18,7 +21,7 @@ export class FirebaseManagerService {
     this.myFirebase= initializeApp(environment.firebaseConfig);
     this.db= getFirestore(this.myFirebase);
     this.firebaseAuth= getAuth(this.myFirebase);
-    //this.firebaseFunctions= getFunction(this.myFirebase);
+    this.firebaseFunctions= getFunctions(this.myFirebase);
     
   }
 

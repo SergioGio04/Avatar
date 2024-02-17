@@ -68,7 +68,7 @@ import { ButtonModule } from 'primeng/button';
     return this.productServiceService;
   }
   override getDynamicParams(): ProductParamsModel{
-    return new ProductParamsModel(this.selectedId, false);
+    return new ProductParamsModel(this.selectedId, true);
   }
   
 }

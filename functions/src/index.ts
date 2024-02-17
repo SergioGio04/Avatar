@@ -3,8 +3,6 @@ import * as bigQ from "@google-cloud/bigquery";
 const bigqueryClient = new bigQ.BigQuery();
 */
 
-import * as bigQ from "@google-cloud/bigquery";
-const bigqueryClient = new bigQ.BigQuery();
 
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 const {logger} = require("firebase-functions");
@@ -15,11 +13,27 @@ const {onDocumentCreated} = require("firebase-functions/v2/firestore");
 const {initializeApp} = require("firebase-admin/app");
 const {getFirestore} = require("firebase-admin/firestore");
 
-initializeApp();
-//const token= "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVkODA2ZjE4NDJiNTg4MDU0YjE4YjY2OWRkMWEwOWE0ZjM2N2FmYzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNjE4MTA0NzA4MDU0LTlyOXMxYzRhbGczNmVybGl1Y2hvOXQ1Mm4zMm42ZGdxLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNjE4MTA0NzA4MDU0LTlyOXMxYzRhbGczNmVybGl1Y2hvOXQ1Mm4zMm42ZGdxLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE0NDg0NTE4NDYwMTA1NzEwMDQxIiwiZW1haWwiOiJwb3dlcmFwcGl0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiaW96NEV6S3ctb25GVkNVOXhneUpOQSIsIm5iZiI6MTcwNzkwODYzNywiaWF0IjoxNzA3OTA4OTM3LCJleHAiOjE3MDc5MTI1MzcsImp0aSI6IjdkYWI4NGEzZTJhNjU5MGVlNzBlNmM3NDE1YzcwZjk4ODllOTkzNzUifQ.jk9EQoq1f1Webx6H59BW4ns_R5l_MH4YBHOksUb49AlcnFOGtawdmgt26Q3oCVFVk3p5IZa8tbU8e_TsRYS2JDuhph75LC_CusGHnvWhn4QEplgz2RYN1-JFXISwAKBjjci5zDlYAPd0feDFcNoBR3XsmBrG49vkphXD5VOaMsAP0kX_CUlcs5bm1Vk99xypOCTa7gERUYejvEAB1-geVx8XOopM6yD9kDY6gFB1PxzRxjigS67qLTxgdTxFKuFu_OeRFWkd5qTihuHlcg9viAvKQKRT6tLzOw401WvPVuVxoEoXr9OZcn-1eppD9uJCuKVSnxF-F_0xTED3s7f6bg";
 
-// Take the text parameter passed to this HTTP endpoint and insert it into
-// Firestore under the path /messages/:documentId/original
+
+
+//import BigQuery
+//import * as bigQ from "@google-cloud/bigquery";
+//const bigqueryClient = new bigQ.BigQuery();
+
+//IMPORT CALLABLE FUNCTIONS
+//const functions = require('firebase-functions');
+const {onCall, HttpsError} = require("firebase-functions/v2/https");
+
+initializeApp();
+
+
+//CREAZIONE DI UNA FUNZIONE CALLABLE
+//export.nome= functions.https.onCall((request:any)=>{})
+exports.callBigQuery= onCall((request:any) => {
+  console.log(request);
+  return "EI SONO IN callBigQuery"
+}); 
+
 exports.addmessage = onRequest( async (req:any, res:any) => {
     // Grab the text parameter.
 
@@ -40,9 +54,7 @@ exports.addmessage = onRequest( async (req:any, res:any) => {
     }
 });
 
-// Listens for new messages added to /messages/:documentId/original
-// and saves an uppercased version of the message
-// to /messages/:documentId/uppercase
+// Listens for new messages added to 
 exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event:any) => {
     
     // Grab the current value of what was written to Firestore.
@@ -61,4 +73,3 @@ exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event:any) 
   });
   
 
-//export.callBigQuery= onCallable 
