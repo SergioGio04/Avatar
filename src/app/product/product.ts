@@ -10,7 +10,7 @@ export class Product extends BridgeCategory{
     title?:string;
     description?:string;
     
-    constructor(json?:any) { 
+    constructor(json?:any) {
         super( json);
     }
 

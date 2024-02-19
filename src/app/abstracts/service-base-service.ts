@@ -98,6 +98,7 @@ export abstract class ServiceBase<T extends ModelBase, P extends BaseParameters>
     }
 
     additionalSelectQueryBigQuery(){}
+    additionalWhereBigQuery(isWhereUsed:boolean, dynamicParam:BaseParameters){}
 
     async getRunTimeCountElementsDB(q:Query): Promise<number>{
         try{
@@ -192,49 +193,61 @@ export abstract class ServiceBase<T extends ModelBase, P extends BaseParameters>
                 });
             }
             else{
-                let query=`WITH CTE AS(
-                        SELECT 
-                        JSON_EXTRACT(data, "$.id") AS id,
-                        ${this.additionalSelectQueryBigQuery()}
-                        JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,
-                        DATA AS data
-                        FROM "${environment.firebaseConfig.projectId}.firestore_export.${this.getNameCollection()}_raw_latest"
-                    )          
-                    SELECT * FROM CTE
-                `;
-
-                if(searchString || (columnToSort && sortDirection) ){
-                    query+=`WHERE `;
+                let query='WITH CTE AS(\
+                        SELECT\
+                        JSON_EXTRACT_SCALAR(data, "$.id") AS id,'+
+                        this.additionalSelectQueryBigQuery()+
+                        'JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,\
+                        DATA AS data\
+                        FROM `'+environment.firebaseConfig.projectId+'.firestore_export.'+this.getNameCollection()+'_raw_latest`\
+                    )\
+                    SELECT * FROM CTE\
+                ';
+                let isWhereUsed= false; 
+                if(searchString){
+                    query+=' WHERE ';
+                    isWhereUsed=true;
                 }
 
                 if(searchString){
-                    query+=`${searchString.toLocaleLowerCase()} IN UNNEST(CTE.lowercaseSearch)`
+                    //query+=`${searchString.toLocaleLowerCase()} IN UNNEST(CTE.lowercaseSearch)`;
+                    query+='"'+searchString.toLocaleLowerCase()+'" IN UNNEST (CTE.lowercaseSearch) ';
                 }
+                
+                query+=this.additionalWhereBigQuery(isWhereUsed, dynamicParam);
                 if( columnToSort && sortDirection ){
-                    query+=`ORDER BY ${columnToSort} ${sortDirection}`;
+                    //query+=`ORDER BY ${columnToSort} ${sortDirection}`;
+                    query+=' ORDER BY '+columnToSort + ' '+sortDirection;
                 }
                 if(numberOfElements){
-                    query += ` LIMIT ${numberOfElements}`;
+                    //query += ` LIMIT ${numberOfElements}`;
+                    query += ' LIMIT '+numberOfElements;
                 }
                 if(numberOfElements && pageIndex){
-                    query += `OFFSET ${numberOfElements * pageIndex}`;
+                    //query += `OFFSET ${numberOfElements * pageIndex}`;
+                    query += ' OFFSET '+numberOfElements * pageIndex;
                 }
 
                 console.log(query);
                 //TODO
                 //senza deploy devi lanciare il serve functions
                 
-                let callBigQuery= httpsCallable(this.firebase.firebaseFunctions, "callBigQuery");
-                callBigQuery({ text: query })
-                .then((result) => {
-                    debugger;
-                    const data = result.data;
-                    console.log(data);
-                    //const sanitizedMessage = data.text;
-                });
+                debugger;
 
-                //firebase.callable(nomefunzione, query)
-                //func custom  additionalQuerybigQuery
+                let callBigQuery= httpsCallable(this.firebase.firebaseFunctions, "callbigquery2");
+                await callBigQuery(query)
+                .then((result:any) => {
+                    debugger;
+                    let data = result.data;
+                    if(data){
+                        for(let obj of data){
+                            list.push(this.getModelInstance(obj.data));     
+                        }
+                    }
+                });
+                console.log("CIAO");
+                
+
             }
             
             return ([list, valueCount]);

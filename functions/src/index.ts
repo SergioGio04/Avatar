@@ -17,26 +17,87 @@ const {getFirestore} = require("firebase-admin/firestore");
 
 
 //import BigQuery
-//import * as bigQ from "@google-cloud/bigquery";
-//const bigqueryClient = new bigQ.BigQuery();
+import * as bigQ from "@google-cloud/bigquery";
+const bigqueryClient = new bigQ.BigQuery();
 
 //IMPORT CALLABLE FUNCTIONS
 //const functions = require('firebase-functions');
-const {onCall, HttpsError} = require("firebase-functions/v2/https");
+const {onCall} = require("firebase-functions/v2/https");
 
 initializeApp();
 
 
 //CREAZIONE DI UNA FUNZIONE CALLABLE
 //export.nome= functions.https.onCall((request:any)=>{})
-exports.callBigQuery= onCall((request:any) => {
-  console.log(request);
-  return "EI SONO IN callBigQuery"
+exports.callbigquery2= onCall(async (request:any) => {
+  /*
+  let q='WITH CTE AS(\
+    SELECT \
+    JSON_EXTRACT(data, "$.id") AS id,\
+    JSON_EXTRACT(data, "$.brand") AS brand,\
+    JSON_EXTRACT(data, "$.categoryId") AS categoryId,\
+    JSON_EXTRACT(data, "$.description") AS description,\
+    JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,\
+    DATA AS data\
+    FROM `avatar-sergio.firestore_export.products_raw_latest`\
+  )\
+  SELECT * FROM CTE\
+  LIMIT 5';
+  return {
+    stringFunctions: q,
+    stringService: request.data 
+  };
+  */
+  
+  console.log('CIAOOOOOOOOO');   
+  console.log('HEYYYYYY');
+  console.log( request);
+  //CALL BIG QUERY
+  debugger;
+  //return "CIAOß"
+
+  /*
+  let q='WITH CTE AS(\
+    SELECT \
+    JSON_EXTRACT(data, "$.id") AS id,\
+    JSON_EXTRACT(data, "$.brand") AS brand,\
+    JSON_EXTRACT(data, "$.categoryId") AS categoryId,\
+    JSON_EXTRACT(data, "$.description") AS description,\
+    JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,\
+    DATA AS data\
+    FROM `avatar-sergio.firestore_export.products_raw_latest`\
+  )\
+  SELECT * FROM CTE\
+  LIMIT 5';
+  */
+  let q= request.data;
+  
+  let dataFromBigQuery= await bigqueryClient.query(
+    //{query: request.data}
+    {query: q}
+  ).then(function(res){
+    let rows= res[0];
+    for(let row of rows){
+      row.data= JSON.parse(row.data);
+    }
+    return rows;
+  });
+  console.log(dataFromBigQuery);
+  return dataFromBigQuery;
+  
+
+  //return "CIAO";
+  
+  ////
+  //
+
 }); 
 
 exports.addmessage = onRequest( async (req:any, res:any) => {
     // Grab the text parameter.
-
+    
+    
+    //http://localhost:5001/avatar-sergio/us-central1/addmessage?text=CIAONE
     if(req.auth && req.auth.uid ){
       const original = req.query.text;
       console.log(original);

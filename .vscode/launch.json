@@ -3,6 +3,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "node",
+      "request": "attach",
+      "name": "DebugMyFunctions",
+      "port": 9229
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
