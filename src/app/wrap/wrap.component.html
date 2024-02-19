@@ -31,14 +31,32 @@
           z-index: 1000;
       }
     }
+
+    #myMessageP .p-message{
+      margin: 0!important;
+    }
+
+    :host ::ng-deep .p-message {
+      margin: 0!important;
+    }
+
+
   </style>
   
   <main class="main">
-  
-    <div  >
-      <span>user: {{firebase.user?.email}} </span>
-      <button (click)="callLogOut()">logOut</button>
-    </div>
+
+
+    <p-messages id="myMessageP" [style]="{'margin': 0}" severity="info">
+      <ng-template pTemplate>
+          <span style="margin-right:8px ;">user: <strong>{{firebase.user?.email}}</strong></span>
+          <p-button 
+            (click)="callLogOut()" 
+            label="logOut" 
+            severity="info" 
+            size="small"
+          ></p-button>
+      </ng-template>
+    </p-messages>
   
     <div class="mainContent">
   

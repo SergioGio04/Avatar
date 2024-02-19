@@ -10,9 +10,7 @@ import { retry } from "rxjs";
 import { environment } from "../../environments/environment.development";
 import { BaseParameters } from "./base-parameters";
 
-
 import { httpsCallable } from "firebase/functions";
-
 //@Injectable({ providedIn: 'root' })
 
 
@@ -237,7 +235,6 @@ export abstract class ServiceBase<T extends ModelBase, P extends BaseParameters>
                 let callBigQuery= httpsCallable(this.firebase.firebaseFunctions, "callbigquery2");
                 await callBigQuery(query)
                 .then((result:any) => {
-                    debugger;
                     let data = result.data;
                     if(data){
                         for(let obj of data){
@@ -245,7 +242,6 @@ export abstract class ServiceBase<T extends ModelBase, P extends BaseParameters>
                         }
                     }
                 });
-                console.log("CIAO");
                 
 
             }

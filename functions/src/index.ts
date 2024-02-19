@@ -3,7 +3,6 @@ import * as bigQ from "@google-cloud/bigquery";
 const bigqueryClient = new bigQ.BigQuery();
 */
 
-
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 const {logger} = require("firebase-functions");
 const {onRequest} = require("firebase-functions/v2/https");
@@ -12,8 +11,6 @@ const {onDocumentCreated} = require("firebase-functions/v2/firestore");
 // The Firebase Admin SDK to access Firestore.
 const {initializeApp} = require("firebase-admin/app");
 const {getFirestore} = require("firebase-admin/firestore");
-
-
 
 
 //import BigQuery
@@ -25,51 +22,12 @@ const bigqueryClient = new bigQ.BigQuery();
 const {onCall} = require("firebase-functions/v2/https");
 
 initializeApp();
-
-
 //CREAZIONE DI UNA FUNZIONE CALLABLE
 //export.nome= functions.https.onCall((request:any)=>{})
 exports.callbigquery2= onCall(async (request:any) => {
-  /*
-  let q='WITH CTE AS(\
-    SELECT \
-    JSON_EXTRACT(data, "$.id") AS id,\
-    JSON_EXTRACT(data, "$.brand") AS brand,\
-    JSON_EXTRACT(data, "$.categoryId") AS categoryId,\
-    JSON_EXTRACT(data, "$.description") AS description,\
-    JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,\
-    DATA AS data\
-    FROM `avatar-sergio.firestore_export.products_raw_latest`\
-  )\
-  SELECT * FROM CTE\
-  LIMIT 5';
-  return {
-    stringFunctions: q,
-    stringService: request.data 
-  };
-  */
-  
-  console.log('CIAOOOOOOOOO');   
-  console.log('HEYYYYYY');
   console.log( request);
-  //CALL BIG QUERY
   debugger;
-  //return "CIAOß"
 
-  /*
-  let q='WITH CTE AS(\
-    SELECT \
-    JSON_EXTRACT(data, "$.id") AS id,\
-    JSON_EXTRACT(data, "$.brand") AS brand,\
-    JSON_EXTRACT(data, "$.categoryId") AS categoryId,\
-    JSON_EXTRACT(data, "$.description") AS description,\
-    JSON_EXTRACT_STRING_ARRAY(data, "$.lowercaseSearch") as lowercaseSearch,\
-    DATA AS data\
-    FROM `avatar-sergio.firestore_export.products_raw_latest`\
-  )\
-  SELECT * FROM CTE\
-  LIMIT 5';
-  */
   let q= request.data;
   
   let dataFromBigQuery= await bigqueryClient.query(
@@ -84,12 +42,6 @@ exports.callbigquery2= onCall(async (request:any) => {
   });
   console.log(dataFromBigQuery);
   return dataFromBigQuery;
-  
-
-  //return "CIAO";
-  
-  ////
-  //
 
 }); 
 

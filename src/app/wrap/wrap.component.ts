@@ -10,6 +10,8 @@ import { ProductsComponent } from '../product/product-list/products.component';
 import { MenuItem } from 'primeng/api';
 import { environment } from '../../environments/environment';
 import { FirebaseManagerService } from '../services/firebase-manager.service';
+import { MessagesModule } from 'primeng/messages';
+
 
 @Component({
   selector: 'app-wrap',
@@ -24,7 +26,8 @@ import { FirebaseManagerService } from '../services/firebase-manager.service';
     MatButtonModule,
     ButtonModule,
     DropdownModule,
-    DockModule
+    DockModule,
+    MessagesModule
   ],
   templateUrl: './wrap.component.html',
   styleUrl: './wrap.component.scss'

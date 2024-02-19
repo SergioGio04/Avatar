@@ -1,4 +1,4 @@
-13:51:43.084 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-13:51:43.190 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
-13:51:54.899 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - avatar-sergio-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 78ms, init: 0ms
-13:51:54.930 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace avatar-sergio-default-rtdb status Active to Active
+14:14:44.262 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+14:14:44.378 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
+14:14:55.817 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - avatar-sergio-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 93ms, init: 0ms
+14:14:55.859 [NamespaceSystem-blocking-namespace-operation-dispatcher-7] INFO com.firebase.core.namespace.StateManager - Namespace avatar-sergio-default-rtdb status Active to Active
